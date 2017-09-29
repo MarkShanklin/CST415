@@ -10,8 +10,10 @@
 int main(void)
 {
     request_t req;
-    memset(req,0);
-    
-    
+    memset(req, 0);
+    req.msg_type = i;
+    req.status = i;
+    encode(&req, &req);
+
     return 0;
 }
