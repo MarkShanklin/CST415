@@ -6,6 +6,8 @@
 * Created By    : Mark Shanklin 
 **********************************************************/
 #include nameserver.h
+#include encode.h
+
 
 int main(void)
 {
