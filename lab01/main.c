@@ -14,10 +14,12 @@ int main(void)
 {
     request_t req;
     memset(req, 0, sizeof(request_t));
-    req.msg_type = i;
-    req.status = i;
-    
-    encode(&req, &req);
-
+    for(int i = 0; i < 10; i++)
+    {
+        req.msg_type = i;
+        req.status = i;
+        
+        encode(&req, &req);
+    }
     return 0;
 }
