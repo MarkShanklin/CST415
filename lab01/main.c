@@ -9,6 +9,7 @@
 #include <stdint.h>
 #include <string.h>
 #include "nameserver.h"
+#include "encode.h"
 
 int main(void)
 {
