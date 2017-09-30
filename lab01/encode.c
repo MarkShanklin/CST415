@@ -6,6 +6,8 @@
 * Created By    : Mark Shanklin 
 **********************************************************/
 #include "nameserver.h"
+#include <arpa/inet.h>
+
 
 #define MSG_TYPE_ERROR 2
 #define STATUS_ERROR 3
@@ -59,7 +61,7 @@ request_t *decode(void *buff, request_t *decoded)
         memcpy(decoded->service_name, ((request *)buff)->service_name, MAX_SERVICE_NAME_LEN); //(dest,src,length)
     }
     decoded->msg_type = ((request_t *)buff)->msg_type; //copy msg type only one byte no need to network order
-    decoded->port = nstoh(((request_t *)buff)->port);  //copy port using host byte order
+    decoded->port = ntohs(((request_t *)buff)->port);  //copy port using host byte order
     ((request_t *)buff)->status = request->status;     //copy status only one byte no need to host order
     return buff;
 };
