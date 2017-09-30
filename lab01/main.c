@@ -5,15 +5,9 @@
 * Last Modified : Sat 30 Sep 2017 11:17:03 AM PDT
 * Created By    : Mark Shanklin 
 **********************************************************/
-<<<<<<< HEAD
 #include <stdio.h>
 #include <stdint.h>
 #include "nameserver.h"
-=======
-#include nameserver.h
-#include encode.h
-
->>>>>>> a6d1674f00634a8878ec779d2ebc560a80033997
 
 int main(void)
 {
