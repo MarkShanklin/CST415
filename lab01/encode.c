@@ -26,7 +26,7 @@ void *encode(request_t *request, void *buff)
     {
         memcpy(request->service_name, ((request *)buff)->service_name, MAX_SERVICE_NAME_LEN); //(dest,src,length)
     }
-    ((request_t *)buff)->service_name[MAX_SERVICE_NAME_LEN] = NULL; //make last item in string NULL
+    ((request_t *)buff)->service_name[MAX_SERVICE_NAME_LEN] = '/0'; //make last item in string NULL
     int length = strlen(request->service_name);                      //find the length up to the first NULL
     memset(buff + length, 0, MAX_SERVICE_NAME_LEN - length);     //NULL fill from first NULL to end
     ((request_t *)buff)->msg_type = request->msg_type;              //copy msg type only one byte no need to network order
