@@ -14,7 +14,7 @@
 int main(void)
 {
     request_t req;
-    memset(((void*)req), 0, sizeof(request_t));
+    memset(req->service_name, 0, MAX_SERVICE_NAME_LEN+1);
     for(int i = 0; i < 10; i++)
     {
         req.msg_type = i;
