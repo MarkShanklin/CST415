@@ -29,9 +29,9 @@ int main(void)
         printf("msg_type: %d\n", req.msg_type);
         printf("status: %d\n", req.status);
         printf("service_name: ");
-        for (int i = 0; i < MAX_SERVICE_NAME_LEN + 1; i++)
+        for (int j = 0; j < MAX_SERVICE_NAME_LEN + 1; j++)
         {
-            printf("%c", req.service_name);
+            printf("%c", req.service_name[j]);
         }
         printf("\n");
         printf("port: %d\n", req.port);
