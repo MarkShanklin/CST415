@@ -68,6 +68,6 @@ request_t *decode(void *buff, request_t *decoded)
     }
     decoded->msg_type = ((request_t *)buff)->msg_type; //copy msg type only one byte no need to network order
     decoded->port = ntohs(((request_t *)buff)->port);  //copy port using host byte order
-    ((request_t *)buff)->status = request->status;     //copy status only one byte no need to host order
+    ((request_t *)buff)->status = decoded->status;     //copy status only one byte no need to host order
     return buff;
 };
