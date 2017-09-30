@@ -26,8 +26,8 @@ int main(void)
         req.port = 1000 + i;
         buff_ptr = encode(&req, &buff);
 
-        printf("buff_ptr: %010x\n", buff_ptr);
-        printf("req: %010x\n", req);
+        printf("buff_ptr: %010x\n", &buff_ptr);
+        printf("req: %010x\n", &req);
         printf("Buff: %s\n", buff);
         printf("msg_type: %d\n", req.msg_type);
         printf("status: %d\n", req.status);
@@ -50,8 +50,8 @@ int main(void)
         req.port = 1000 + i;
         buff_ptr = encode(&req, &req);
 
-        printf("buff_ptr: %010x\n", buff_ptr);
-        printf("req: %010x\n", req);
+        printf("buff_ptr: %010x\n", &buff_ptr);
+        printf("req: %010x\n", &req);
         printf("Buff: %s\n", buff);
         printf("msg_type: %d\n", req.msg_type);
         printf("status: %d\n", req.status);
