@@ -26,7 +26,7 @@ int main(void)
         req.port = 1000 + i;
         _ptr = encode(&req, &buff);
 
-        printf("buff_ptr: %010x\n", &buff_ptr);
+        printf("buff_ptr: %010x\n", &_ptr);
         printf("req: %010x\n", &req);
         printf("req_msg_type: %d\n", req.msg_type);
         printf("req_service_name: ");
@@ -66,7 +66,7 @@ int main(void)
         req.port = 1000 + i;
         buff_ptr = encode(&req, &req);
 
-        printf("buff_ptr: %010x\n", &buff_ptr);
+        printf("buff_ptr: %010x\n", &_ptr);
         printf("req: %010x\n", &req);
         printf("req_msg_type: %d\n", req.msg_type);
         printf("req_service_name: ");
