@@ -47,7 +47,7 @@ int is_invalid(request_t *request)
     int length = strlen(request->service_name);
     for (int i = length; i < MAX_SERVICE_NAME_LEN)
     {
-        if (request->service_name[i] != NULL)
+        if (request->service_name[i] != '0')
             return SERVICE_NAME_ERROR;
     }
 
@@ -57,7 +57,7 @@ int is_invalid(request_t *request)
 request_t *decode(void *buff, request_t *decoded)
 {
     if (is_invalid((request_t *)buff))
-        return;
+        return NULL;
     if (request == buff)
     {
         memmove(decoded->service_name, ((request_t *)buff)->service_name, MAX_SERVICE_NAME_LEN); //(dest,src,length)
