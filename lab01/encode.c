@@ -7,8 +7,9 @@
 **********************************************************/
 #include "nameserver.h"
 #include <arpa/inet.h>
+#include <string.h>
 
-
+#define NULL 0
 #define MSG_TYPE_ERROR 2
 #define STATUS_ERROR 3
 #define SERVICE_NAME_ERROR 4
