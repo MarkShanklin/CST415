@@ -9,6 +9,7 @@
 //
 // Date: 9/25/2017
 //
+#include <stdint.h>
 
 #define MAX_SERVICE_NAME_LEN 49
 

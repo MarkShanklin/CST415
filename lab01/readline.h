@@ -4,6 +4,8 @@
 //
 // Author: Phil Howard
 
+#include <sys/types.h>
+
 //**********************************************************
 // read from a file descriptor a line at a time
 //

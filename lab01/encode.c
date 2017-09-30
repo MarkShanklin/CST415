@@ -2,10 +2,10 @@
 * File Name     : encode.c
 * Purpose       : encode decode and validate data
 * Creation Date : 09-26-2017
-* Last Modified : Wed 27 Sep 2017 08:33:26 PM PDT
+* Last Modified : Sat 30 Sep 2017 11:11:56 AM PDT
 * Created By    : Mark Shanklin 
 **********************************************************/
-#include nameserver.h
+#include "nameserver.h"
 
 #define MSG_TYPE_ERROR 2
 #define STATUS_ERROR 3

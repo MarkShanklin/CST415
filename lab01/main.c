@@ -2,10 +2,12 @@
 * File Name     : main.c
 * Purpose       : 
 * Creation Date : 09-26-2017
-* Last Modified : Wed 27 Sep 2017 08:33:26 PM PDT
+* Last Modified : Sat 30 Sep 2017 11:17:03 AM PDT
 * Created By    : Mark Shanklin 
 **********************************************************/
-#include nameserver.h
+#include <stdio.h>
+#include <stdint.h>
+#include "nameserver.h"
 
 int main(void)
 {
