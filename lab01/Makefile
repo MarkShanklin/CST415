@@ -6,7 +6,7 @@
 # Created By    : Mark Shanklin 
 ############################################################
 
-CC = gcc -g
+CC = gcc -g -std=c99
 CFLAGS = -Wall 
 PROG = labOne
 SOURCES := $(shell echo *.c)
