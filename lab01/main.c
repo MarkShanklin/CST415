@@ -32,7 +32,7 @@ int main(void)
         for (int j = 0; j < MAX_SERVICE_NAME_LEN + 1; j++)
         {
             if(req.service_name[j] == '\0')
-            printf("0",req.service_name[j]);
+            printf("0");
             else
             printf("%c",req.service_name[j]);
         }
