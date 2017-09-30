@@ -30,7 +30,6 @@ int main(void)
         printf("req: %010x\n", &req);
         printf("Buff: %s\n", buff);
         printf("msg_type: %d\n", req.msg_type);
-        printf("status: %d\n", req.status);
         printf("service_name: ");
         for (int j = 0; j < MAX_SERVICE_NAME_LEN + 1; j++)
         {
@@ -41,6 +40,9 @@ int main(void)
         }
         printf("\n");
         printf("port: %d\n", req.port);
+        printf("status: %d\n", req.status);
+        printf("\n\n");
+        
     }
     for (int i = 0; i < 10; i++)
     {
@@ -54,7 +56,6 @@ int main(void)
         printf("req: %010x\n", &req);
         printf("Buff: %s\n", buff);
         printf("msg_type: %d\n", req.msg_type);
-        printf("status: %d\n", req.status);
         printf("service_name: ");
         for (int j = 0; j < MAX_SERVICE_NAME_LEN + 1; j++)
         {
@@ -65,6 +66,8 @@ int main(void)
         }
         printf("\n");
         printf("port: %d\n", req.port);
+        printf("status: %d\n", req.status);
+        printf("\n\n");
     }
 
     return 0;
