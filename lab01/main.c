@@ -40,7 +40,6 @@ int main(void)
         printf("\n");
         printf("req_port: %d\n", req.port);
         printf("req_status: %d\n", req.status);
-        //printf("\n\n");
 
         printf("buff: %010x\n", &buff);
         printf("buff_msg_type: %d\n", buff.msg_type);
@@ -64,7 +63,7 @@ int main(void)
         req.status = i;
         strcpy(req.service_name, "this is the service name" + i);
         req.port = 1000 + i;
-        buff_ptr = encode(&req, &req);
+        _ptr = encode(&req, &req);
 
         printf("buff_ptr: %010x\n", &_ptr);
         printf("req: %010x\n", &req);
