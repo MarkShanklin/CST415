@@ -31,7 +31,7 @@ int main(void)
         printf("service_name: ");
         for (int j = 0; j < MAX_SERVICE_NAME_LEN + 1; j++)
         {
-            printf("%c", req.service_name[j]);
+            printf("%d %c ", j,req.service_name[j]);
         }
         printf("\n");
         printf("port: %d\n", req.port);
