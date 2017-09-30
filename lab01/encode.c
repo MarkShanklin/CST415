@@ -45,7 +45,7 @@ int is_invalid(request_t *request)
         return STATUS_ERROR;
 
     int length = strlen(request->service_name);
-    for (int i = length; i < MAX_SERVICE_NAME_LEN)
+    for (int i = length; i < MAX_SERVICE_NAME_LEN; i++)
     {
         if (request->service_name[i] != '0')
             return SERVICE_NAME_ERROR;
