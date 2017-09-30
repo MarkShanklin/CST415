@@ -20,9 +20,9 @@ int main(void)
     {
         req.msg_type = i;
         req.status = i;
-        req.service_name = "this is the service name" + i;
+        strcpy(req.service_name,"this is the service name" + i);
         req.port = 1000 + i;
-        buff = encode(&req, &req);
+        &buff = encode(&req, &req);
 
         printf("Buff: %s\n",buff);
         printf("msg_type: %d\n",req.msg_type);
