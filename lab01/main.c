@@ -14,23 +14,22 @@
 int main(void)
 {
     request_t req;
+    request_t buff;
     memset(req.service_name, 0, MAX_SERVICE_NAME_LEN + 1);
-    char buff[MAX_SERVICE_NAME_LEN + 1];
-    memset(buff, 0, MAX_SERVICE_NAME_LEN + 1);
-    char *buff_ptr;
+    memset(buff.service_name, 0, MAX_SERVICE_NAME_LEN + 1);
+    char *_ptr;
     for (int i = 0; i < 10; i++)
     {
         req.msg_type = i;
         req.status = i;
         strcpy(req.service_name, "this is the service name" + i);
         req.port = 1000 + i;
-        buff_ptr = encode(&req, &buff);
+        _ptr = encode(&req, &buff);
 
         printf("buff_ptr: %010x\n", &buff_ptr);
         printf("req: %010x\n", &req);
-        printf("Buff: %s\n", buff);
-        printf("msg_type: %d\n", req.msg_type);
-        printf("service_name: ");
+        printf("req_msg_type: %d\n", req.msg_type);
+        printf("req_service_name: ");
         for (int j = 0; j < MAX_SERVICE_NAME_LEN + 1; j++)
         {
             if(req.service_name[j] == '\0')
@@ -39,8 +38,23 @@ int main(void)
             printf("%c",req.service_name[j]);
         }
         printf("\n");
-        printf("port: %d\n", req.port);
-        printf("status: %d\n", req.status);
+        printf("req_port: %d\n", req.port);
+        printf("req_status: %d\n", req.status);
+        //printf("\n\n");
+
+        printf("buff: %010x\n", &buff);
+        printf("buff_msg_type: %d\n", buff.msg_type);
+        printf("buff_service_name: ");
+        for (int j = 0; j < MAX_SERVICE_NAME_LEN + 1; j++)
+        {
+            if(buff.service_name[j] == '\0')
+            printf("0");
+            else
+            printf("%c",buff.service_name[j]);
+        }
+        printf("\n");
+        printf("buff_port: %d\n", buff.port);
+        printf("buff_status: %d\n", buff.status);
         printf("\n\n");
         
     }
@@ -54,9 +68,8 @@ int main(void)
 
         printf("buff_ptr: %010x\n", &buff_ptr);
         printf("req: %010x\n", &req);
-        printf("Buff: %s\n", buff);
-        printf("msg_type: %d\n", req.msg_type);
-        printf("service_name: ");
+        printf("req_msg_type: %d\n", req.msg_type);
+        printf("req_service_name: ");
         for (int j = 0; j < MAX_SERVICE_NAME_LEN + 1; j++)
         {
             if(req.service_name[j] == '\0')
@@ -65,8 +78,22 @@ int main(void)
             printf("%c",req.service_name[j]);
         }
         printf("\n");
-        printf("port: %d\n", req.port);
-        printf("status: %d\n", req.status);
+        printf("req_port: %d\n", req.port);
+        printf("req_status: %d\n", req.status);
+        
+        printf("buff: %010x\n", &buff);
+        printf("buff_msg_type: %d\n", buff.msg_type);
+        printf("buff_service_name: ");
+        for (int j = 0; j < MAX_SERVICE_NAME_LEN + 1; j++)
+        {
+            if(buff.service_name[j] == '\0')
+            printf("0");
+            else
+            printf("%c",buff.service_name[j]);
+        }
+        printf("\n");
+        printf("buff_port: %d\n", buff.port);
+        printf("buff_status: %d\n", buff.status);
         printf("\n\n");
     }
 
