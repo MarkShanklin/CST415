@@ -14,22 +14,27 @@
 int main(void)
 {
     request_t req;
-    memset(req.service_name, 0, MAX_SERVICE_NAME_LEN+1);
+    memset(req.service_name, 0, MAX_SERVICE_NAME_LEN + 1);
     char buff[MAX_SERVICE_NAME_LEN + 1];
-    char * buff_ptr;
-    for(int i = 0; i < 10; i++)
+    char *buff_ptr;
+    for (int i = 0; i < 10; i++)
     {
         req.msg_type = i;
         req.status = i;
-        strcpy(req.service_name,"this is the service name" + i);
+        strcpy(req.service_name, "this is the service name" + i);
         req.port = 1000 + i;
         buff_ptr = encode(&req, &req);
 
-        printf("Buff: %s\n",buff);
-        printf("msg_type: %d\n",req.msg_type);
-        printf("status: %d\n",req.status);
-        printf("service_name: %s\n",req.service_name);
-        printf("port: %d\n",req.port);
+        printf("Buff: %s\n", buff);
+        printf("msg_type: %d\n", req.msg_type);
+        printf("status: %d\n", req.status);
+        printf("service_name: ");
+        for (int i = 0; i < MAX_SERVICE_NAME_LEN + 1; i++)
+        {
+            printf("%c", req.service_name);
+        }
+        printf("\n");
+        printf("port: %d\n", req.port);
     }
 
     return 0;
