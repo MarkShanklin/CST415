@@ -27,7 +27,7 @@ void *encode(request_t *request, void *buff)
         memcpy(request->service_name, ((request *)buff)->service_name, MAX_SERVICE_NAME_LEN); //(dest,src,length)
     }
     ((request_t *)buff)->service_name[MAX_SERVICE_NAME_LEN] = NULL; //make last item in string NULL
-    int length = request->service_name.length;                      //find the length up to the first NULL
+    int length = strlen(request->service_name);                      //find the length up to the first NULL
     memset(buff + length, 0, MAX_SERVICE_NAME_LEN - length);     //NULL fill from first NULL to end
     ((request_t *)buff)->msg_type = request->msg_type;              //copy msg type only one byte no need to network order
     ((request_t *)buff)->port = htons(request->port);               //copy port using network byte order
@@ -40,8 +40,8 @@ int is_invalid(request_t *request)
     if(request->msg_type > 6 || request->msg_type < 1) return MSG_TYPE_ERROR;
     if(request->status > 5 || request->status < 0) return STATUS_ERROR;
 
-    int len = request->service_name.length;
-    for(i = len; i < MAX_SERVICE_NAME_LEN)
+    int length = strlen(request->service_name);
+    for(i = length; i < MAX_SERVICE_NAME_LEN)
     {
         if(request->service_name[i] != NULL) return SERVICE_NAME_ERROR;
     }
