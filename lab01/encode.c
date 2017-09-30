@@ -58,7 +58,7 @@ request_t *decode(void *buff, request_t *decoded)
 {
     if (is_invalid((request_t *)buff))
         return NULL;
-    if (request == buff)
+    if (buff == decoded)
     {
         memmove(decoded->service_name, ((request_t *)buff)->service_name, MAX_SERVICE_NAME_LEN); //(dest,src,length)
     }
