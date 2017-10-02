@@ -17,7 +17,7 @@ int main(void)
     request_t buff;
     memset(req.service_name, 0, MAX_SERVICE_NAME_LEN + 1);
     memset(buff.service_name, 0, MAX_SERVICE_NAME_LEN + 1);
-    char *_ptr;
+    void *_ptr;
     for (int i = 0; i < 10; i++)
     {
         req.msg_type = i;
@@ -134,7 +134,7 @@ int main(void)
         printf("buff_status: %d\n", buff.status);
         printf("\n\n");
         
-        req=decode(&buff, &req);
+        (request_t*)_ptr=decode(&buff, &req);
 
         printf("buff_ptr: %p\n", (void*)&_ptr);
         printf("req: %p\n", (void*)&req);
