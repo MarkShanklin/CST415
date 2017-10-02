@@ -85,7 +85,7 @@ int main(void)
         printf("buff_service_name: ");
         for (int j = 0; j < MAX_SERVICE_NAME_LEN + 1; j++)
         {
-            if(buff.service_n ame[j] == '\0')
+            if(buff.service_name[j] == '\0')
             printf("0");
             else
             printf("%c",buff.service_name[j]);
