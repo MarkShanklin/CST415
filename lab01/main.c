@@ -134,7 +134,7 @@ int main(void)
         printf("buff_status: %d\n", buff.status);
         printf("\n\n");
         
-        _ptr=decode(&buff, &req);
+        _ptr = decode(&buff, &req);
 
         printf("buff_ptr: %p\n", (void*)&_ptr);
         printf("req: %p\n", (void*)&req);
