@@ -25,17 +25,16 @@ char *readline(char *buff, ssize_t size, int fd)
     char *src_ptr = myBuff.buffer;
     while( myBuff.totalCopied < size || *bptr != '\n')
     {
-        if(myBuff.amountRead == myBuff.amountCopied)
+        if(myBuff.amountCopied == myBuff.amountRead)
         {    
             myBuff.amountRead = read_block(fd, myBuff.buffer);
             myBuff.amountCopied = 0;
+            src_ptr = myBuff.buffer;
         }
 
         if(myBuff.amountRead > 0)
         {
-            *bptr = *src_ptr;
-            bptr++;
-            src_ptr++;
+            *bptr++ = *src_ptr++;
             myBuff.amountCopied++;
             myBuff.totalCopied++;
         } 
