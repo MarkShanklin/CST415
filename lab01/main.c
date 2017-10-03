@@ -6,8 +6,8 @@
 * Created By    : Mark Shanklin 
 **********************************************************/
 #include <stdio.h>
-#include <stdint.h>
-#include <string.h>
+//#include <stdint.h>
+//#include <string.h>
 #include "nameserver.h"
 #include "encode.h"
 
