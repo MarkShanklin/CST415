@@ -17,12 +17,13 @@ int main(int argc, char *argv[])
 {
     int fd = open_blocks("filea.txt");
     char buffer[1024];
-
-    while(1)
+    int esc = 0;
+    while(esc < 5)
     {
         if(readline(buffer,1024,fd) == NULL)
         {
-            printf("NULL");  
+            printf("NULL");
+            esc++;
         }
         printf("%s", buffer);
     }
