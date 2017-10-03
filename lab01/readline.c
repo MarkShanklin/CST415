@@ -29,6 +29,7 @@ char *readline(char *buff, ssize_t size, int fd)
 
             if((j + myBuff.amount) > size){
                 memcpy(buff+j, &myBuff.buffer, (size-j));
+                return buff;
             } 
 
             if (myBuff.amount <= 0)
@@ -43,7 +44,6 @@ char *readline(char *buff, ssize_t size, int fd)
                     myBuff.placeHolder = i;
                     memcpy(buff+j, &myBuff.buffer, i + 1);
                     myBuff.amount -= myBuff.placeHolder;
-                    j += i;
                     return buff;
                 }
                 else if (i == myBuff.amount - 1)
@@ -59,6 +59,7 @@ char *readline(char *buff, ssize_t size, int fd)
         {
             if((j + myBuff.amount) > size){
                 memcpy(buff+j, &myBuff.buffer, (size-j));
+                return buff;
             }
         
             for (int i = myBuff.placeHolder; i < myBuff.amount; i++)
@@ -67,18 +68,15 @@ char *readline(char *buff, ssize_t size, int fd)
                 {
                     memcpy(buff+j, &myBuff.buffer + myBuff.placeHolder, i + 1);
                     myBuff.placeHolder = i;
-                    myBuff.amount = myBuff.amount - myBuff.placeHolder;
-                    j += i;
+                    myBuff.amount -= myBuff.placeHolder;
                     return buff;
                 }
-                else if (i == myBuff.amount - 1)
-                {
-                    memcpy(buff+j, &myBuff.buffer + myBuff.placeHolder, i + 1);
-                    myBuff.placeHolder = i;
-                    myBuff.amount = myBuff.amount - myBuff.placeHolder;
-                    j += i;
-                }
+                
             }
+                memcpy(buff+j, &myBuff.buffer + myBuff.placeHolder, myBuff.amount);
+                myBuff.placeHolder = myBuff.amount - 1;
+                j += i;
+                myBuff.amount -= myBuff.placeHolder;
         }
     }
     return buff;
