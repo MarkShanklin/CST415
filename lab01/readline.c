@@ -58,10 +58,10 @@ char *readline(char *buff, ssize_t size, int fd)
         }
         else
         {
-            if((j + myBuff.amount) > size){
-                memcpy(buff+j, myBuff.buffer + myBuff.placeHolder, (size));
+            if((myBuff.amount) > size){
+                memcpy(buff, myBuff.buffer + myBuff.placeHolder, (size));
                 myBuff.amount -= (size);
-                myBuff.placeHolder = ((size));
+                myBuff.placeHolder += ((size));
                 return buff;
             }
         
