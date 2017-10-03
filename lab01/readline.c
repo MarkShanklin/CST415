@@ -34,7 +34,7 @@ char *readline(char *buff, ssize_t size, int fd)
             *bptr++ = *src_ptr++;
             myBuff.amount++;
         } 
-        else 
+        else if (myBuff.placeHolder < 0)
         {
             return NULL;
         }
@@ -43,7 +43,9 @@ char *readline(char *buff, ssize_t size, int fd)
     if(*bptr != '\n')
     {
         myBuff.amount = 0;
-    } else {
+    } 
+    else 
+    {
         myBuff.placeHolder = 0;
     }
     *bptr++ = '\0';
