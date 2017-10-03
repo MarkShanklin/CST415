@@ -21,7 +21,7 @@ int main(void)
     while(1)
     {
         readline(buffer,32,fd);
-        printf("%s", buff);
+        printf("%s", buffer);
     }
     // request_t req;
     // request_t buff;
