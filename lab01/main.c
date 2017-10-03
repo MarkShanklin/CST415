@@ -22,7 +22,6 @@ int main(int argc, char *argv[])
     {
         if(readline(buffer,1024,fd) == NULL)
         {
-            printf("NULL");
             esc++;
         }
         printf("%s", buffer);
