@@ -32,7 +32,7 @@ char *readline(char *buff, ssize_t size, int fd)
             src_ptr = myBuff.buffer;
         }
 
-        if(myBuff.amountRead > 0)
+        if(myBuff.amountRead >= 0)
         {
             *bptr++ = *src_ptr++;
             myBuff.amountCopied++;
@@ -46,5 +46,6 @@ char *readline(char *buff, ssize_t size, int fd)
         }
     }
     *bptr = '\0';
+    myBuff.totalCopied = 0;
     return buff;
 };
