@@ -21,14 +21,11 @@ static __thread buffer_t myBuff;
 char *readline(char *buff, ssize_t size, int fd)
 {
     memset(buff,0,size);
-    printf("ph: %d\na: %d\n", myBuff.placeHolder, myBuff.amount);
     for (int j = 0; j < size;)
     {
-        printf("J: %d ", j);
         if (myBuff.placeHolder == 0)
         {
             myBuff.amount = read_block(fd, myBuff.buffer);
-
             if((j + myBuff.amount) > size){
                 memcpy(buff+j, myBuff.buffer, (size-j));
                 myBuff.placeHolder = ((size - j));
@@ -69,12 +66,9 @@ char *readline(char *buff, ssize_t size, int fd)
         
             for (int i = myBuff.placeHolder; i < (myBuff.amount - myBuff.placeHolder); i++)
             {
-                //printf("bottomi: %d ", i);
                 if (myBuff.buffer[i] == '\n')
                 {
                     memcpy(buff+j, (myBuff.buffer + myBuff.placeHolder), (i+1));
-                    //printf("\nBUFFER: %s\n", myBuff.buffer);
-                    //printf("DUFFER: %s\n", buff);
                     myBuff.amount = (myBuff.amount + myBuff.placeHolder) - (i+1);
                     myBuff.placeHolder = i+1;
                     return buff;
