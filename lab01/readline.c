@@ -23,6 +23,7 @@ char *readline(char *buff, ssize_t size, int fd)
     printf("ph: %d\na: %d\n", myBuff.placeHolder, myBuff.amount);
     for (int j = 0; j < size;)
     {
+        printf("J: %d ", j);
         if (myBuff.placeHolder == 0)
         {
             myBuff.amount = read_block(fd, myBuff.buffer);
