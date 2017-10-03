@@ -20,7 +20,7 @@ int main(void)
 
     while(1)
     {
-        readline(buffer,1024,fd);
+        readline(&buffer,1024,fd);
         printf("%s", buffer);
     }
     // request_t req;
