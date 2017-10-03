@@ -23,7 +23,7 @@ char *readline(char *buff, ssize_t size, int fd)
 {
     char *bptr = buff;
     char *src_ptr = myBuff.buffer;
-    while( myBuff.totalCopied < (size-1) || *bptr != '\n')
+    while( myBuff.totalCopied < size || *bptr != '\n')
     {
         if(myBuff.amountCopied == myBuff.amountRead)
         {    
