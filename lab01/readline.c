@@ -29,12 +29,12 @@ char *readline(char *buff, ssize_t size, int fd)
             myBuff.amountRead = read_block(fd, myBuff.buffer);
             myBuff.amountCopied = 0;
         }
-        if(myBuff.amountRead >= 0)
+        if(myBuff.amountRead > 0)
         {
             *bptr++ = *src_ptr++;
             myBuff.amountCopied++;
         } 
-        else if (myBuff.amountRead < 0)
+        else if (myBuff.amountRead <= 0)
         {
             return NULL;
         }
