@@ -25,6 +25,7 @@ int main(int argc, char *argv[])
             esc++;
         }
         printf("%s", buffer);
+        buffer = "";
     }
 
     int val = close_blocks(fd);
