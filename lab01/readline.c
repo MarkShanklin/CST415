@@ -77,9 +77,9 @@ char *readline(char *buff, ssize_t size, int fd)
                 
             }
             memcpy(buff+j, &myBuff.buffer + myBuff.placeHolder, myBuff.amount);
-            myBuff.placeHolder = myBuff.amount - 1;
-            j += myBuff.amount - 1;
-            myBuff.amount -= myBuff.placeHolder;
+            myBuff.placeHolder = 0;
+            j += myBuff.amount;
+            myBuff.amount = 0;
         }
     }
     return buff;
