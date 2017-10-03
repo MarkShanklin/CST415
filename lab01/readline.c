@@ -20,67 +20,27 @@ static __thread buffer_t myBuff;
 
 char *readline(char *buff, ssize_t size, int fd)
 {
-    memset(buff,0,size);
-    for (int j = 0; j < size;)
+    char *bptr = buff;
+    char *src_ptr = myBuff.buffer[myBuff.placeholder];
+    for (int j = 0; j < size; j += myBuff.placeHolder)
     {
-        if (myBuff.placeHolder == 0)
+        if (myBuff.placeHolder >= BLOCK_SIZE)
         {
             myBuff.amount = read_block(fd, myBuff.buffer);
-
-            if((myBuff.amount + j) > size){
-                memcpy(buff+j, myBuff.buffer, ((size - j)));
-                myBuff.placeHolder += ((size - j)-1);
-                myBuff.amount -= (size - j);
+            myBuff.placeHolder = 0;
+            src_ptr = myBuff.buffer[myBuff.placeholder];            
+        }
+        for (int i = myBuff.placeHolder; i < (myBuff.amount - myBuff.placeHolder) && j+myBuff.placeHolder < size; i++)
+        {
+            *bptr++ = *src_ptr++;
+            myBuff.placeHolder++;
+            if (src_ptr == '\n')
+            {
+                *bptr++ = '\0';
                 return buff;
             } 
-
-            if (myBuff.amount <= 0)
-            {
-                return NULL;
-            }
-
-            for (int i = 0; i < myBuff.amount; i++)
-            {
-                if (myBuff.buffer[i] == '\n')
-                {
-                    myBuff.placeHolder = (i+1);
-                    memcpy(buff+j, myBuff.buffer, (i+1));
-                    myBuff.amount -= (i+1);
-                    return buff;
-                }
-            }
-            
-            memcpy(buff+j, myBuff.buffer, myBuff.amount);
-            j += (myBuff.amount);
-            myBuff.amount = 0;
-            myBuff.placeHolder = 0;
-            
-        }
-        else
-        {
-            if((j+myBuff.amount) > size){
-                memcpy(buff+j, myBuff.buffer + myBuff.placeHolder, ((size -j)));
-                myBuff.amount -= ((size -j));
-                myBuff.placeHolder += ((size - j)-1);
-                return buff;
-            }
-        
-            for (int i = myBuff.placeHolder; i < (myBuff.amount - myBuff.placeHolder); i++)
-            {
-                if (myBuff.buffer[i] == '\n')
-                {
-                    memcpy(buff+j, (myBuff.buffer + myBuff.placeHolder), (i+1));
-                    myBuff.amount = (myBuff.amount + myBuff.placeHolder) - (i+1);
-                    myBuff.placeHolder = i+1;
-                    return buff;
-                }
-                
-            }
-            memcpy(buff+j, myBuff.buffer + myBuff.placeHolder, myBuff.amount);
-            j += (myBuff.amount);
-            myBuff.amount = 0;
-            myBuff.placeHolder = 0;
         }
     }
+    *bptr++ = '\0';
     return buff;
 };
