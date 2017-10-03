@@ -20,7 +20,7 @@ static __thread buffer_t myBuff;
 
 char *readline(char *buff, ssize_t size, int fd)
 {
-    printf("ph: %d\na: %d\n", myBuff.placeHolder, myBuff.amount);
+    //printf("ph: %d\na: %d\n", myBuff.placeHolder, myBuff.amount);
     for (int j = 0; j < size;)
     {
         //printf("J: %d ", j);
@@ -71,8 +71,8 @@ char *readline(char *buff, ssize_t size, int fd)
                 if (myBuff.buffer[i] == '\n')
                 {
                     if(memcpy(buff+j, (myBuff.buffer) + myBuff.placeHolder, i+1 - myBuff.placeHolder) == NULL) printf("ERROR");
-                    printf("\nBUFFER: %s\n", myBuff.buffer);
-                    printf("DUFFER: %s\n", buff);
+                    //printf("\nBUFFER: %s\n", myBuff.buffer);
+                    //printf("DUFFER: %s\n", buff);
                     myBuff.amount = (myBuff.amount + myBuff.placeHolder) - (i+1);
                     myBuff.placeHolder = i+1;
                     return buff;
