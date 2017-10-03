@@ -40,6 +40,8 @@ char *readline(char *buff, ssize_t size, int fd)
         } 
         else if (myBuff.amountRead <= 0)
         {
+            mybuff.amountCopied = 0;
+            myBuff.totalCopied = 0;
             return NULL;
         }
     }
