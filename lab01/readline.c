@@ -40,15 +40,16 @@ char *readline(char *buff, ssize_t size, int fd)
         }
     }
     
-    if(*bptr != '\n')
-    {
-        myBuff.amount = 0;
-    } 
-    else 
-    {
-        myBuff.placeHolder = 0;
-    }
-    *bptr++ = '\0';
+    // if(*bptr != '\n')
+    // {
+    //     myBuff.amount = 0;
+    // } 
+    // else 
+    // {
+    //     myBuff.placeHolder = 0;
+    // }
+    // *bptr++ = '\0';
+    *bptr = '\0';
     return buff;
 
     // char *bptr = buff;
