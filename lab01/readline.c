@@ -17,7 +17,7 @@ static __thread buffer_t myBuff;
 
 char *readline(char *buff, ssize_t size, int fd)
 {
-    int8_t amount;
+    //int8_t amount;
     if(myBuff.placeHolder == 0)
     {
         myBuff.placeHolder = read_block(fd,myBuff.buffer); 
