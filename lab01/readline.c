@@ -52,7 +52,6 @@ char *readline(char *buff, ssize_t size, int fd)
             }
             
             memcpy(buff+j, myBuff.buffer, myBuff.amount);
-            printf(myBuff)
             j += (myBuff.amount - 1);
             myBuff.amount = 0;
             myBuff.placeHolder = 0;
