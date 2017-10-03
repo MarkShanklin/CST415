@@ -15,7 +15,7 @@
 
 int main(int argc, char *argv[])
 {
-    int size = 1024;
+    int size = 32;
     int fd = open_blocks("filea.txt");
     char buffer[size];
 
