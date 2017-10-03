@@ -10,6 +10,7 @@
 
 #include "nameserver.h"
 #include "encode.h"
+#include "readline.h"
 
 int main(void)
 {
