@@ -24,11 +24,11 @@ char *readline(char *buff, ssize_t size, int fd)
         if (myBuff.placeHolder == 0)
         {
             myBuff.amount = read_block(fd, myBuff.buffer);
+
             if((j + myBuff.amount) > size){
                 memcpy(buff+j, &myBuff.buffer, (size-j));
-            } else {
-                j += myBuff.amount;
-            }
+            } 
+
             if (myBuff.amount == 0)
             {
                 return buff;
@@ -40,6 +40,7 @@ char *readline(char *buff, ssize_t size, int fd)
                     myBuff.placeHolder = i;
                     memcpy(buff+j, &myBuff.buffer, i + 1);
                     myBuff.amount = myBuff.amount - myBuff.placeHolder;
+                    j += i;
                     return buff;
                 }
                 else if (i == myBuff.amount - 1)
@@ -47,11 +48,16 @@ char *readline(char *buff, ssize_t size, int fd)
                     myBuff.placeHolder = i;
                     memcpy(buff+j, &myBuff.buffer, i + 1);
                     myBuff.amount = myBuff.amount - myBuff.placeHolder;
+                    j += i;
                 }
             }
         }
         else
         {
+            if((j + myBuff.amount) > size){
+                memcpy(buff+j, &myBuff.buffer, (size-j));
+            }
+        
             for (int i = myBuff.placeHolder; i < myBuff.amount; i++)
             {
                 if (myBuff.buffer[i] == '\n')
@@ -59,6 +65,7 @@ char *readline(char *buff, ssize_t size, int fd)
                     memcpy(buff+j, &myBuff.buffer + myBuff.placeHolder, i + 1);
                     myBuff.placeHolder = i;
                     myBuff.amount = myBuff.amount - myBuff.placeHolder;
+                    j += i;
                     return buff;
                 }
                 else if (i == myBuff.amount - 1)
@@ -66,6 +73,7 @@ char *readline(char *buff, ssize_t size, int fd)
                     memcpy(buff+j, &myBuff.buffer + myBuff.placeHolder, i + 1);
                     myBuff.placeHolder = i;
                     myBuff.amount = myBuff.amount - myBuff.placeHolder;
+                    j += i;
                 }
             }
         }
