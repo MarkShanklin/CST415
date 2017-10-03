@@ -21,7 +21,7 @@ char *readline(char *buff, ssize_t size, int fd)
 {
     for (int j = 0; j < size;)
     {
-        printf("%d",j);
+        printf("J:%d\n",j);
         if (myBuff.placeHolder == 0)
         {
             myBuff.amount = read_block(fd, myBuff.buffer);
@@ -36,6 +36,7 @@ char *readline(char *buff, ssize_t size, int fd)
             }
             for (int i = 0; i < myBuff.amount; i++)
             {
+                printf("topi: %d\n", i)
                 if (myBuff.buffer[i] == '\n')
                 {
                     myBuff.placeHolder = i;
