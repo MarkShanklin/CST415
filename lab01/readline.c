@@ -29,9 +29,9 @@ char *readline(char *buff, ssize_t size, int fd)
                 memcpy(buff+j, &myBuff.buffer, (size-j));
             } 
 
-            if (myBuff.amount == 0)
+            if (myBuff.amount <= 0)
             {
-                return buff;
+                return NULL;
             }
             for (int i = 0; i < myBuff.amount; i++)
             {
