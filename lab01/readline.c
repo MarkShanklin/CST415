@@ -30,8 +30,8 @@ char *readline(char *buff, ssize_t size, int fd)
 
             if((j + myBuff.amount) > size){
                 memcpy(buff+j, myBuff.buffer, (size-j));
-                myBuff.placeHolder = size - j;
-                myBuff.amount -= size-j;
+                myBuff.placeHolder = (size - j);
+                myBuff.amount -= (size-j);
                 return buff;
             } 
 
@@ -44,8 +44,8 @@ char *readline(char *buff, ssize_t size, int fd)
             {
                 if (myBuff.buffer[i] == '\n')
                 {
-                    myBuff.placeHolder = i+1;
-                    memcpy(buff+j, myBuff.buffer, i+1);
+                    myBuff.placeHolder = (i+1);
+                    memcpy(buff+j, myBuff.buffer, (i+1));
                     myBuff.amount -= (i+1);
                     return buff;
                 }
@@ -62,17 +62,17 @@ char *readline(char *buff, ssize_t size, int fd)
         {
             if((j + myBuff.amount) > size){
                 memcpy(buff+j, myBuff.buffer + myBuff.placeHolder, (size-j));
-                myBuff.amount -= size-j;
-                myBuff.placeHolder = size-j;
+                myBuff.amount -= (size-j);
+                myBuff.placeHolder = (size-j);
                 return buff;
             }
         
-            for (int i = myBuff.placeHolder; i < (myBuff.amount + myBuff.placeHolder); i++)
+            for (int i = myBuff.placeHolder; i < (myBuff.amount - myBuff.placeHolder); i++)
             {
                 //printf("bottomi: %d ", i);
                 if (myBuff.buffer[i] == '\n')
                 {
-                    if(memcpy(buff+j, (myBuff.buffer) + myBuff.placeHolder, i+1 - myBuff.placeHolder) == NULL) printf("ERROR");
+                    if(memcpy(buff+j, (myBuff.buffer + myBuff.placeHolder), (i+1) - myBuff.placeHolder) == NULL) printf("ERROR");
                     //printf("\nBUFFER: %s\n", myBuff.buffer);
                     //printf("DUFFER: %s\n", buff);
                     myBuff.amount = (myBuff.amount + myBuff.placeHolder) - (i+1);
