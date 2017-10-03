@@ -21,32 +21,62 @@ static __thread buffer_t myBuff;
 char *readline(char *buff, ssize_t size, int fd)
 {
     char *bptr = buff;
-    char *src_ptr = myBuff.buffer[myBuff.placeHolder];
-    for (int j = 0; j < size;)
+    char *src_ptr = myBuff.buffer;
+    while( myBuff.amount < size || *bptr != '\n')
     {
-        printf("j:%d",j);
-        if (myBuff.placeHolder >= BLOCK_SIZE)
-        {
-            myBuff.amount = read_block(fd, myBuff.buffer);
-            if(myBuff.amount < 0)
-            {
-                return NULL;
-            }
-            myBuff.placeHolder = 0;
-            src_ptr = myBuff.buffer[myBuff.placeHolder];            
+        if(myBuff.placeHolder == myBuff.amount)
+        {    
+            myBuff.placeHolder = read_block(fd, myBuff.buffer);
+            myBuff.amount = 0;
         }
-        for (int i = myBuff.placeHolder; i < (myBuff.amount - myBuff.placeHolder) && j < size; i++)
+        if(myBuff.placeHolder >= 0)
         {
             *bptr++ = *src_ptr++;
-            myBuff.placeHolder++;
-            j++;
-            if (*src_ptr == '\n')
-            {
-                *bptr++ = '\0';
-                return buff;
-            } 
+            myBuff.amount++;
+        } 
+        else 
+        {
+            return NULL;
         }
+    }
+    
+    if(*bptr != '\n')
+    {
+        myBuff.amount = 0;
+    } else {
+        myBuff.placeHolder = 0;
     }
     *bptr++ = '\0';
     return buff;
+
+    // char *bptr = buff;
+    // char *src_ptr = myBuff.buffer[myBuff.placeHolder];
+
+    // for (int j = 0; j < size;)
+    // {
+    //     printf("j:%d",j);
+    //     if (myBuff.placeHolder >= BLOCK_SIZE)
+    //     {
+    //         myBuff.amount = read_block(fd, myBuff.buffer);
+    //         if(myBuff.amount < 0)
+    //         {
+    //             return NULL;
+    //         }
+    //         myBuff.placeHolder = 0;
+    //         src_ptr = myBuff.buffer[myBuff.placeHolder];            
+    //     }
+    //     for (int i = myBuff.placeHolder; i < (myBuff.amount - myBuff.placeHolder) && j < size; i++)
+    //     {
+    //         *bptr++ = *src_ptr++;
+    //         myBuff.placeHolder++;
+    //         j++;
+    //         if (*src_ptr == '\n')
+    //         {
+    //             *bptr++ = '\0';
+    //             return buff;
+    //         } 
+    //     }
+    // }
+    // *bptr++ = '\0';
+    // return buff;
 };
