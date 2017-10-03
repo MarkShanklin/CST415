@@ -27,10 +27,10 @@ char *readline(char *buff, ssize_t size, int fd)
         {
             myBuff.amount = read_block(fd, myBuff.buffer);
 
-            if((j + myBuff.amount) > size){
-                memcpy(buff+j, myBuff.buffer, (size-j));
-                myBuff.placeHolder = ((size - j) + 1);
-                myBuff.amount -= (size - j);
+            if((myBuff.amount) > size){
+                memcpy(buff, myBuff.buffer, (size));
+                myBuff.placeHolder += size;
+                myBuff.amount -= (size);
                 return buff;
             } 
 
