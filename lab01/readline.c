@@ -67,7 +67,7 @@ char *readline(char *buff, ssize_t size, int fd)
         
             for (int i = myBuff.placeHolder; i < (myBuff.amount + myBuff.placeHolder); i++)
             {
-                //printf("topi: %d\n", i);
+                printf("bottomi: %d ", i);
                 if (myBuff.buffer[i] == '\n')
                 {
                     memcpy(buff+j, &myBuff.buffer + myBuff.placeHolder, i);
