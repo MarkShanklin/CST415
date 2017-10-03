@@ -70,7 +70,7 @@ char *readline(char *buff, ssize_t size, int fd)
                 //printf("bottomi: %d ", i);
                 if (myBuff.buffer[i] == '\n')
                 {
-                    if(memcpy(buff+j, (myBuff.buffer) + myBuff.placeHolder, i - myBuff.placeHolder) == NULL) printf("ERROR");
+                    if(memcpy(buff+j, (myBuff.buffer) + myBuff.placeHolder, i+1 - myBuff.placeHolder) == NULL) printf("ERROR");
                     //printf("\nBUFFER: %s\n", myBuff.buffer);
                     //printf("DUFFER: %s\n", buff);
                     myBuff.amount = (myBuff.amount + myBuff.placeHolder) - i;
