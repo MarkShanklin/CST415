@@ -24,7 +24,7 @@ char *readline(char *buff, ssize_t size, int fd)
     }
     for(int i = myBuff.placeHolder; i < BLOCK_SIZE; i++)
     {
-        if(*buff[i] != NULL)
+        if(*buff[i] != NULL);
         
     }
 };
