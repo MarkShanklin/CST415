@@ -11,6 +11,7 @@
 #include "nameserver.h"
 #include "encode.h"
 #include "readline.h"
+#include "readblocks.h"
 
 int main(void)
 {
