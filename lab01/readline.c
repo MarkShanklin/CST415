@@ -22,13 +22,14 @@ char *readline(char *buff, ssize_t size, int fd)
 {
     char *bptr = buff;
     char *src_ptr = myBuff.buffer;
-    while( myBuff.amountCopied < (size-1) || *src_ptr != '\n')
+    while( myBuff.amountCopied < size || *bptr != '\n')
     {
         if(myBuff.amountRead == myBuff.amountCopied)
         {    
             myBuff.amountRead = read_block(fd, myBuff.buffer);
             myBuff.amountCopied = 0;
         }
+
         if(myBuff.amountRead > 0)
         {
             *bptr++ = *src_ptr++;
@@ -39,6 +40,6 @@ char *readline(char *buff, ssize_t size, int fd)
             return NULL;
         }
     }
-    *bptr = '\0';
+    //*bptr = '\0';
     return buff;
 };
