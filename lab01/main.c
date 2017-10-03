@@ -16,12 +16,13 @@
 int main(void)
 {
     int fd = open_blocks("filea.txt");
-    char buffer[1024]; 
+    char buffer[1024];
+    char * buff; 
 
     while(1)
     {
-        readline(&buffer,1024,fd);
-        printf("%s", buffer);
+        buff = readline(buffer,1024,fd);
+        printf("%s", buff);
     }
     // request_t req;
     // request_t buff;
