@@ -64,7 +64,7 @@ char *readline(char *buff, ssize_t size, int fd)
                 return buff;
             }
         
-            for (int i = myBuff.placeHolder; i < myBuff.amount; i++)
+            for (int i = myBuff.placeHolder; i < (myBuff.amount + myBuff.placeHolder); i++)
             {
                 //printf("topi: %d\n", i);
                 if (myBuff.buffer[i] == '\n')
