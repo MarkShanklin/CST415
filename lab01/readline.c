@@ -7,6 +7,7 @@
 **********************************************************/
 #include "readblocks.h"
 #include "string.h"
+#include <stdio.h>
 
 typedef struct
 {
@@ -36,7 +37,7 @@ char *readline(char *buff, ssize_t size, int fd)
             }
             for (int i = 0; i < myBuff.amount; i++)
             {
-                printf("topi: %d\n", i)
+                printf("topi: %d\n", i);
                 if (myBuff.buffer[i] == '\n')
                 {
                     myBuff.placeHolder = i;
