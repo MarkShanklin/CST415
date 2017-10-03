@@ -27,6 +27,10 @@ char *readline(char *buff, ssize_t size, int fd)
         if (myBuff.placeHolder >= BLOCK_SIZE)
         {
             myBuff.amount = read_block(fd, myBuff.buffer);
+            if(myBuff.amount < 0)
+            {
+                return NULL;
+            }
             myBuff.placeHolder = 0;
             src_ptr = myBuff.buffer[myBuff.placeHolder];            
         }
