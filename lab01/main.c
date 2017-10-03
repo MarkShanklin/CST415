@@ -23,6 +23,7 @@ int main(int argc, char *argv[])
     {
         if(readline(buffer,size,fd) != NULL)
         {
+            printf("%s", buffer);
             break;
         }
         printf("%s", buffer);
