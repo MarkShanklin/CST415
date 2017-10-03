@@ -13,16 +13,16 @@ typedef struct
     char buffer[BLOCK_SIZE];
 } buffer_t
 
-static _tread buffer_t myBuff;
+static __thread buffer_t myBuff;
 
 char *readline(char *buff, ssize_t size, int fd)
 {
     int8_t amount;
-    if(placeHolder == 0)
+    if(myBuff.placeHolder == 0)
     {
         myBuff.placeHolder = read_block(fd,myBuff.buffer); 
     }
-    for(int i = placeHolder; i < BLOCK_SIZE; i++)
+    for(int i = myBuff.placeHolder; i < BLOCK_SIZE; i++)
     {
         if(*buff[i] != NULL)
         
