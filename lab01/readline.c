@@ -38,7 +38,6 @@ char *readline(char *buff, ssize_t size, int fd)
             }
             for (int i = 0; i < myBuff.amount; i++)
             {
-                printf("topi: %d\n", i);
                 if (myBuff.buffer[i] == '\n')
                 {
                     myBuff.placeHolder = i;
@@ -46,14 +45,12 @@ char *readline(char *buff, ssize_t size, int fd)
                     myBuff.amount -= myBuff.placeHolder;
                     return buff;
                 }
-                else if (i == myBuff.amount - 1)
-                {
-                    myBuff.placeHolder = i;
-                    memcpy(buff+j, &myBuff.buffer, i + 1);
-                    myBuff.amount -= myBuff.placeHolder;
-                    j += i;
-                }
             }
+            myBuff.placeHolder = myBuff.amount - 1;
+            memcpy(buff+j, &myBuff.buffer, myBuff.amount);
+            j += myBuff.amount - 1;
+            myBuff.amount -= myBuff.placeHolder;
+            
         }
         else
         {
@@ -64,6 +61,7 @@ char *readline(char *buff, ssize_t size, int fd)
         
             for (int i = myBuff.placeHolder; i < myBuff.amount; i++)
             {
+                printf("topi: %d\n", i);
                 if (myBuff.buffer[i] == '\n')
                 {
                     memcpy(buff+j, &myBuff.buffer + myBuff.placeHolder, i + 1);
@@ -73,10 +71,10 @@ char *readline(char *buff, ssize_t size, int fd)
                 }
                 
             }
-                memcpy(buff+j, &myBuff.buffer + myBuff.placeHolder, myBuff.amount);
-                myBuff.placeHolder = myBuff.amount - 1;
-                j += i;
-                myBuff.amount -= myBuff.placeHolder;
+            memcpy(buff+j, &myBuff.buffer + myBuff.placeHolder, myBuff.amount);
+            myBuff.placeHolder = myBuff.amount - 1;
+            j += myBuff.amount - 1;
+            myBuff.amount -= myBuff.placeHolder;
         }
     }
     return buff;
