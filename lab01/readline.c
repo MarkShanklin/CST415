@@ -6,6 +6,7 @@
 * Created By: Mark Shanklin
 **********************************************************/
 #include "readblocks.h"
+#include "string.h"
 
 typedef struct
 {
@@ -24,7 +25,6 @@ char *readline(char *buff, ssize_t size, int fd)
         {
             myBuff.amount = read_block(fd, myBuff.buffer);
             if(j + myBuff.amount > size){
-                //overflow
                 memcpy(buff+j, &myBuff.buffer, (size-j));
             } else {
                 j += myBuff.amount;
@@ -54,14 +54,15 @@ char *readline(char *buff, ssize_t size, int fd)
         {
             for (int i = myBuff.placeHolder; i < myBuff.amount; i++)
             {
-                if (myBuff.buffer[i] == '\n' || i == myBuff.amount - 1)
+                if (myBuff.buffer[i] == '\n')
                 {
                     memcpy(buff+j, &myBuff.buffer + myBuff.placeHolder, i + 1);
                     myBuff.placeHolder = i;
                     myBuff.amount = myBuff.amount - myBuff.placeHolder;
                     return buff;
                 }
-                else if{
+                else if (i == myBuff.amount - 1)
+                {
                     memcpy(buff+j, &myBuff.buffer + myBuff.placeHolder, i + 1);
                     myBuff.placeHolder = i;
                     myBuff.amount = myBuff.amount - myBuff.placeHolder;
