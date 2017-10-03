@@ -21,6 +21,10 @@ int main(int argc, char *argv[])
     while(1)
     {
         readline(buffer,1024,fd);
+        if(buffer == NULL)
+        {
+            printf("NULL");  
+        }
         printf("%s", buffer);
     }
 

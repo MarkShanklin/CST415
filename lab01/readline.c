@@ -39,7 +39,7 @@ char *readline(char *buff, ssize_t size, int fd)
                 {
                     myBuff.placeHolder = i;
                     memcpy(buff+j, &myBuff.buffer, i + 1);
-                    myBuff.amount = myBuff.amount - myBuff.placeHolder;
+                    myBuff.amount -= myBuff.placeHolder;
                     j += i;
                     return buff;
                 }
@@ -47,7 +47,7 @@ char *readline(char *buff, ssize_t size, int fd)
                 {
                     myBuff.placeHolder = i;
                     memcpy(buff+j, &myBuff.buffer, i + 1);
-                    myBuff.amount = myBuff.amount - myBuff.placeHolder;
+                    myBuff.amount -= myBuff.placeHolder;
                     j += i;
                 }
             }
