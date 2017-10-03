@@ -16,7 +16,7 @@
 int main(int argc, char *argv[])
 {
     int fd = open_blocks("filea.txt");
-    char buffer[1024];
+    char buffer[5];
     int esc = 0;
     while(esc < 1)
     {
