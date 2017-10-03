@@ -20,6 +20,7 @@ static __thread buffer_t myBuff;
 
 char *readline(char *buff, ssize_t size, int fd)
 {
+    memset(buffer,0,size);
     //printf("ph: %d\na: %d\n", myBuff.placeHolder, myBuff.amount);
     for (int j = 0; j < size;)
     {

@@ -25,7 +25,6 @@ int main(int argc, char *argv[])
             esc++;
         }
         printf("%s", buffer);
-        memset(buffer,0,1024);
     }
 
     int val = close_blocks(fd);
