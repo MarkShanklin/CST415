@@ -39,16 +39,6 @@ char *readline(char *buff, ssize_t size, int fd)
             return NULL;
         }
     }
-    
-    // if(*bptr != '\n')
-    // {
-    //     myBuff.amount = 0;
-    // } 
-    // else 
-    // {
-    //     myBuff.placeHolder = 0;
-    // }
-    // *bptr++ = '\0';
     *bptr = '\0';
     return buff;
 
