@@ -21,12 +21,11 @@ int main(int argc, char *argv[])
 
     while(1)
     {
-        if(readline(buffer,size,fd) != NULL)
+        if(readline(buffer,size,fd) == NULL)
         {
-            printf("%s", buffer);
             break;
         }
-        //printf("%s", buffer);
+        printf("%s", buffer);
     }
 
     int val = close_blocks(fd);
