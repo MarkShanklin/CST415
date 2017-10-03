@@ -18,13 +18,9 @@ int main(int argc, char *argv[])
     int size = 50;
     int fd = open_blocks("filea.txt");
     char buffer[size];
-    int esc = 0;
-    while(esc < 1)
+    
+    while(readline(buffer,size,fd) != NULL)
     {
-        if(readline(buffer,size,fd) == NULL)
-        {
-            esc++;
-        }
         printf("%s", buffer);
     }
 
