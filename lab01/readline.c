@@ -21,10 +21,10 @@ static __thread buffer_t myBuff;
 char *readline(char *buff, ssize_t size, int fd)
 {
     memset(buff,0,size);
-    //printf("ph: %d\na: %d\n", myBuff.placeHolder, myBuff.amount);
+    printf("ph: %d\na: %d\n", myBuff.placeHolder, myBuff.amount);
     for (int j = 0; j < size;)
     {
-        //printf("J: %d ", j);
+        printf("J: %d ", j);
         if (myBuff.placeHolder == 0)
         {
             myBuff.amount = read_block(fd, myBuff.buffer);
