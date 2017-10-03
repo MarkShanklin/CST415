@@ -20,7 +20,7 @@ int main(int argc, char *argv[])
     int esc = 0;
     while(esc < 1)
     {
-        if(readline(buffer,1024,fd) == NULL)
+        if(readline(buffer,5,fd) == NULL)
         {
             esc++;
         }
