@@ -22,13 +22,14 @@ char *readline(char *buff, ssize_t size, int fd)
 {
     for (int j = 0; j < size;)
     {
-        //printf("J:%d\n",j);
         if (myBuff.placeHolder == 0)
         {
             myBuff.amount = read_block(fd, myBuff.buffer);
 
             if((j + myBuff.amount) > size){
                 memcpy(buff+j, &myBuff.buffer, (size-j));
+                myBuff.placeHolder = size - j;
+                myBuff.amount -= size-j;
                 return buff;
             } 
 
@@ -40,22 +41,25 @@ char *readline(char *buff, ssize_t size, int fd)
             {
                 if (myBuff.buffer[i] == '\n')
                 {
-                    myBuff.placeHolder = i;
-                    memcpy(buff+j, &myBuff.buffer, i + 1);
+                    myBuff.placeHolder = i+1;
+                    memcpy(buff+j, &myBuff.buffer, i+1);
                     myBuff.amount -= myBuff.placeHolder;
                     return buff;
                 }
             }
-            myBuff.placeHolder = myBuff.amount - 1;
+            
             memcpy(buff+j, &myBuff.buffer, myBuff.amount);
             j += myBuff.amount - 1;
-            myBuff.amount -= myBuff.placeHolder;
+            myBuff.amount = 0;
+            myBuff.placeHolder = 0;
             
         }
         else
         {
             if((j + myBuff.amount) > size){
-                memcpy(buff+j, &myBuff.buffer, (size-j));
+                memcpy(buff+j, &myBuff.buffer + myBuff.placeHolder, (size-j));
+                myBuff.amount -= size-j;
+                myBuff.placeHolder = size-j;
                 return buff;
             }
         
