@@ -10,21 +10,21 @@
 
 typedef struct
 {
-    int8_t placeHolder;
-    int8_t amount;
-    char buffer[BLOCK_SIZE];
+    int8_t placeHolder = 0;
+    int8_t amount = 0;
+    char buffer[BLOCK_SIZE] = "";
 } buffer_t;
 
 static __thread buffer_t myBuff;
 
 char *readline(char *buff, ssize_t size, int fd)
 {
-    for (int j = 0;j < size;)
+    for (int j = 0; j < size;)
     {
         if (myBuff.placeHolder == 0)
         {
             myBuff.amount = read_block(fd, myBuff.buffer);
-            if(j + myBuff.amount > size){
+            if((j + myBuff.amount) > size){
                 memcpy(buff+j, &myBuff.buffer, (size-j));
             } else {
                 j += myBuff.amount;
