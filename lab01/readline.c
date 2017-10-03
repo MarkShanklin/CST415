@@ -43,6 +43,6 @@ char *readline(char *buff, ssize_t size, int fd)
             return NULL;
         }
     }
-    //*bptr = '\0';
+    *bptr = '\0';
     return buff;
 };
