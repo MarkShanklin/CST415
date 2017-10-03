@@ -13,7 +13,7 @@
 #include "readline.h"
 #include "readblocks.h"
 
-int main(void)
+int main(int argc, char *argv[])
 {
     int fd = open_blocks("filea.txt");
     char buffer[1024];
@@ -23,6 +23,9 @@ int main(void)
         readline(buffer,1024,fd);
         printf("%s", buffer);
     }
+
+    int val = close_blocks(fd);
+
     // request_t req;
     // request_t buff;
     // memset(req.service_name, 0, MAX_SERVICE_NAME_LEN + 1);
@@ -177,5 +180,5 @@ int main(void)
     //     printf("\n\n");
     // }
 
-    return 0;
+    return val;
 }
