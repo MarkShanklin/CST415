@@ -17,11 +17,10 @@ int main(void)
 {
     int fd = open_blocks("filea.txt");
     char buffer[1024];
-    char * buff; 
 
     while(1)
     {
-        buff = readline(buffer,1024,fd);
+        readline(buffer,32,fd);
         printf("%s", buff);
     }
     // request_t req;
