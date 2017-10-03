@@ -11,9 +11,9 @@ typedef struct
 {
     int8_t placeHolder;
     char buffer[BLOCK_SIZE];
-} buffer_t
+} buffer_t;
 
-static buffer_t myBuff;
+static __thread buffer_t myBuff;
 
 char *readline(char *buff, ssize_t size, int fd)
 {
