@@ -30,7 +30,7 @@ char *readline(char *buff, ssize_t size, int fd)
             myBuff.placeHolder = 0;
             src_ptr = myBuff.buffer[myBuff.placeHolder];            
         }
-        for (int i = myBuff.placeHolder; i < (myBuff.amount - myBuff.placeHolder) && j+myBuff.placeHolder < size; i++)
+        for (int i = myBuff.placeHolder; i < (myBuff.amount - myBuff.placeHolder) && j < size; i++)
         {
             *bptr++ = *src_ptr++;
             myBuff.placeHolder++;
