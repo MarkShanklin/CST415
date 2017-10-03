@@ -22,7 +22,7 @@ char *readline(char *buff, ssize_t size, int fd)
 {
     char *bptr = buff;
     char *src_ptr = myBuff.buffer[myBuff.placeHolder];
-    for (int j = 0; j < size; j += myBuff.placeHolder)
+    for (int j = 0; j < size;)
     {
         if (myBuff.placeHolder >= BLOCK_SIZE)
         {
@@ -34,6 +34,7 @@ char *readline(char *buff, ssize_t size, int fd)
         {
             *bptr++ = *src_ptr++;
             myBuff.placeHolder++;
+            j++;
             if (*src_ptr == '\n')
             {
                 *bptr++ = '\0';
