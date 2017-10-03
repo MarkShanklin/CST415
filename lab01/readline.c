@@ -22,7 +22,7 @@ char *readline(char *buff, ssize_t size, int fd)
     {
         myBuff.placeHolder = read_block(fd,myBuff.buffer); 
     }
-    for(i = placeHolder; i < BLOCK_SIZE; i++)
+    for(int i = placeHolder; i < BLOCK_SIZE; i++)
     {
         if(*buff[i] != NULL)
         
