@@ -71,8 +71,8 @@ char *readline(char *buff, ssize_t size, int fd)
                 if (myBuff.buffer[i] == '\n')
                 {
                     memcpy(buff+j, &myBuff.buffer + myBuff.placeHolder, i);
+                    myBuff.amount = (myBuff.amount + myBuff.placeHolder) - i;
                     myBuff.placeHolder = i+1;
-                    myBuff.amount -= (i - myBuff.placeHolder);
                     return buff;
                 }
                 
