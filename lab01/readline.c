@@ -39,13 +39,14 @@ char *readline(char *buff, ssize_t size, int fd)
             {
                 return NULL;
             }
+
             for (int i = 0; i < myBuff.amount; i++)
             {
                 if (myBuff.buffer[i] == '\n')
                 {
                     myBuff.placeHolder = i+1;
-                    memcpy(buff+j, myBuff.buffer, i+1);
-                    myBuff.amount -= i+1;
+                    memcpy(buff+j, myBuff.buffer, i);
+                    myBuff.amount -= (i+1);
                     return buff;
                 }
             }
