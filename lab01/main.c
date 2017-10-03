@@ -18,7 +18,7 @@ int main(int argc, char *argv[])
     int fd = open_blocks("filea.txt");
     char buffer[1024];
     int esc = 0;
-    while(esc < 5)
+    while(esc != 0)
     {
         if(readline(buffer,1024,fd) == NULL)
         {
