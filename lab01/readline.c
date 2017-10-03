@@ -73,7 +73,7 @@ char *readline(char *buff, ssize_t size, int fd)
                     if(memcpy(buff+j, (myBuff.buffer) + myBuff.placeHolder, i+1 - myBuff.placeHolder) == NULL) printf("ERROR");
                     printf("\nBUFFER: %s\n", myBuff.buffer);
                     printf("DUFFER: %s\n", buff);
-                    myBuff.amount = (myBuff.amount + myBuff.placeHolder) - i+1;
+                    myBuff.amount = (myBuff.amount + myBuff.placeHolder) - (i+1);
                     myBuff.placeHolder = i+1;
                     return buff;
                 }
