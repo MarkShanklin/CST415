@@ -25,7 +25,7 @@ char *readline(char *buff, ssize_t size, int fd)
             myBuff.amount = read_block(fd, myBuff.buffer);
             if(j + myBuff.amount > size){
                 //overflow
-                memcpy(buff+j, &myBuff.buffer, (size-j))
+                memcpy(buff+j, &myBuff.buffer, (size-j));
             } else {
                 j += myBuff.amount;
             }
