@@ -11,8 +11,8 @@
 
 typedef struct
 {
-    int8_t placeHolder;
-    int8_t amount;
+    int8_t amountCopied;
+    int8_t amountRead;
     char buffer[BLOCK_SIZE];
 } buffer_t;
 
@@ -22,54 +22,23 @@ char *readline(char *buff, ssize_t size, int fd)
 {
     char *bptr = buff;
     char *src_ptr = myBuff.buffer;
-    while( myBuff.amount < size || *bptr != '\n')
+    while( myBuff.amountCopied < size || *bptr != '\n')
     {
-        if(myBuff.placeHolder == myBuff.amount)
+        if(myBuff.amountRead == myBuff.amountCopied)
         {    
-            myBuff.placeHolder = read_block(fd, myBuff.buffer);
-            myBuff.amount = 0;
+            myBuff.amountRead = read_block(fd, myBuff.buffer);
+            myBuff.amountCopied = 0;
         }
-        if(myBuff.placeHolder >= 0)
+        if(myBuff.amountRead >= 0)
         {
             *bptr++ = *src_ptr++;
-            myBuff.amount++;
+            myBuff.amountCopied++;
         } 
-        else if (myBuff.placeHolder < 0)
+        else if (myBuff.amountRead < 0)
         {
             return NULL;
         }
     }
     *bptr = '\0';
     return buff;
-
-    // char *bptr = buff;
-    // char *src_ptr = myBuff.buffer[myBuff.placeHolder];
-
-    // for (int j = 0; j < size;)
-    // {
-    //     printf("j:%d",j);
-    //     if (myBuff.placeHolder >= BLOCK_SIZE)
-    //     {
-    //         myBuff.amount = read_block(fd, myBuff.buffer);
-    //         if(myBuff.amount < 0)
-    //         {
-    //             return NULL;
-    //         }
-    //         myBuff.placeHolder = 0;
-    //         src_ptr = myBuff.buffer[myBuff.placeHolder];            
-    //     }
-    //     for (int i = myBuff.placeHolder; i < (myBuff.amount - myBuff.placeHolder) && j < size; i++)
-    //     {
-    //         *bptr++ = *src_ptr++;
-    //         myBuff.placeHolder++;
-    //         j++;
-    //         if (*src_ptr == '\n')
-    //         {
-    //             *bptr++ = '\0';
-    //             return buff;
-    //         } 
-    //     }
-    // }
-    // *bptr++ = '\0';
-    // return buff;
 };
