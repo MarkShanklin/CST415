@@ -55,5 +55,6 @@ char *readline(char *buff, ssize_t size, int fd)
             return NULL;
         }
     }
+    myBuff.totalCopied = 0;
     return buff;
 };
