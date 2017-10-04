@@ -5,8 +5,8 @@
 * Last Modified: 10/02/2017
 * Created By: Mark Shanklin
 **********************************************************/
+#include "readline.h"
 #include "readblocks.h"
-#include "string.h"
 #include <stdio.h>
 
 typedef struct
