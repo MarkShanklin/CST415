@@ -13,7 +13,6 @@ typedef struct
 {
     int8_t amountCopied;
     int8_t amountRead;
-    int8_t totalCopied;
     char buffer[BLOCK_SIZE];
 } buffer_t;
 
@@ -23,7 +22,7 @@ char *readline(char *buff, ssize_t size, int fd)
 {
     char *bptr = buff;
     char *src_ptr = myBuff.buffer + myBuff.amountCopied;
-    while( myBuff.totalCopied < size)
+    for(int i = 0; i < size; i++)
     {
         if(myBuff.amountCopied == myBuff.amountRead)
         {    
@@ -31,32 +30,20 @@ char *readline(char *buff, ssize_t size, int fd)
             myBuff.amountCopied = 0;
             src_ptr = myBuff.buffer;
         }
-        
         if(myBuff.amountRead > 0)
         {
             *bptr++ = *src_ptr++;
-            myBuff.amountCopied++;
-            myBuff.totalCopied++;
-
+            myBuff.amountCopied++;;
             if(*bptr == '\n')
-            {
-                *bptr = '\0';
-                return buff;
-            }
+                break;
         } 
         else if (myBuff.amountRead <= 0)
         {
             if(bptr != buff)
-            {
-               *bptr = '\0';
-               return buff; 
-            }
-            myBuff.amountCopied = 0;
-            myBuff.totalCopied = 0;
+               break; 
             return NULL;
         }
     }
-    myBuff.totalCopied = 0;
     *bptr = '\0';
     return buff;
 };
