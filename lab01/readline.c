@@ -34,19 +34,14 @@ char *readline(char *buff, ssize_t size, int fd)
 
         if(myBuff.amountRead > 0)
         {
+            *bptr++ = *src_ptr++;
+            myBuff.amountCopied++;
+            myBuff.totalCopied++;
+
             if(*bptr == '\n')
             {
-                *bptr++ = *src_ptr++;
-                myBuff.amountCopied++;
-                myBuff.totalCopied++;
                 *bptr = '\0';
                 return buff;
-            }
-            else
-            {
-                *bptr++ = *src_ptr++;
-                myBuff.amountCopied++;
-                myBuff.totalCopied++;
             }
         } 
         else if(myBuff.amountRead == 0)
@@ -57,7 +52,9 @@ char *readline(char *buff, ssize_t size, int fd)
                return buff; 
             }
             else
+            {
                 return NULL;
+            }
         }
         else if (myBuff.amountRead < 0)
         {
