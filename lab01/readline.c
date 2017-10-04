@@ -51,7 +51,7 @@ char *readline(char *buff, ssize_t size, int fd)
         } 
         else if(myBuff.amountRead == 0)
         {
-            *bptr = '\0';
+            //*bptr = '\0';
             return buff; 
         }
         else if (myBuff.amountRead < 0)
