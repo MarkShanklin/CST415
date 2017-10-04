@@ -53,6 +53,7 @@ char *readline(char *buff, ssize_t size, int fd)
         {
             if(myBuff.amountCopied != 0)
             {
+                *bptr = '\0';
                 return buff; 
             }
             else
