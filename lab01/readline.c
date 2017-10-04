@@ -51,12 +51,12 @@ char *readline(char *buff, ssize_t size, int fd)
         } 
         else if(myBuff.amountRead == 0)
         {
-            //if(myBuff.amountCopied != 0)
-            //{
-           //     *bptr = '\0';
-           //     return buff; 
-           // }
-           // else
+            if(bptr != buff)
+            {
+               *bptr = '\0';
+               return buff; 
+            }
+            else
                 return NULL;
         }
         else if (myBuff.amountRead < 0)
