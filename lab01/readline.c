@@ -39,6 +39,7 @@ char *readline(char *buff, ssize_t size, int fd)
                 *bptr++ = *src_ptr++;
                 myBuff.amountCopied++;
                 myBuff.totalCopied++;
+                *bptr = "\0";
                 return buff;
             }
             else
@@ -56,5 +57,6 @@ char *readline(char *buff, ssize_t size, int fd)
         }
     }
     myBuff.totalCopied = 0;
+    *bptr = "\0";
     return buff;
 };
