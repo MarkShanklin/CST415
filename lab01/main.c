@@ -18,14 +18,14 @@ int main(int argc, char *argv[])
     int size = 1024;
     int fd = open_blocks("filea.txt");
     char buffer[size];
-    int i = 0;
+
     while(1)
     {
         if(readline(buffer,size,fd) == NULL)
         {
             break;
         }
-        printf("i:%d %s", i++, buffer);
+        printf("%s", buffer);
     }
 
     int val = close_blocks(fd);
