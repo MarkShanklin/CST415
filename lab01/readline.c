@@ -31,7 +31,7 @@ char *readline(char *buff, ssize_t size, int fd)
             myBuff.amountCopied = 0;
             src_ptr = myBuff.buffer;
         }
-
+        
         if(myBuff.amountRead > 0)
         {
             *bptr++ = *src_ptr++;
