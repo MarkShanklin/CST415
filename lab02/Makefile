@@ -1,31 +1,28 @@
-############################################################
-# File Name     : Makefile
-# Purpose       : Used to Compile Program  
-# Creation Date : 09-30-2017
-# Last Modified : Sat 30 Sep 2017 11:11:08 AM PDT
-# Created By    : Mark Shanklin 
-############################################################
+#**************************************************
+# Makefile for OIT Nameserver lab
+# CST 415 Lab 1
+#
+# Author: Philip Howard
+# Email:  phil.howard@oit.edu
+# Date:   Sept 22, 2016
+#
+COPTS = -g -O0 -Wall 
 
-CC = gcc -g -std=c99
-CFLAGS = -Wall 
-PROG = labOne
-SOURCES := $(shell echo *.c)
-DEPS := $(shell echo *.h)
-OBJECTS = $(SOURCES:.c=.o)
-DEPENDS = depends.mk
-$(shell touch ${DEPENDS})
+OBJS = addr2str.o
 
-all: depends $(PROG)
-
-$(PROG): $(OBJECTS)
-	$(CC) $(CFLAGS) -o $@ $^
-
-.PHONY: clean
+all: oit_ns nsclient 
 
 clean:
-	rm -f $(PROG) *.o $(DEPENDS)
+	rm -f nsclient
+	rm -f oit_ns
+	rm -f *.o
 
-include $(DEPENDS)
+.c.o:
+	gcc $(COPTS) -c $? -o $@
 
-depends:
-	gcc -MM $(SOURCES) > $(DEPENDS)
+oit_ns: oit_ns.c nameserver.h $(OBJS)
+	gcc $(COPTS) oit_ns.c -o oit_ns $(OBJS)
+
+nsclient: nsclient.c nameserver.h $(OBJS)
+	gcc $(COPTS) nsclient.c -o nsclient $(OBJS)
+
