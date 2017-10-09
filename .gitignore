@@ -7,6 +7,9 @@
 *.obj
 *.elf
 
+# Test files
+*.txt
+
 # Linker output
 *.ilk
 *.map
@@ -50,3 +53,4 @@ modules.order
 Module.symvers
 Mkfile.old
 dkms.conf
+*.mk
