@@ -5,6 +5,7 @@
 # Author: Philip Howard
 # Email:  phil.howard@oit.edu
 # Date:   Sept 22, 2016
+# Modified By: Mark Shanklin
 #
 COPTS = -g -O0 -Wall 
 
@@ -20,9 +21,9 @@ clean:
 .c.o:
 	gcc $(COPTS) -c $? -o $@
 
-oit_ns: oit_ns.c nameserver.h $(OBJS)
+oit_ns: oit_ns.c nameserver.h encode.h $(OBJS)
 	gcc $(COPTS) oit_ns.c -o oit_ns $(OBJS)
 
-nsclient: nsclient.c nameserver.h $(OBJS)
+nsclient: nsclient.c nameserver.h encode.h $(OBJS)
 	gcc $(COPTS) nsclient.c -o nsclient $(OBJS)
 
