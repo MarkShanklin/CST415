@@ -14,13 +14,15 @@
 #include <sys/types.h>
 #include <string.h>
 #include <bool.h>
+#include <time.h>
 
 #include "nameserver.h"
+#include "encode.h"
 
 typedef struct list_element list_element;
 struct list_element 
 {
-    int keep_alive; //time stamp for keeping alive when i reqieve keep alive message update time stamp -1 equals dead.
+    time_t keep_alive; //time stamp for keeping alive when i recieve keep alive message update time stamp -1 equals dead.
     char service_name[MAX_SERVICE_NAME_LEN + 1];
     uint16_t port;
 
@@ -84,10 +86,36 @@ int main(int argc, char *argv[])
                "Minimum Ports: %d\n"
                "Keep Alive Time: %d\n\n", servicePort, minimumPorts, keepAliveTime);
     }
-    
+    request_t message;
+    int index = 0;
+    time_t current;
     while(true)
     { recvfrom(fd, buffer, sizeof(buffer), 0, recv_addr, sizeof(recv_addr));
-        //decode
+        decode(&buffer, &message); //decode
+        if(index == minimumPorts)
+        {
+            message.msg_type = RESPONSE;
+            message.status = ALL_PORTS_BUSY;
+            encode(&message,&message);
+        }
+        else
+        {
+            services[index].service_name = message.service_name;
+            services[index].port = message.port;
+            services[index].keep_alive = time(0);
+            current = time(0);
+            for(int i = 0; i <= index; i++)
+            {
+                if(difftime(current, services[i].keep_alive) > keepAliveTime)
+                //if((current - keepAliveTime) < services[i].keep_alive)
+                {
+                    services[i].keep_alive = 0;
+                }
+            }
+            if()
+            //manage data
+        }
+        
         //process message, msg_type defines action if succeded success
         //encode msg_type=response status is depeinding
         //send
