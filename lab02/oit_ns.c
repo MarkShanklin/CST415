@@ -112,7 +112,6 @@ int main(int argc, char *argv[])
                     services[i].keep_alive = 0;
                 }
             }
-            if()
             //manage data
         }
         
