@@ -5,9 +5,9 @@
 * Last Modified : Mon 10 Oct 2016 11:59:34 AM PDT
 * Created By    : Mark Shanklin 
 ***********************************************************/
+#include <unistd.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <unistd.h>
 #include <stdint.h>
 #include <netdb.h>
 #include <sys/socket.h>
