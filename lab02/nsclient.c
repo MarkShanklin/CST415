@@ -35,7 +35,6 @@ int main(int argc, char *argv[])
     int minimumPorts = 100;
     int keepAliveTime = 300; //seconds
     int command = 0;
-    char buffer[1024];
     bool verbose = false;
 
     while ((command = getopt(argc, argv, "p:n:t:hv")) != -1)
@@ -66,18 +65,17 @@ int main(int argc, char *argv[])
 
     service_t services[minimumPorts];
 
-    int fd = socket(AF_INET, SOCK_DGRAM, 0);
+    int clientSocket_fd = socket(AF_INET, SOCK_DGRAM, 0);
+    char buffer[1024];
+    struct sockaddr_in serverAddr;
+    //struct sockaddr_in recv_addr;
 
-    struct sockaddr_in myaddr;
-    struct sockaddr_in recv_addr;
-    memset((char *)&myaddr, 0, sizeof(myaddr));
-    myaddr.sin_family = AF_INET;
-    myaddr.sin_addr.s_addr = htonl(INADDR_ANY);
-    myaddr.sin_port = htons(servicePort);
+    memset((char *)&serverAddr, 0, sizeof(serverAddr));
+    serverAddr.sin_family = AF_INET;
+    serverAddr.sin_port = htons(servicePort);
+    serverAddr.sin_addr.s_addr = htonl(INADDR_ANY);
 
-    bind(fd, (struct sockaddr *)&myaddr, sizeof(myaddr));
-
-    printf("Bound: %d", nstoh(myaddr.port));
+    printf("Bound: %d", nstoh(serverAddr.sin_port));
 
     if (verbose)
     {
@@ -87,12 +85,34 @@ int main(int argc, char *argv[])
                servicePort, minimumPorts, keepAliveTime);
     }
     request_t message;
-    int index = 0; //needs to change
+    int _error = 0; //needs to change
     time_t current;
     while (true)
     {
+        memset(buffer, 0, sizeof(buffer));
+        printf("\nPlease enter msg: ");
+        fgets(buffer, sizeof(buffer), stdin);
+        strcpy(message.service_name,buffer);
+        message.port = 9000;
+        message.msg_type = DEFINE_PORT;
+        message.status = SUCCESS;
 
-        sendto(fd, buffer, sizeof(buffer), 0, recv_addr, sizeof(recv_addr));
+        encode(&message,&message);
+
+        _error = sendto(fd, message, sizeof(message), 0, &serverAddr, sizeof(serverAddr));
+        if (n < 0)
+            error("ERROR in sendto");
+
+        _error = recvfrom(fd, message, sizeof(message), 0, &serverAddr, sizeof(serverAddr));
+        if (n < 0)
+            error("ERROR in recvfrom");
+
+        decode(&message,&message);
+
+        printf("\nservice_name: %s", message.service_name);
+        printf("\nstatus: %d", message.status);
+        printf("\nmsg_type: %d", message.msg_type);
+        printf("\nport: %d", message.port);
     }
 
     printf("Exiting");
