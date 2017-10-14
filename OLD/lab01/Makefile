@@ -6,7 +6,7 @@
 # Date: Sept 27, 2016
 # 
 CC = gcc
-COPTS = -g -O0 -Wall
+COPTS = -g -O0 -Wall -std=c99
 PROG = oit_ns
 PROG2 = nsclient
 
