@@ -87,7 +87,7 @@ int main(int argc, char *argv[])
     time_t current;
     while (1)
     {
-        recvfrom(fd, message, sizeof(message), 0, &recv_addr, sizeof(recv_addr));
+        recvfrom(fd, buffer, sizeof(buffer), 0, &recv_addr, sizeof(recv_addr));
         //decode(&buffer, &message); //decode
         //if (index == minimumPorts)
         //{
