@@ -87,35 +87,35 @@ int main(int argc, char *argv[])
     time_t current;
     while (1)
     {
-        recvfrom(fd, buffer, sizeof(buffer), 0, &recv_addr, sizeof(recv_addr));
-        decode(&buffer, &message); //decode
-        if (index == minimumPorts)
-        {
-            message.msg_type = RESPONSE;
-            message.status = ALL_PORTS_BUSY;
-            encode(&message, &message);
-        }
-        else
-        {
-            services[index].service_name = message.service_name;
-            services[index].port = message.port;
-            services[index].keep_alive = time(0);
-            current = time(0);
-            for (int i = 0; i <= minimumPorts; i++)
-            {
-                if (difftime(current, services[i].keep_alive) > keepAliveTime)
+        recvfrom(fd, message, sizeof(message), 0, &recv_addr, sizeof(recv_addr));
+        //decode(&buffer, &message); //decode
+        //if (index == minimumPorts)
+        //{
+        //    message.msg_type = RESPONSE;
+       //     message.status = ALL_PORTS_BUSY;
+        //    encode(&message, &message);
+       // }
+        //else
+       // {
+        //    services[index].service_name = message.service_name;
+        //    services[index].port = message.port;
+        //    services[index].keep_alive = time(0);
+        //    current = time(0);
+       //     for (int i = 0; i <= minimumPorts; i++)
+       //     {
+   //          if (difftime(current, services[i].keep_alive) > keepAliveTime)
                 //if((current - keepAliveTime) < services[i].keep_alive)
-                {
-                    services[i].keep_alive = -1;
-                }
-            }
+      //          {
+      //              services[i].keep_alive = -1;
+      //          }
+      //      }
             //manage data
-        }
+      //  }
 
         //process message, msg_type defines action if succeded success
         //encode msg_type=response status is depeinding
         //send
-        sendto(fd, buffer, sizeof(buffer), 0, recv_addr, sizeof(recv_addr));
+     //   sendto(fd, buffer, sizeof(buffer), 0, recv_addr, sizeof(recv_addr));
     }
 
     printf("Exiting");
