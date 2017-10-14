@@ -17,17 +17,6 @@
 #include "nameserver.h"
 #include "encode.h"
 
-typedef struct list_element list_element;
-struct list_element
-{
-    time_t keep_alive; //time stamp for keeping alive when i recieve keep alive message update time stamp -1 equals dead.
-    char service_name[MAX_SERVICE_NAME_LEN + 1];
-    uint16_t port;
-
-    //list_element *next;
-    //list_element *previous;
-} service_t;
-
 int main(int argc, char *argv[])
 {
     int servicePort = 50000;

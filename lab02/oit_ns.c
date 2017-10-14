@@ -29,6 +29,8 @@ struct list_element
     //list_element *previous;
 } service_t;
 
+typedef struct service_t;
+
 int main(int argc, char *argv[])
 {
     int servicePort = 50000;
