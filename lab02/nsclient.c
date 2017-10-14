@@ -7,12 +7,17 @@
 ***********************************************************/
 #include <stdio.h>
 #include <stdlib.h>
-#include <unistd.h>
-#include <stdint.h>
-#include <netdb.h>
-#include <sys/socket.h>
-#include <sys/types.h>
 #include <string.h>
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <netdb.h>
+
+
+
+
+
 
 #include "nameserver.h"
 #include "encode.h"
@@ -87,11 +92,11 @@ int main(int argc, char *argv[])
 
         encode(&message,&message);
 
-        _error = sendto(fd, message, sizeof(message), 0, &serverAddr, sizeof(serverAddr));
+        _error = sendto(clientSocket_fd, message, sizeof(message), 0, &serverAddr, sizeof(serverAddr));
         if (n < 0)
             error("ERROR in sendto");
 
-        _error = recvfrom(fd, message, sizeof(message), 0, &serverAddr, sizeof(serverAddr));
+        _error = recvfrom(clientSocket_fd, message, sizeof(message), 0, &serverAddr, sizeof(serverAddr));
         if (n < 0)
             error("ERROR in recvfrom");
 
