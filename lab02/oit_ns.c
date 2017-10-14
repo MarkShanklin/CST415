@@ -73,7 +73,7 @@ int main(int argc, char *argv[])
 
     bind(fd, (struct sockaddr *)&myaddr, sizeof(myaddr));
 
-    printf("Bound: %d", nstoh(myaddr.port));
+    printf("Bound: %d", nstoh(myaddr.sin_port));
 
     if (verbose == 1)
     {
