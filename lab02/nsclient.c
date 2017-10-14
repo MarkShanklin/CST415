@@ -14,11 +14,6 @@
 #include <netinet/in.h>
 #include <netdb.h>
 
-
-
-
-
-
 #include "nameserver.h"
 #include "encode.h"
 
@@ -55,9 +50,6 @@ int main(int argc, char *argv[])
             break;
         }
     }
-
-    service_t services[minimumPorts];
-
     int clientSocket_fd = socket(AF_INET, SOCK_DGRAM, 0);
     char buffer[1024];
     struct sockaddr_in serverAddr;
@@ -93,11 +85,11 @@ int main(int argc, char *argv[])
         encode(&message,&message);
 
         _error = sendto(clientSocket_fd, message, sizeof(message), 0, &serverAddr, sizeof(serverAddr));
-        if (n < 0)
+        if (_error < 0)
             error("ERROR in sendto");
 
         _error = recvfrom(clientSocket_fd, message, sizeof(message), 0, &serverAddr, sizeof(serverAddr));
-        if (n < 0)
+        if (_error < 0)
             error("ERROR in recvfrom");
 
         decode(&message,&message);
