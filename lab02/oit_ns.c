@@ -20,7 +20,7 @@
 #include "encode.h"
 
 typedef struct list_element list_element;
-struct list_element 
+struct list_element
 {
     time_t keep_alive; //time stamp for keeping alive when i recieve keep alive message update time stamp -1 equals dead.
     char service_name[MAX_SERVICE_NAME_LEN + 1];
@@ -28,7 +28,7 @@ struct list_element
 
     //list_element *next;
     //list_element *previous;
-}service_t;
+} service_t;
 
 int main(int argc, char *argv[])
 {
@@ -38,36 +38,36 @@ int main(int argc, char *argv[])
     int command = 0;
     char buffer[1024];
     bool verbose = false;
- 
-    while((command = getopt(argc, argv, "p:n:t:hv")) != -1)
+
+    while ((command = getopt(argc, argv, "p:n:t:hv")) != -1)
     {
-        switch(command)
-        {   
-            case 'p':
-                servicePort = atoi(optarg);
-                break;
-            case 'n':
-                minimumPorts = atoi(optarg);
-                break;
-            case 't':
-                keepAliveTime = atoi(optarg);
-                break;
-            case 'h':
-                printf( "This program is a service used to maintain unique port numbers.\n\n"
-                        "-p \t<service port>\n"
-                        "-n \t<minimum number of ports>\n"
-                        "-t \t<keep alive time in seconds\n");
-                break;
-            case 'v':
-                verbose = true;
-            case '?':
-                break;
+        switch (command)
+        {
+        case 'p':
+            servicePort = atoi(optarg);
+            break;
+        case 'n':
+            minimumPorts = atoi(optarg);
+            break;
+        case 't':
+            keepAliveTime = atoi(optarg);
+            break;
+        case 'h':
+            printf("This program is a service used to maintain unique port numbers.\n\n"
+                   "-p \t<service port>\n"
+                   "-n \t<minimum number of ports>\n"
+                   "-t \t<keep alive time in seconds\n");
+            break;
+        case 'v':
+            verbose = true;
+        case '?':
+            break;
         }
     }
 
     service_t services[minimumPorts];
 
-    int fd = socket(AF_INET, SOCK_DGRAM, 0); 
+    int fd = socket(AF_INET, SOCK_DGRAM, 0);
 
     struct sockaddr_in myaddr;
     struct sockaddr_in recv_addr;
@@ -79,24 +79,26 @@ int main(int argc, char *argv[])
     bind(fd, (struct sockaddr *)&myaddr, sizeof(myaddr));
 
     printf("Bound: %d", nstoh(myaddr.port));
-    
-    if(verbose)
+
+    if (verbose)
     {
         printf("Service Port: %d\n"
                "Minimum Ports: %d\n"
-               "Keep Alive Time: %d\n\n", servicePort, minimumPorts, keepAliveTime);
+               "Keep Alive Time: %d\n\n",
+               servicePort, minimumPorts, keepAliveTime);
     }
     request_t message;
-    int index = 0;
+    int index = 0; //needs to change
     time_t current;
-    while(true)
-    { recvfrom(fd, buffer, sizeof(buffer), 0, recv_addr, sizeof(recv_addr));
+    while (true)
+    {
+        recvfrom(fd, buffer, sizeof(buffer), 0, recv_addr, sizeof(recv_addr));
         decode(&buffer, &message); //decode
-        if(index == minimumPorts)
+        if (index == minimumPorts)
         {
             message.msg_type = RESPONSE;
             message.status = ALL_PORTS_BUSY;
-            encode(&message,&message);
+            encode(&message, &message);
         }
         else
         {
@@ -104,20 +106,21 @@ int main(int argc, char *argv[])
             services[index].port = message.port;
             services[index].keep_alive = time(0);
             current = time(0);
-            for(int i = 0; i <= index; i++)
+            for (int i = 0; i <= minimumPorts; i++)
             {
-                if(difftime(current, services[i].keep_alive) > keepAliveTime)
+                if (difftime(current, services[i].keep_alive) > keepAliveTime)
                 //if((current - keepAliveTime) < services[i].keep_alive)
                 {
-                    services[i].keep_alive = 0;
+                    services[i].keep_alive = -1;
                 }
             }
             //manage data
         }
-        
+
         //process message, msg_type defines action if succeded success
         //encode msg_type=response status is depeinding
         //send
+        sendto(fd, buffer, sizeof(buffer), 0, recv_addr, sizeof(recv_addr));
     }
 
     printf("Exiting");

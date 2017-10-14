@@ -47,17 +47,12 @@ int is_invalid(request_t *request)
     {
         return SERVICE_NAME_ERROR;
     }
-    for (int i = 0; i < MAX_SERVICE_NAME_LEN; i++)
+    int length = strlen(request->service_name);
+    for (int i = length; i < MAX_SERVICE_NAME_LEN; i++)
     {
-        if  (request->service_name[i] == '\0')
+        if (request->service_name[i] != '\0')
         {
-            for(int j = i + 1; j < MAX_SERVICE_NAME_LEN; j++, i++)
-            {
-                if (request->service_name[j] != '\0')
-                {
-                    return SERVICE_NAME_ERROR;
-                }
-            }
+            return SERVICE_NAME_ERROR;
         }
     }
     return 0;

@@ -12,7 +12,7 @@ PROG2 = nsclient
 
 SOURCES = $(PROG).c
 SOURCES2 = $(PROG2).c
-DEPS = nameserver.h
+DEPS = nameserver.h encode.h addr2str.h
 
 LAB := $(shell basename ${PWD})
 TAR_FILE := $(LAB)_${LOGNAME}.tar
