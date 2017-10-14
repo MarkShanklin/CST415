@@ -34,7 +34,7 @@ int main(int argc, char *argv[])
     int minimumPorts = 100;
     int keepAliveTime = 300; //seconds
     int command = 0;
-    bool verbose = false;
+    int verbose = 0;
 
     while ((command = getopt(argc, argv, "p:n:t:hv")) != -1)
     {
@@ -56,7 +56,7 @@ int main(int argc, char *argv[])
                    "-t \t<keep alive time in seconds\n");
             break;
         case 'v':
-            verbose = true;
+            verbose = 1;
         case '?':
             break;
         }
@@ -76,7 +76,7 @@ int main(int argc, char *argv[])
 
     printf("Bound: %d", nstoh(serverAddr.sin_port));
 
-    if (verbose)
+    if (verbose == 1)
     {
         printf("Service Port: %d\n"
                "Minimum Ports: %d\n"
