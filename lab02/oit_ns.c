@@ -13,7 +13,6 @@
 #include <sys/socket.h>
 #include <sys/types.h>
 #include <string.h>
-#include <bool.h>
 #include <time.h>
 
 #include "nameserver.h"
@@ -90,7 +89,7 @@ int main(int argc, char *argv[])
     request_t message;
     int index = 0; //needs to change
     time_t current;
-    while (true)
+    while (1)
     {
         recvfrom(fd, buffer, sizeof(buffer), 0, recv_addr, sizeof(recv_addr));
         decode(&buffer, &message); //decode

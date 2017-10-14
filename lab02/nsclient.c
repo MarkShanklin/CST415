@@ -13,7 +13,6 @@
 #include <sys/socket.h>
 #include <sys/types.h>
 #include <string.h>
-#include <bool.h>
 
 #include "nameserver.h"
 #include "encode.h"
@@ -87,7 +86,7 @@ int main(int argc, char *argv[])
     request_t message;
     int _error = 0; //needs to change
     time_t current;
-    while (true)
+    while (1)
     {
         memset(buffer, 0, sizeof(buffer));
         printf("\nPlease enter msg: ");
