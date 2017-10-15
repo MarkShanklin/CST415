@@ -86,20 +86,19 @@ int main(int argc, char *argv[])
                servicePort, minimumPorts, keepAliveTime);
     }
     request_t message;
-    int index = 0; //needs to change
     time_t current;
     socklen_t len;
     len = sizeof(struct sockaddr);
     while (1)
     {
-        recvfrom(fd, buffer, sizeof(buffer), 0, 
+        recvfrom(fd, &message, sizeof(message), 0, 
             (struct sockaddr *) &recv_addr, &len);
-        //decode(&buffer, &message); //decode
-        //if (index == minimumPorts)
-        //{
-        //    message.msg_type = RESPONSE;
-       //     message.status = ALL_PORTS_BUSY;
-        //    encode(&message, &message);
+        decode(&message, &message); //decode
+
+        printf("Service_name: %s", message.service_name);
+           // message.msg_type = RESPONSE;
+           // message.status = ALL_PORTS_BUSY;
+           // encode(&message, &message);
        // }
         //else 
        // {
