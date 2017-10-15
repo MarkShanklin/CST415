@@ -89,8 +89,10 @@ int main(int argc, char *argv[])
     time_t current;
     while (1)
     {
+        socklent_t len;
+        len = sizeof(struct sockaddr_in);
         recvfrom(fd, buffer, sizeof(buffer), 0, 
-            (struct sockaddr *) &recv_addr, (socklen_t)sizeof(struct sockaddr_in));
+            (struct sockaddr *) &recv_addr, &len);
         //decode(&buffer, &message); //decode
         //if (index == minimumPorts)
         //{
