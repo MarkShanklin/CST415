@@ -23,9 +23,9 @@
 
 typedef struct
 {
+    uint16_t port;
     time_t keep_alive; //time stamp for keeping alive when i recieve keep alive message update time stamp -1 equals dead.
     char service_name[MAX_SERVICE_NAME_LEN + 1];
-    uint16_t port;
 } service_t;
 
 int main(int argc, char *argv[])
@@ -36,8 +36,13 @@ int main(int argc, char *argv[])
     int command = 0;
     int verbose = 0;
     request_t message;
-    //time_t current;
+    time_t current;
     socklen_t len;
+
+    //access point variables
+    int first_openPort = 0;
+    int first_deadPort = 0;
+    int portTaken_found = 0;
 
     while ((command = getopt(argc, argv, "p:n:t:hv")) != -1)
     {
@@ -64,7 +69,7 @@ int main(int argc, char *argv[])
             break;
         }
     }
-    //service_t services[minimumPorts];
+    service_t services[minimumPorts];
     int fd = socket(AF_INET, SOCK_DGRAM, 0);
 
     struct sockaddr_in myaddr;
@@ -96,27 +101,125 @@ int main(int argc, char *argv[])
         _error = recvfrom(fd, &message, sizeof(request_t), 0, (struct sockaddr *)&client_addr, &len);
         if(_error == sizeof(request_t))
         {
-        decode(&message, &message); //decode
-        if (verbose == 1)
-        {
-            printf("\nrequest_t recieved:");
-            printf("\nport: %d", message.port);
-            printf("\nmsg_type: %d", message.msg_type);
-            printf("\nstatus: %d", message.status);
-            printf("\nservice_name: %s", message.service_name);
-        }
-        message.msg_type = RESPONSE;
-        message.status = SUCCESS;
-        if (verbose == 1)
-        {
-            printf("\nrequest_t sent:");
-            printf("\nport: %d", message.port);
-            printf("\nmsg_type: %d", message.msg_type);
-            printf("\nstatus: %d", message.status);
-            printf("\nservice_name: %s", message.service_name);
-        }
-        encode(&message, &message);
-        _error = sendto(fd, &message, sizeof(request_t), 0, (struct sockaddr *)&client_addr, len);
+            decode(&message, &message); //decode
+            if (verbose == 1)
+            {
+                printf("\nrequest_t recieved:");
+                printf("\nport: %d", message.port);
+                printf("\nmsg_type: %d", message.msg_type);
+                printf("\nstatus: %d", message.status);
+                printf("\nservice_name: %s", message.service_name);
+            }
+            first_deadPort = -1;
+            first_openPort = -1;
+            portTaken_found = -1;
+            current = time(0);
+            for (i = 0; i < MAX_SERVICE_NAME_LEN; i++)
+            {
+                time_t temp = service_name[i].keep_alive;
+                if(temp < 0)
+                {
+                    if(first_deadPort == -1)
+                    {
+                        first_deadPort = i;
+                    }
+                }
+                else if(temp == 0)
+                {
+                    if(first_openPort == -1)
+                    {
+                        first_openPort = i;
+                    }
+                }
+                else
+                {
+                    if(difftime(current,temp) > keepAliveTime)
+                    {
+                        service_name[i].keep_alive = -1;
+                    }
+                }
+                if(portTaken_found > -1 && massage.port == services[i].port)
+                {
+                    portTaken_found = i;
+                }
+            }
+
+            switch(message.msg_type)
+            {
+                case DEFINE_PORT:
+                    if(portTaken_found > -1)
+                    {
+                        if(first_openPort < 0)
+                        {
+                            first_openPort = first_deadPort;
+                        }
+                        else if(first_deadPort > 0)
+                        {
+                            services[first_openPort].keep_alive = time(0);
+                            strcpy(services[first_openPort].service_name, message.service_name);
+                            services[first_openPort].port = message.port;
+                            message.status = SUCCESS;
+                        }
+                        else
+                        {
+                            message.status = ALL_PORTS_BUSY;
+                        }
+                    }
+                    else
+                    {
+                        message.status = SERVICE_IN_USE;
+                    }
+                    break;
+                case LOOKUP_PORT:
+                    if(portTaken_found > -1)
+                    {
+                        message.status = SUCCESS;
+                    }
+                    else
+                    {
+                        message.status = SERVICE_NOT_FOUND;
+                    }
+                    break;
+                case KEEP_ALIVE:
+                    if(portTaken_found > -1)
+                    {
+                        services[portTaken_found].keep_alive = time(0);
+                        message.status = SUCCESS;
+                    }
+                    else
+                    {
+                        //or possible issue new port
+                        message.status = SERVICE_NOT_FOUND;
+                    }
+                    break;
+                case CLOSE_PORT:
+                    if(portTaken_found > -1)
+                    {
+                        services[portTaken_found].keep_alive = -1;
+                        services[portTaken_found].service_name = '\0';
+                        services[portTaken_found].port = -1;
+                        message.status = SUCCESS;
+                    }
+                    else
+                    {
+                        message.status = SERVICE_NOT_FOUND;
+                    }
+                    break;
+                case STOP:
+                    return (EXIT_SUCCESS);
+                    break;
+            }
+            message.msg_type = RESPONSE;
+            if (verbose == 1)
+            {
+                printf("\nrequest_t sent:");
+                printf("\nport: %d", message.port);
+                printf("\nmsg_type: %d", message.msg_type);
+                printf("\nstatus: %d", message.status);
+                printf("\nservice_name: %s", message.service_name);
+            }
+            encode(&message, &message);
+            _error = sendto(fd, &message, sizeof(request_t), 0, (struct sockaddr *)&client_addr, len);
         }
     }
 
