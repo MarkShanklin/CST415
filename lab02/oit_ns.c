@@ -128,7 +128,7 @@ int main(int argc, char *argv[])
         //encode msg_type=response status is depeinding
         //send
         printf("\nsending\n");
-        sendto(fd, buffer, sizeof(buffer), 0, recv_addr, sizeof(recv_addr));
+        sendto(fd, &buffer, sizeof(buffer), 0, (struct sockaddr *)recv_addr, len);
         printf("\nsent\n");
     }
 
