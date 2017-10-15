@@ -14,7 +14,7 @@
 #define STATUS_ERROR 3
 #define SERVICE_NAME_ERROR 4
 
-void *encode(request_t *request, void *buff)
+void *encode(request_t *request, void *buff)//src,dest
 {
     if (request->msg_type > 6 || request->msg_type < 1)
         return NULL; //validate msg_type
@@ -22,9 +22,9 @@ void *encode(request_t *request, void *buff)
         return NULL; //validate status
     if (request != buff)
     {
-        ((request_t *)request)->service_name[MAX_SERVICE_NAME_LEN] = '\0';
-        strcpy(((request_t *)buff)->service_name,request->service_name);
-        //memcpy(request->service_name, ((request_t *)buff)->service_name, MAX_SERVICE_NAME_LEN); //(dest,src,length)
+        //((request_t *)request)->service_name[MAX_SERVICE_NAME_LEN] = '\0';
+        //strcpy(((request_t *)buff)->service_name,request->service_name);
+        memcpy(((request_t *)buff)->service_name,request->service_name, MAX_SERVICE_NAME_LEN); //(dest,src,length)
         ((request_t *)buff)->msg_type = request->msg_type;             //copy msg type only one byte no need to network order
         ((request_t *)buff)->status = request->status;                 //copy status only one byte no need to network order
     }
@@ -61,16 +61,16 @@ int is_invalid(request_t *request)
     return 0;
 };
 
-request_t *decode(void *buff, request_t *decoded)
+request_t *decode(void *buff, request_t *decoded) //src,dst
 {
     if (is_invalid((request_t *)buff))
         return NULL;
     if (buff != decoded)
     {
         memcpy(decoded->service_name, ((request_t *)buff)->service_name, MAX_SERVICE_NAME_LEN); //(dest,src,length)
-        ((request_t *)buff)->status = decoded->status;     //copy status only one byte no need to host order
+        decoded->status = ((request_t *)buff)->status;     //copy status only one byte no need to host order
         decoded->msg_type = ((request_t *)buff)->msg_type; //copy msg type only one byte no need to network order
     }
     decoded->port = ntohs(((request_t *)buff)->port);  //copy port using host byte order
-    return buff;
+    return decoded;
 };

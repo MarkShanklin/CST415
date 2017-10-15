@@ -91,6 +91,8 @@ int main(int argc, char *argv[])
             fprintf(stderr,"ERROR in sendto");
         printf("\nsent\n");
         printf("\nstart_rec:\n");
+
+        memset(&message, 0, sizeof(message));
         _error = recvfrom(clientSocket_fd, &message, sizeof(message), 0,(struct sockaddr *) &serverAddr, &len);
         if (_error < 0)
             fprintf(stderr,"ERROR in recvfrom");
