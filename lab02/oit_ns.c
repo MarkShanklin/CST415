@@ -100,7 +100,7 @@ int main(int argc, char *argv[])
         //memset(&buffer, 0, sizeof(buffer));
         //memset(&message, 0, sizeof(message));
         printf("\nstart_rec:\n");
-        _error = recvfrom(fd, &message, sizeof(message), 0, (struct sockaddr *) &recv_addr, &len);
+        _error = recvfrom(fd, &message, sizeof(request_t), 0, (struct sockaddr *) &recv_addr, &len);
         if(_error == sizeof(request_t))
         {
         printf("\nrec\n");
@@ -134,7 +134,7 @@ int main(int argc, char *argv[])
         //encode msg_type=response status is depeinding
         //send
         printf("\nsending\n");
-        _error = sendto(fd, &message, sizeof(message), 0, (struct sockaddr *)&recv_addr, len);
+        _error = sendto(fd, &message, sizeof(request_t), 0, (struct sockaddr *)&recv_addr, len);
         printf("\nsent\n");
       }
     }

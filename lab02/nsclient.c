@@ -88,7 +88,7 @@ int main(int argc, char *argv[])
         encode(&message,&message);
         printf("Service_name sent: %s", message.service_name);
         printf("\nsending\n");
-        _error = sendto(clientSocket_fd, &message, sizeof(message), 0,(struct sockaddr *) &serverAddr, len);
+        _error = sendto(clientSocket_fd, &message, sizeof(request_t), 0,(struct sockaddr *) &serverAddr, len);
         if (_error < 0)
             fprintf(stderr,"ERROR in sendto");
         printf("\nsent\n");
@@ -96,7 +96,7 @@ int main(int argc, char *argv[])
 
         //memset(&buffer, 0, sizeof(buffer));
         //memset(&message, 0, sizeof(message));
-        _error = recvfrom(clientSocket_fd, &buffer, sizeof(buffer), 0,(struct sockaddr *) &serverAddr, &len);
+        _error = recvfrom(clientSocket_fd, &message, sizeof(request_t), 0,(struct sockaddr *) &serverAddr, &len);
         if (_error < 0)
             fprintf(stderr,"ERROR in recvfrom");
         printf("\nrec\n");
