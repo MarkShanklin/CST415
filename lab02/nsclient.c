@@ -56,7 +56,7 @@ int main(int argc, char *argv[])
 
     if (verbose == 1)
     {
-        printf("nsclient\n");
+        printf("Name Server Client\n");
         printf("Service Port: %d\n",servicePort);
     }
     while (1)
