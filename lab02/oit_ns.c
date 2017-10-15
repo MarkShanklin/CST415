@@ -77,6 +77,7 @@ int main(int argc, char *argv[])
     int _error = 0;
     bind(fd, (struct sockaddr *)&myaddr, sizeof(myaddr));
     int bound = sock2port(fd);
+    printf("oit_ns\n");
     printf("Bound to port: %d\n", bound);
 
     if (verbose == 1)
