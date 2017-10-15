@@ -22,29 +22,19 @@
 int main(int argc, char *argv[])
 {
     int servicePort = 50000;
-    int minimumPorts = 100;
-    int keepAliveTime = 300; //seconds
     int command = 0;
     int verbose = 0;
 
-    while ((command = getopt(argc, argv, "p:n:t:hv")) != -1)
+    while ((command = getopt(argc, argv, "p:hv")) != -1)
     {
         switch (command)
         {
         case 'p':
             servicePort = atoi(optarg);
             break;
-        case 'n':
-            minimumPorts = atoi(optarg);
-            break;
-        case 't':
-            keepAliveTime = atoi(optarg);
-            break;
         case 'h':
             printf("This program is a service used to maintain unique port numbers.\n\n"
-                   "-p \t<service port>\n"
-                   "-n \t<minimum number of ports>\n"
-                   "-t \t<keep alive time in seconds\n");
+                   "-p \t<service port>\n");
             break;
         case 'v':
             verbose = 1;
@@ -55,57 +45,49 @@ int main(int argc, char *argv[])
     int clientSocket_fd = socket(AF_INET, SOCK_DGRAM, 0);
     char buffer[1024];
     struct sockaddr_in serverAddr;
-
     memset((char *)&serverAddr, 0, sizeof(serverAddr));
     serverAddr.sin_family = AF_INET;
     serverAddr.sin_port = htons(servicePort);
     serverAddr.sin_addr.s_addr = htonl(INADDR_ANY);
-
-    if (verbose == 1)
-    {
-        printf("Service Port: %d\n"
-               "Minimum Ports: %d\n"
-               "Keep Alive Time: %d\n\n",
-               servicePort, minimumPorts, keepAliveTime);
-    }
     request_t message;
     int _error = 0;
     socklen_t len;
     len = sizeof(serverAddr);
+
+    if (verbose == 1)
+    {
+        printf("Service Port: %d\n\n",servicePort);
+    }
     while (1)
     {
-        //memset(&buffer, 0, sizeof(buffer));
-        //memset(&message, 0, sizeof(message));
-
-        printf("\nPlease enter msg: ");
+        printf("\nPlease enter ServiceName: ");
         fgets(buffer, sizeof(buffer), stdin);
         strcpy(message.service_name,buffer);
         message.port = 9000;
         message.msg_type = DEFINE_PORT;
         message.status = SUCCESS;
-        printf("Service_name sent: %s", message.service_name);
-
+        if (verbose == 1)
+        {
+            printf("\nservice_name: %s", message.service_name);
+            printf("\nstatus: %d", message.status);
+            printf("\nmsg_type: %d", message.msg_type);
+            printf("\nport: %d", message.port);
+        }
         encode(&message,&message);
-        printf("Service_name sent: %s", message.service_name);
-        printf("\nsending\n");
         _error = sendto(clientSocket_fd, &message, sizeof(request_t), 0,(struct sockaddr *) &serverAddr, len);
         if (_error < 0)
             fprintf(stderr,"ERROR in sendto");
-        printf("\nsent\n");
-        printf("\nstart_rec:\n");
-
-        //memset(&buffer, 0, sizeof(buffer));
-        //memset(&message, 0, sizeof(message));
         _error = recvfrom(clientSocket_fd, &message, sizeof(request_t), 0,(struct sockaddr *) &serverAddr, &len);
         if (_error < 0)
             fprintf(stderr,"ERROR in recvfrom");
-        printf("\nrec\n");
         decode(&message,&message);
-
-        printf("\nservice_name: %s", message.service_name);
-        printf("\nstatus: %d", message.status);
-        printf("\nmsg_type: %d", message.msg_type);
-        printf("\nport: %d", message.port);
+        if (verbose == 1)
+        {
+            printf("\nservice_name: %s", message.service_name);
+            printf("\nstatus: %d", message.status);
+            printf("\nmsg_type: %d", message.msg_type);
+            printf("\nport: %d", message.port);
+        }
     }
 
     printf("Exiting");

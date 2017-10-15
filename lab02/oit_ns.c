@@ -34,7 +34,6 @@ int main(int argc, char *argv[])
     int minimumPorts = 100;
     int keepAliveTime = 300; //seconds
     int command = 0;
-    char buffer[1024];
     int verbose = 0;
     request_t message;
     time_t current;
@@ -65,14 +64,11 @@ int main(int argc, char *argv[])
             break;
         }
     }
-    printf("\nfinished command line\n");
     service_t services[minimumPorts];
-
     int fd = socket(AF_INET, SOCK_DGRAM, 0);
-    
 
     struct sockaddr_in myaddr;
-    struct sockaddr_in recv_addr;
+    struct sockaddr_in client_addr;
     memset((char *)&myaddr, 0, sizeof(myaddr));
     myaddr.sin_family = AF_INET;
     myaddr.sin_addr.s_addr = htonl(INADDR_ANY);
@@ -97,48 +93,31 @@ int main(int argc, char *argv[])
     int _error = 0;
     while (1)
     {
-        //memset(&buffer, 0, sizeof(buffer));
-        //memset(&message, 0, sizeof(message));
-        printf("\nstart_rec:\n");
-        _error = recvfrom(fd, &message, sizeof(request_t), 0, (struct sockaddr *) &recv_addr, &len);
-       printf("\n%d\n",_error);
-       printf("\nshould be:%d\n",sizeof(request_t));
+        _error = recvfrom(fd, &message, sizeof(request_t), 0, (struct sockaddr *)&client_addr, &len);
         if(_error == sizeof(request_t))
         {
-        printf("\nrec\n");
         decode(&message, &message); //decode
-
-        printf("Service_name: %s", message.service_name);
-            message.msg_type = RESPONSE;
-            message.status = ALL_PORTS_BUSY;
-        //memset(&buffer, 0, sizeof(buffer));
+        if (verbose == 1)
+        {
+            printf("\nrequest_t recieved:\n");
+            printf("\nservice_name: %s", message.service_name);
+            printf("\nstatus: %d", message.status);
+            printf("\nmsg_type: %d", message.msg_type);
+            printf("\nport: %d", message.port);
+        }
+        message.msg_type = RESPONSE;
+        message.status = SUCCESS;
+        if (verbose == 1)
+        {
+            printf("\nrequest_t sent:\n");
+            printf("\nservice_name: %s", message.service_name);
+            printf("\nstatus: %d", message.status);
+            printf("\nmsg_type: %d", message.msg_type);
+            printf("\nport: %d", message.port);
+        }
         encode(&message, &message);
-        //printf("Service_name: %s", ((request_t*)buffer)->service_name);
-       // }
-        //else 
-       // {
-        //    services[index].service_name = message.service_name;
-        //    services[index].port = message.port;
-        //    services[index].keep_alive = time(0);
-        //    current = time(0);
-       //     for (int i = 0; i <= minimumPorts; i++)
-       //     {
-   //          if (difftime(current, services[i].keep_alive) > keepAliveTime)
-                //if((current - keepAliveTime) < services[i].keep_alive)
-      //          {
-      //              services[i].keep_alive = -1;
-      //          }
-      //      }
-            //manage data
-      //  }
-
-        //process message, msg_type defines action if succeded success
-        //encode msg_type=response status is depeinding
-        //send
-        printf("\nsending\n");
-        _error = sendto(fd, &message, sizeof(request_t), 0, (struct sockaddr *)&recv_addr, len);
-        printf("\nsent\n");
-      }
+        _error = sendto(fd, &message, sizeof(request_t), 0, (struct sockaddr *)&client_addr, len);
+        }
     }
 
     printf("Exiting");
