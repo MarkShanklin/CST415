@@ -83,7 +83,7 @@ int main(int argc, char *argv[])
         message.status = SUCCESS;
 
         encode(&message,&message);
-
+        printf("\nsending\n");
         _error = sendto(clientSocket_fd, &message, sizeof(message), 0,(struct sockaddr *) &serverAddr, len);
         if (_error < 0)
             error("ERROR in sendto");

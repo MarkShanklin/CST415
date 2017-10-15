@@ -61,7 +61,7 @@ int main(int argc, char *argv[])
             break;
         }
     }
-
+    printf("\nfinished command line\n");
     service_t services[minimumPorts];
 
     int fd = socket(AF_INET, SOCK_DGRAM, 0);
