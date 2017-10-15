@@ -90,7 +90,7 @@ int main(int argc, char *argv[])
     while (1)
     {
         recvfrom(fd, buffer, sizeof(buffer), 0, 
-            (struct sockaddr *) &recv_addr, sizeof(struct sockaddr_in));
+            (struct sockaddr *) &recv_addr, (socklen_t)sizeof(struct sockaddr_in));
         //decode(&buffer, &message); //decode
         //if (index == minimumPorts)
         //{
