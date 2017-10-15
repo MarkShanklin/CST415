@@ -88,10 +88,10 @@ int main(int argc, char *argv[])
     request_t message;
     int index = 0; //needs to change
     time_t current;
+    socklen_t len;
+    len = sizeof(struct sockaddr);
     while (1)
     {
-        socklen_t len;
-        len = sizeof(struct sockaddr);
         recvfrom(fd, buffer, sizeof(buffer), 0, 
             (struct sockaddr *) &recv_addr, &len);
         //decode(&buffer, &message); //decode
@@ -101,7 +101,7 @@ int main(int argc, char *argv[])
        //     message.status = ALL_PORTS_BUSY;
         //    encode(&message, &message);
        // }
-        //else
+        //else 
        // {
         //    services[index].service_name = message.service_name;
         //    services[index].port = message.port;

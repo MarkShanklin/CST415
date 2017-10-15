@@ -13,6 +13,8 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <netdb.h>
+#include <getopt.h>
+#include <arpa/inet.h>
 
 #include "nameserver.h"
 #include "encode.h"
@@ -53,14 +55,11 @@ int main(int argc, char *argv[])
     int clientSocket_fd = socket(AF_INET, SOCK_DGRAM, 0);
     char buffer[1024];
     struct sockaddr_in serverAddr;
-    //struct sockaddr_in recv_addr;
 
     memset((char *)&serverAddr, 0, sizeof(serverAddr));
     serverAddr.sin_family = AF_INET;
     serverAddr.sin_port = htons(servicePort);
     serverAddr.sin_addr.s_addr = htonl(INADDR_ANY);
-
-    printf("Bound: %d", nstoh(serverAddr.sin_port));
 
     if (verbose == 1)
     {
@@ -71,7 +70,8 @@ int main(int argc, char *argv[])
     }
     request_t message;
     int _error = 0; //needs to change
-    time_t current;
+    socklen_t len;
+    len = sizeof(struct sockaddr)
     while (1)
     {
         memset(buffer, 0, sizeof(buffer));
@@ -84,11 +84,11 @@ int main(int argc, char *argv[])
 
         encode(&message,&message);
 
-        _error = sendto(clientSocket_fd, message, sizeof(message), 0, &serverAddr, sizeof(serverAddr));
+        _error = sendto(clientSocket_fd, &message, sizeof(message), 0, &serverAddr, &len);
         if (_error < 0)
             error("ERROR in sendto");
 
-        _error = recvfrom(clientSocket_fd, message, sizeof(message), 0, &serverAddr, sizeof(serverAddr));
+        _error = recvfrom(clientSocket_fd, &message, sizeof(message), 0, &serverAddr, &len);
         if (_error < 0)
             error("ERROR in recvfrom");
 
