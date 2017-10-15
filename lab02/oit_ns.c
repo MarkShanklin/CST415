@@ -77,6 +77,7 @@ int main(int argc, char *argv[])
     myaddr.sin_family = AF_INET;
     myaddr.sin_addr.s_addr = htonl(INADDR_ANY);
     myaddr.sin_port = htons(servicePort);
+    len = sizeof(myaddr);
 
     bind(fd, (struct sockaddr *)&myaddr, sizeof(myaddr));
     int bound = sock2port(fd);
@@ -93,8 +94,6 @@ int main(int argc, char *argv[])
                "Keep Alive Time: %d\n\n",
                servicePort, minimumPorts, keepAliveTime);
     }
-
-    len = sizeof(myaddr);
     while (1)
     {
         printf("\nstart_rec");
