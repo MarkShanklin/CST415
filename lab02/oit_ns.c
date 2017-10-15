@@ -87,7 +87,7 @@ int main(int argc, char *argv[])
         }
         printf("\nService Port: %d\n"
                "Minimum Ports: %d\n"
-               "Keep Alive Time: %d\n\n",
+               "Keep Alive Time: %d\n",
                servicePort, minimumPorts, keepAliveTime);
     }
     while (1)
@@ -98,21 +98,21 @@ int main(int argc, char *argv[])
         decode(&message, &message); //decode
         if (verbose == 1)
         {
-            printf("\nrequest_t recieved:\n");
-            printf("\nservice_name: %s", message.service_name);
-            printf("\nstatus: %d", message.status);
-            printf("\nmsg_type: %d", message.msg_type);
+            printf("\nrequest_t recieved:");
             printf("\nport: %d", message.port);
+            printf("\nmsg_type: %d", message.msg_type);
+            printf("\nstatus: %d", message.status);
+            printf("\nservice_name: %s", message.service_name);
         }
         message.msg_type = RESPONSE;
         message.status = SUCCESS;
         if (verbose == 1)
         {
-            printf("\nrequest_t sent:\n");
-            printf("\nservice_name: %s", message.service_name);
-            printf("\nstatus: %d", message.status);
-            printf("\nmsg_type: %d", message.msg_type);
+            printf("\nrequest_t sent:");
             printf("\nport: %d", message.port);
+            printf("\nmsg_type: %d", message.msg_type);
+            printf("\nstatus: %d", message.status);
+            printf("\nservice_name: %s", message.service_name);
         }
         encode(&message, &message);
         _error = sendto(fd, &message, sizeof(request_t), 0, (struct sockaddr *)&client_addr, len);

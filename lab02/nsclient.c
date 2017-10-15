@@ -56,7 +56,7 @@ int main(int argc, char *argv[])
 
     if (verbose == 1)
     {
-        printf("Service Port: %d\n\n",servicePort);
+        printf("Service Port: %d\n",servicePort);
     }
     while (1)
     {
@@ -68,10 +68,11 @@ int main(int argc, char *argv[])
         message.status = SUCCESS;
         if (verbose == 1)
         {
-            printf("\nservice_name: %s", message.service_name);
-            printf("\nstatus: %d", message.status);
-            printf("\nmsg_type: %d", message.msg_type);
+            printf("\nrequest_t sent:");
             printf("\nport: %d", message.port);
+            printf("\nmsg_type: %d", message.msg_type);
+            printf("\nstatus: %d", message.status);
+            printf("\nservice_name: %s", message.service_name);
         }
         encode(&message,&message);
         _error = sendto(clientSocket_fd, &message, sizeof(request_t), 0,(struct sockaddr *) &serverAddr, len);
@@ -83,10 +84,11 @@ int main(int argc, char *argv[])
         decode(&message,&message);
         if (verbose == 1)
         {
-            printf("\nservice_name: %s", message.service_name);
-            printf("\nstatus: %d", message.status);
+            printf("\nrequest_t recieved:");
+            printf("\nport: %d", message.port);
             printf("\nmsg_type: %d", message.msg_type);
-            printf("\nport: %d\n\n", message.port);
+            printf("\nstatus: %d", message.status);
+            printf("\nservice_name: %s", message.service_name);
         }
     }
 
