@@ -75,6 +75,8 @@ int main(int argc, char *argv[])
     while (1)
     {
         memset(buffer, 0, sizeof(buffer));
+        memset(&message, 0, sizeof(message));
+
         printf("\nPlease enter msg: ");
         fgets(buffer, sizeof(buffer), stdin);
         strcpy(message.service_name,buffer);
@@ -92,12 +94,13 @@ int main(int argc, char *argv[])
         printf("\nsent\n");
         printf("\nstart_rec:\n");
 
+        memset(buffer, 0, sizeof(buffer));
         memset(&message, 0, sizeof(message));
-        _error = recvfrom(clientSocket_fd, &message, sizeof(message), 0,(struct sockaddr *) &serverAddr, &len);
+        _error = recvfrom(clientSocket_fd, &buffer, sizeof(buffer), 0,(struct sockaddr *) &serverAddr, &len);
         if (_error < 0)
             fprintf(stderr,"ERROR in recvfrom");
         printf("rec");
-        decode(&message,&message);
+        decode(&buffer,&message);
 
         printf("\nservice_name: %s", message.service_name);
         printf("\nstatus: %d", message.status);
