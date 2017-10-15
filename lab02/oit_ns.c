@@ -93,6 +93,7 @@ int main(int argc, char *argv[])
     {
         recvfrom(fd, &message, sizeof(message), 0, 
             (struct sockaddr *) &recv_addr, &len);
+        printf("rec");
         decode(&message, &message); //decode
 
         printf("Service_name: %s", message.service_name);
