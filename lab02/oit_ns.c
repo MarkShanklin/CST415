@@ -105,7 +105,7 @@ int main(int argc, char *argv[])
         printf("Service_name: %s", message.service_name);
            // message.msg_type = RESPONSE;
            // message.status = ALL_PORTS_BUSY;
-           // encode(&message, &message);
+         encode(&message, &buffer);
        // }
         //else 
        // {
@@ -127,7 +127,9 @@ int main(int argc, char *argv[])
         //process message, msg_type defines action if succeded success
         //encode msg_type=response status is depeinding
         //send
-     //   sendto(fd, buffer, sizeof(buffer), 0, recv_addr, sizeof(recv_addr));
+        printf("\nsending\n");
+        sendto(fd, buffer, sizeof(buffer), 0, recv_addr, sizeof(recv_addr));
+        printf("\nsent\n");
     }
 
     printf("Exiting");

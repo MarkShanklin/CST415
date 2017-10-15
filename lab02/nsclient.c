@@ -81,13 +81,15 @@ int main(int argc, char *argv[])
         message.port = 9000;
         message.msg_type = DEFINE_PORT;
         message.status = SUCCESS;
+        printf("Service_name sent: %s", message.service_name);
 
         encode(&message,&buffer);
         printf("\nsending\n");
         _error = sendto(clientSocket_fd, &buffer, sizeof(buffer), 0,(struct sockaddr *) &serverAddr, len);
         if (_error < 0)
             fprintf(stderr,"ERROR in sendto");
-        printf("\nsent");
+        printf("\nsent\n");
+        printf("\nstart_rec:\n");
         _error = recvfrom(clientSocket_fd, &message, sizeof(message), 0,(struct sockaddr *) &serverAddr, &len);
         if (_error < 0)
             fprintf(stderr,"ERROR in recvfrom");
