@@ -22,7 +22,9 @@ void *encode(request_t *request, void *buff)
         return NULL; //validate status
     if (request != buff)
     {
-        memcpy(request->service_name-1, ((request_t *)buff)->service_name, MAX_SERVICE_NAME_LEN + 1); //(dest,src,length)
+        ((request_t *)request)->service_name[MAX_SERVICE_NAME_LEN] = '\0';
+        strcpy(((request_t *)buff)->service_name,request->service_name);
+        //memcpy(request->service_name, ((request_t *)buff)->service_name, MAX_SERVICE_NAME_LEN); //(dest,src,length)
         ((request_t *)buff)->msg_type = request->msg_type;             //copy msg type only one byte no need to network order
         ((request_t *)buff)->status = request->status;                 //copy status only one byte no need to network order
     }
