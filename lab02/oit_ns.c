@@ -101,6 +101,8 @@ int main(int argc, char *argv[])
         //memset(&message, 0, sizeof(message));
         printf("\nstart_rec:\n");
         _error = recvfrom(fd, &message, sizeof(request_t), 0, (struct sockaddr *) &recv_addr, &len);
+       printf("\n%d\n",_error);
+       printf("\nshould be:%d\n",sizeof(request_t));
         if(_error == sizeof(request_t))
         {
         printf("\nrec\n");
