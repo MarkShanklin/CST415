@@ -136,10 +136,10 @@ int main(int argc, char *argv[])
                 {
                     if(difftime(current,temp) > keepAliveTime)
                     {
-                        service_name[i].keep_alive = -1;
+                        services[i].keep_alive = -1;
                     }
                 }
-                if(portTaken_found > -1 && massage.port == services[i].port)
+                if(portTaken_found > -1 && (massage.port == services[i].port))
                 {
                     portTaken_found = i;
                 }
