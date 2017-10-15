@@ -157,7 +157,7 @@ int main(int argc, char *argv[])
                 printf("\nservice_name: %s", message.service_name);
                 printf("\nFirst Dead Port: %d", first_deadPort);
                 printf("\nFirst Open: %d", first_openPort);
-                printf("\nPort Exsists in index: %d", portTaken_found);
+                printf("\nPort Exsists in index: %d\n", portTaken_found);
             }
             switch(message.msg_type)
             {
