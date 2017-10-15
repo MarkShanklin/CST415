@@ -84,13 +84,17 @@ int main(int argc, char *argv[])
 
     if (verbose == 1)
     {
+        if(servicePort == 0)
+        {
+            servicePort = bound;
+        }
         printf("\nService Port: %d\n"
                "Minimum Ports: %d\n"
                "Keep Alive Time: %d\n\n",
                servicePort, minimumPorts, keepAliveTime);
     }
 
-    len = sizeof(struct sockaddr);
+    len = sizeof(myaddr);
     while (1)
     {
         printf("\nstart_rec");
