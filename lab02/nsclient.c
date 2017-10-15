@@ -74,7 +74,7 @@ int main(int argc, char *argv[])
     len = sizeof(serverAddr);
     while (1)
     {
-        memset(buffer, 0, sizeof(buffer));
+        memset(&buffer, 0, sizeof(buffer));
         memset(&message, 0, sizeof(message));
 
         printf("\nPlease enter msg: ");
@@ -94,7 +94,7 @@ int main(int argc, char *argv[])
         printf("\nsent\n");
         printf("\nstart_rec:\n");
 
-        memset(buffer, 0, sizeof(buffer));
+        memset(&buffer, 0, sizeof(buffer));
         memset(&message, 0, sizeof(message));
         _error = recvfrom(clientSocket_fd, &buffer, sizeof(buffer), 0,(struct sockaddr *) &serverAddr, &len);
         if (_error < 0)

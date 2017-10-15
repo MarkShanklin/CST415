@@ -96,20 +96,19 @@ int main(int argc, char *argv[])
     }
     while (1)
     {
-        memset(buffer, 0, sizeof(buffer));
+        memset(&buffer, 0, sizeof(buffer));
         memset(&message, 0, sizeof(message));
         printf("\nstart_rec:\n");
-        recvfrom(fd, &buffer, sizeof(buffer), 0, 
-            (struct sockaddr *) &recv_addr, &len);
-        printf("\nrec");
+        recvfrom(fd, &buffer, sizeof(buffer), 0, (struct sockaddr *) &recv_addr, &len);
+        printf("\nrec\n");
         decode(&buffer, &message); //decode
 
         printf("Service_name: %s", message.service_name);
            // message.msg_type = RESPONSE;
            // message.status = ALL_PORTS_BUSY;
-        memset(buffer, 0, sizeof(buffer));
+        memset(&buffer, 0, sizeof(buffer));
         encode(&message, &buffer);
-        printf("Service_name: %s", message.service_name);
+        printf("Service_name: %s", ((request_t*)buffer)->service_name);
        // }
         //else 
        // {
