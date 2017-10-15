@@ -87,7 +87,7 @@ int main(int argc, char *argv[])
         _error = sendto(clientSocket_fd, &message, sizeof(message), 0,(struct sockaddr *) &serverAddr, len);
         if (_error < 0)
             error("ERROR in sendto");
-        printf("sent");
+        printf("sent%d",0);
         _error = recvfrom(clientSocket_fd, &message, sizeof(message), 0,(struct sockaddr *) &serverAddr, &len);
         if (_error < 0)
             error("ERROR in recvfrom");
