@@ -24,7 +24,7 @@
 typedef struct
 {
     uint16_t port;
-    time_t keep_alive; //time stamp for keeping alive when i recieve keep alive message update time stamp -1 equals dead.
+    time_t keep_alive = 0; //time stamp for keeping alive when i recieve keep alive message update time stamp -1 equals dead.
     char service_name[MAX_SERVICE_NAME_LEN + 1];
 } service_t;
 
