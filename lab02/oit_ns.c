@@ -73,11 +73,11 @@ int main(int argc, char *argv[])
     myaddr.sin_family = AF_INET;
     myaddr.sin_addr.s_addr = htonl(INADDR_ANY);
     myaddr.sin_port = htons(servicePort);
-    len = sizeof(recv_addr);
-
+    len = sizeof(client_addr);
+    int _error = 0;
     bind(fd, (struct sockaddr *)&myaddr, sizeof(myaddr));
     int bound = sock2port(fd);
-    printf("Bound: %d\n", bound);
+    printf("Bound to port: %d\n", bound);
 
     if (verbose == 1)
     {
@@ -90,7 +90,6 @@ int main(int argc, char *argv[])
                "Keep Alive Time: %d\n\n",
                servicePort, minimumPorts, keepAliveTime);
     }
-    int _error = 0;
     while (1)
     {
         _error = recvfrom(fd, &message, sizeof(request_t), 0, (struct sockaddr *)&client_addr, &len);
