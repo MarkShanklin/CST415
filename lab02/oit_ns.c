@@ -96,10 +96,10 @@ int main(int argc, char *argv[])
     }
     while (1)
     {
-        printf("\nstart_rec");
+        printf("\nstart_rec:\n");
         recvfrom(fd, &buffer, sizeof(buffer), 0, 
             (struct sockaddr *) &recv_addr, &len);
-        printf("rec");
+        printf("\nrec");
         decode(&buffer, &message); //decode
 
         printf("Service_name: %s", message.service_name);
