@@ -15,6 +15,7 @@
 #include <string.h>
 #include <time.h>
 #include <getopt.h>
+#include <arpa/inet.h>
 
 #include "nameserver.h"
 #include "encode.h"
@@ -90,7 +91,7 @@ int main(int argc, char *argv[])
     while (1)
     {
         socklent_t len;
-        len = sizeof(struct sockaddr_in);
+        len = sizeof(struct sockaddr);
         recvfrom(fd, buffer, sizeof(buffer), 0, 
             (struct sockaddr *) &recv_addr, &len);
         //decode(&buffer, &message); //decode
