@@ -91,10 +91,10 @@ int main(int argc, char *argv[])
     len = sizeof(struct sockaddr);
     while (1)
     {
-        recvfrom(fd, &message, sizeof(message), 0, 
+        recvfrom(fd, &buffer, sizeof(buffer), 0, 
             (struct sockaddr *) &recv_addr, &len);
         printf("rec");
-        decode(&message, &message); //decode
+        decode(&buffer, &message); //decode
 
         printf("Service_name: %s", message.service_name);
            // message.msg_type = RESPONSE;

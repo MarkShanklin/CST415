@@ -82,12 +82,12 @@ int main(int argc, char *argv[])
         message.msg_type = DEFINE_PORT;
         message.status = SUCCESS;
 
-        encode(&message,&message);
+        encode(&message,&buffer);
         printf("\nsending\n");
-        _error = sendto(clientSocket_fd, &message, sizeof(message), 0,(struct sockaddr *) &serverAddr, len);
+        _error = sendto(clientSocket_fd, &buffer, sizeof(buffer), 0,(struct sockaddr *) &serverAddr, len);
         if (_error < 0)
             error("ERROR in sendto");
-        printf("sent%d",0);
+        printf("\nsent");
         _error = recvfrom(clientSocket_fd, &message, sizeof(message), 0,(struct sockaddr *) &serverAddr, &len);
         if (_error < 0)
             error("ERROR in recvfrom");
