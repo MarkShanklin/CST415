@@ -91,7 +91,7 @@ int main(int argc, char *argv[])
         _error = recvfrom(clientSocket_fd, &message, sizeof(message), 0,(struct sockaddr *) &serverAddr, &len);
         if (_error < 0)
             error("ERROR in recvfrom");
-        printf("rec";)
+        printf("rec");
         decode(&message,&message);
 
         printf("\nservice_name: %s", message.service_name);
