@@ -14,6 +14,7 @@
 #include <sys/types.h>
 #include <string.h>
 #include <time.h>
+#include <getopt.h>
 
 #include "nameserver.h"
 #include "encode.h"
@@ -63,6 +64,7 @@ int main(int argc, char *argv[])
     service_t services[minimumPorts];
 
     int fd = socket(AF_INET, SOCK_DGRAM, 0);
+    
 
     struct sockaddr_in myaddr;
     struct sockaddr_in recv_addr;
@@ -73,7 +75,7 @@ int main(int argc, char *argv[])
 
     bind(fd, (struct sockaddr *)&myaddr, sizeof(myaddr));
 
-    printf("Bound: %d", nstoh(myaddr.sin_port));
+    printf("Bound: %d", ntohs(myaddr.sin_port));
 
     if (verbose == 1)
     {
