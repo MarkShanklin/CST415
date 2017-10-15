@@ -15,10 +15,10 @@
 
 typedef struct
 {
-    int8_t msg_type;                                // see #defines below
-    char service_name[MAX_SERVICE_NAME_LEN + 1];    // null terminated name
     uint16_t port;                                  // net byte order port num
+    int8_t msg_type;                                // see #defines below
     int8_t status;                                  // see #defines below
+    char service_name[MAX_SERVICE_NAME_LEN + 1];    // null terminated name
 } request_t;
 
 // Valid msg_type values

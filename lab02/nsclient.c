@@ -69,13 +69,13 @@ int main(int argc, char *argv[])
                servicePort, minimumPorts, keepAliveTime);
     }
     request_t message;
-    int _error = 0; //needs to change
+    int _error = 0;
     socklen_t len;
     len = sizeof(serverAddr);
     while (1)
     {
-        memset(&buffer, 0, sizeof(buffer));
-        memset(&message, 0, sizeof(message));
+        //memset(&buffer, 0, sizeof(buffer));
+        //memset(&message, 0, sizeof(message));
 
         printf("\nPlease enter msg: ");
         fgets(buffer, sizeof(buffer), stdin);
@@ -85,22 +85,22 @@ int main(int argc, char *argv[])
         message.status = SUCCESS;
         printf("Service_name sent: %s", message.service_name);
 
-        encode(&message,&buffer);
+        encode(&message,&message);
         printf("Service_name sent: %s", message.service_name);
         printf("\nsending\n");
-        _error = sendto(clientSocket_fd, &buffer, sizeof(buffer), 0,(struct sockaddr *) &serverAddr, len);
+        _error = sendto(clientSocket_fd, &message, sizeof(message), 0,(struct sockaddr *) &serverAddr, len);
         if (_error < 0)
             fprintf(stderr,"ERROR in sendto");
         printf("\nsent\n");
         printf("\nstart_rec:\n");
 
-        memset(&buffer, 0, sizeof(buffer));
-        memset(&message, 0, sizeof(message));
+        //memset(&buffer, 0, sizeof(buffer));
+        //memset(&message, 0, sizeof(message));
         _error = recvfrom(clientSocket_fd, &buffer, sizeof(buffer), 0,(struct sockaddr *) &serverAddr, &len);
         if (_error < 0)
             fprintf(stderr,"ERROR in recvfrom");
         printf("\nrec\n");
-        decode(&buffer,&message);
+        decode(&message,&message);
 
         printf("\nservice_name: %s", message.service_name);
         printf("\nstatus: %d", message.status);

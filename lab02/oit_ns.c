@@ -21,7 +21,7 @@
 #include "encode.h"
 #include "addr2str.h"
 
-typedef struct list_element
+typedef struct
 {
     time_t keep_alive; //time stamp for keeping alive when i recieve keep alive message update time stamp -1 equals dead.
     char service_name[MAX_SERVICE_NAME_LEN + 1];
@@ -94,21 +94,24 @@ int main(int argc, char *argv[])
                "Keep Alive Time: %d\n\n",
                servicePort, minimumPorts, keepAliveTime);
     }
+    int _error = 0;
     while (1)
     {
-        memset(&buffer, 0, sizeof(buffer));
-        memset(&message, 0, sizeof(message));
+        //memset(&buffer, 0, sizeof(buffer));
+        //memset(&message, 0, sizeof(message));
         printf("\nstart_rec:\n");
-        recvfrom(fd, &buffer, sizeof(buffer), 0, (struct sockaddr *) &recv_addr, &len);
+        _error = recvfrom(fd, &message, sizeof(message), 0, (struct sockaddr *) &recv_addr, &len);
+        if(_error == sizeof(request_t))
+        {
         printf("\nrec\n");
-        decode(&buffer, &message); //decode
+        decode(&message, &message); //decode
 
         printf("Service_name: %s", message.service_name);
-           // message.msg_type = RESPONSE;
-           // message.status = ALL_PORTS_BUSY;
-        memset(&buffer, 0, sizeof(buffer));
-        encode(&message, &buffer);
-        printf("Service_name: %s", ((request_t*)buffer)->service_name);
+            message.msg_type = RESPONSE;
+            message.status = ALL_PORTS_BUSY;
+        //memset(&buffer, 0, sizeof(buffer));
+        encode(&message, &message);
+        //printf("Service_name: %s", ((request_t*)buffer)->service_name);
        // }
         //else 
        // {
@@ -131,8 +134,9 @@ int main(int argc, char *argv[])
         //encode msg_type=response status is depeinding
         //send
         printf("\nsending\n");
-        sendto(fd, &buffer, sizeof(buffer), 0, (struct sockaddr *)&recv_addr, len);
+        _error = sendto(fd, &message, sizeof(message), 0, (struct sockaddr *)&recv_addr, len);
         printf("\nsent\n");
+      }
     }
 
     printf("Exiting");
