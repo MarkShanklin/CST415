@@ -84,6 +84,7 @@ int main(int argc, char *argv[])
         printf("Service_name sent: %s", message.service_name);
 
         encode(&message,&buffer);
+        printf("Service_name sent: %s", message.service_name);
         printf("\nsending\n");
         _error = sendto(clientSocket_fd, &buffer, sizeof(buffer), 0,(struct sockaddr *) &serverAddr, len);
         if (_error < 0)
