@@ -29,7 +29,7 @@ typedef struct list_element
 
 int main(int argc, char *argv[])
 {
-    int servicePort = 50000;
+    int servicePort = 0; //50000
     int minimumPorts = 100;
     int keepAliveTime = 300; //seconds
     int command = 0;
