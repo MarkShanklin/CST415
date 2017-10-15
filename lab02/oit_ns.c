@@ -91,7 +91,7 @@ int main(int argc, char *argv[])
     len = sizeof(struct sockaddr);
     while (1)
     {
-        printf("start_rec");
+        printf("\nstart_rec");
         recvfrom(fd, &buffer, sizeof(buffer), 0, 
             (struct sockaddr *) &recv_addr, &len);
         printf("rec");
