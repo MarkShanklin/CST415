@@ -76,7 +76,7 @@ int main(int argc, char *argv[])
 
     bind(fd, (struct sockaddr *)&myaddr, sizeof(myaddr));
 
-    printf("\nBound: %d", ntohs(myaddr.sin_port));
+    printf("Bound: %d\n", ntohs(myaddr.sin_port));
 
     if (verbose == 1)
     {
