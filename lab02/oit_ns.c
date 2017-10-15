@@ -97,6 +97,7 @@ int main(int argc, char *argv[])
     while (1)
     {
         memset(buffer, 0, sizeof(buffer));
+        memset(&message, 0, sizeof(message));
         printf("\nstart_rec:\n");
         recvfrom(fd, &buffer, sizeof(buffer), 0, 
             (struct sockaddr *) &recv_addr, &len);
@@ -106,7 +107,9 @@ int main(int argc, char *argv[])
         printf("Service_name: %s", message.service_name);
            // message.msg_type = RESPONSE;
            // message.status = ALL_PORTS_BUSY;
-         encode(&message, &buffer);
+        memset(buffer, 0, sizeof(buffer));
+        encode(&message, &buffer);
+        printf("Service_name: %s", message.service_name);
        // }
         //else 
        // {
