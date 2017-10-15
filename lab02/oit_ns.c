@@ -40,6 +40,7 @@ int main(int argc, char *argv[])
     socklen_t len;
 
     //access point variables
+    int i;
     int first_openPort = 0;
     int first_deadPort = 0;
     int portTaken_found = 0;
@@ -116,7 +117,7 @@ int main(int argc, char *argv[])
             current = time(0);
             for (i = 0; i < MAX_SERVICE_NAME_LEN; i++)
             {
-                time_t temp = service_name[i].keep_alive;
+                time_t temp = services[i].keep_alive;
                 if(temp < 0)
                 {
                     if(first_deadPort == -1)
