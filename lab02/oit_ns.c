@@ -197,7 +197,7 @@ int main(int argc, char *argv[])
                     if(portTaken_found > -1)
                     {
                         services[portTaken_found].keep_alive = -1;
-                        services[portTaken_found].service_name = '\0';
+                        memset(services[portTaken_found].service_name, '\0', MAX_SERVICE_NAME_LEN);
                         services[portTaken_found].port = -1;
                         message.status = SUCCESS;
                     }
