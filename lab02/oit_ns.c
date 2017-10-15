@@ -76,11 +76,11 @@ int main(int argc, char *argv[])
 
     bind(fd, (struct sockaddr *)&myaddr, sizeof(myaddr));
 
-    printf("Bound: %d", ntohs(myaddr.sin_port));
+    printf("\nBound: %d", ntohs(myaddr.sin_port));
 
     if (verbose == 1)
     {
-        printf("Service Port: %d\n"
+        printf("\nService Port: %d\n"
                "Minimum Ports: %d\n"
                "Keep Alive Time: %d\n\n",
                servicePort, minimumPorts, keepAliveTime);
