@@ -71,7 +71,7 @@ int main(int argc, char *argv[])
     request_t message;
     int _error = 0; //needs to change
     socklen_t len;
-    len = sizeof(struct sockaddr)
+    len = sizeof(struct sockaddr);
     while (1)
     {
         memset(buffer, 0, sizeof(buffer));
