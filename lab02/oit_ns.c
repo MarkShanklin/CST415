@@ -139,7 +139,7 @@ int main(int argc, char *argv[])
                         services[i].keep_alive = -1;
                     }
                 }
-                if(portTaken_found > -1 && (message.port == services[i].port))
+                if(portTaken_found < 0 && (message.port == services[i].port))
                 {
                     portTaken_found = i;
                 }
