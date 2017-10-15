@@ -86,11 +86,11 @@ int main(int argc, char *argv[])
         printf("\nsending\n");
         _error = sendto(clientSocket_fd, &buffer, sizeof(buffer), 0,(struct sockaddr *) &serverAddr, len);
         if (_error < 0)
-            error("ERROR in sendto");
+            fprintf(stderr,"ERROR in sendto");
         printf("\nsent");
         _error = recvfrom(clientSocket_fd, &message, sizeof(message), 0,(struct sockaddr *) &serverAddr, &len);
         if (_error < 0)
-            error("ERROR in recvfrom");
+            fprintf(stderr,"ERROR in recvfrom");
         printf("rec");
         decode(&message,&message);
 
