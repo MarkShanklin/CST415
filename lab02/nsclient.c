@@ -84,11 +84,11 @@ int main(int argc, char *argv[])
 
         encode(&message,&message);
 
-        _error = sendto(clientSocket_fd, &message, sizeof(message), 0, &serverAddr, &len);
+        _error = sendto(clientSocket_fd, &message, sizeof(message), 0,(struct sockaddr *) &serverAddr, &len);
         if (_error < 0)
             error("ERROR in sendto");
 
-        _error = recvfrom(clientSocket_fd, &message, sizeof(message), 0, &serverAddr, &len);
+        _error = recvfrom(clientSocket_fd, &message, sizeof(message), 0,(struct sockaddr *) &serverAddr, &len);
         if (_error < 0)
             error("ERROR in recvfrom");
 
