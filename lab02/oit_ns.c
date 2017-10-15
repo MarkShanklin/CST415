@@ -77,7 +77,7 @@ int main(int argc, char *argv[])
     myaddr.sin_family = AF_INET;
     myaddr.sin_addr.s_addr = htonl(INADDR_ANY);
     myaddr.sin_port = htons(servicePort);
-    len = sizeof(myaddr);
+    len = sizeof(recv_addr);
 
     bind(fd, (struct sockaddr *)&myaddr, sizeof(myaddr));
     int bound = sock2port(fd);
