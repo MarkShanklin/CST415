@@ -115,6 +115,7 @@ int main(int argc, char *argv[])
             first_openPort = -1;
             portTaken_found = -1;
             current = time(0);
+
             for (i = 0; i < MAX_SERVICE_NAME_LEN; i++)
             {
                 time_t temp = services[i].keep_alive;
@@ -148,7 +149,7 @@ int main(int argc, char *argv[])
             switch(message.msg_type)
             {
                 case DEFINE_PORT:
-                    if(portTaken_found > -1)
+                    if(portTaken_found < 0)
                     {
                         if(first_openPort < 0)
                         {
