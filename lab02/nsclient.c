@@ -65,7 +65,7 @@ int main(int argc, char *argv[])
         fgets(buffer, sizeof(buffer), stdin);
         strcpy(message.service_name,buffer);
         message.port = 9000;
-        message.msg_type = DEFINE_PORT;
+        message.msg_type = KEEP_ALIVE;
         message.status = SUCCESS;
         if (verbose == 1)
         {
