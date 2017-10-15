@@ -19,6 +19,7 @@
 
 #include "nameserver.h"
 #include "encode.h"
+#include "addr2str.h"
 
 typedef struct list_element
 {
@@ -75,8 +76,8 @@ int main(int argc, char *argv[])
     myaddr.sin_port = htons(servicePort);
 
     bind(fd, (struct sockaddr *)&myaddr, sizeof(myaddr));
-
-    printf("Bound: %d\n", sock2port(fd));
+    int bound = sock2port(fd);
+    printf("Bound: %d\n", bound);
 
     if (verbose == 1)
     {
