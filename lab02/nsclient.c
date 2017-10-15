@@ -86,7 +86,7 @@ int main(int argc, char *argv[])
             printf("\nservice_name: %s", message.service_name);
             printf("\nstatus: %d", message.status);
             printf("\nmsg_type: %d", message.msg_type);
-            printf("\nport: %d", message.port);
+            printf("\nport: %d\n\n", message.port);
         }
     }
 
