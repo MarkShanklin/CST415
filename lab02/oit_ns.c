@@ -96,6 +96,7 @@ int main(int argc, char *argv[])
     }
     while (1)
     {
+        memset(buffer, 0, sizeof(buffer));
         printf("\nstart_rec:\n");
         recvfrom(fd, &buffer, sizeof(buffer), 0, 
             (struct sockaddr *) &recv_addr, &len);
