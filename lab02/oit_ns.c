@@ -36,7 +36,7 @@ int main(int argc, char *argv[])
     int command = 0;
     int verbose = 0;
     request_t message;
-    time_t current;
+    //time_t current;
     socklen_t len;
 
     while ((command = getopt(argc, argv, "p:n:t:hv")) != -1)
@@ -64,7 +64,7 @@ int main(int argc, char *argv[])
             break;
         }
     }
-    service_t services[minimumPorts];
+    //service_t services[minimumPorts];
     int fd = socket(AF_INET, SOCK_DGRAM, 0);
 
     struct sockaddr_in myaddr;
