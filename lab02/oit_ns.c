@@ -145,17 +145,26 @@ int main(int argc, char *argv[])
                     portTaken_found = i;
                 }
             }
-
+            if(first_openPort == -1 && first_deadPort > -1)
+            {
+                first_openPort = first_deadPort;
+            }
+            if (verbose == 1)
+            {
+                printf("\nCurrent Data:");
+                printf("\nport: %d", message.port);
+                printf("\nmsg_type: %d", message.msg_type);
+                printf("\nservice_name: %s", message.service_name);
+                printf("\nFirst Dead Port: %d", first_deadPort);
+                printf("\nFirst Open: %d", first_openPort);
+                printf("\nPort Exsists in index: %d", portTaken_found);
+            }
             switch(message.msg_type)
             {
                 case DEFINE_PORT:
                     if(portTaken_found < 0)
                     {
                         if(first_openPort < 0)
-                        {
-                            first_openPort = first_deadPort;
-                        }
-                        else if(first_deadPort < 0)
                         {
                             message.status = ALL_PORTS_BUSY;
                         }
