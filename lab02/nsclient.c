@@ -33,15 +33,15 @@ int main(int argc, char *argv[])
         case 'p':
             servicePort = atoi(optarg);
             break;
+        case 's':
+            strcpy(g_address,optarg);
+            break;
         case 'h':
             printf("This program is a service used to maintain unique port numbers.\n\n"
                    "-p \t<service port>\n");
             break;
         case 'v':
             verbose = 1;
-        case 's':
-            strcpy(g_address,optarg);
-            break;
         case '?':
             break;
         }
