@@ -99,7 +99,15 @@ int main(int argc, char *argv[])
     }
     while (1)
     {
+        if (verbose == 1)
+        {
+            printf("\nRecieving");
+        }
         _error = recvfrom(fd, &message, sizeof(request_t), 0, (struct sockaddr *)&client_addr, &len);
+        if (verbose == 1)
+        {
+            printf("\nRecieved");
+        }
         if(_error == sizeof(request_t))
         {
             if(decode(&message, &message) != NULL)
@@ -156,9 +164,9 @@ int main(int argc, char *argv[])
                 printf("\nport: %d", message.port);
                 printf("\nmsg_type: %d", message.msg_type);
                 printf("\nservice_name: %s", message.service_name);
-                printf("\nFirst Dead Port: %d", first_deadPort);
-                printf("\nFirst Open: %d", first_openPort);
-                printf("\nPort Exsists in index: %d\n", portTaken_found);
+                printf("\nFirst Dead Port(-1=NA): %d", first_deadPort);
+                printf("\nFirst Open(-1=NA): %d", first_openPort);
+                printf("\nPort Exsists in index(-1=NA): %d\n", portTaken_found);
             }
             switch(message.msg_type)
             {
@@ -234,6 +242,10 @@ int main(int argc, char *argv[])
         }
         else
         {
+            if (verbose == 1)
+            {
+                printf("\nDecode returned: NULL");
+            }
             message.status = INVALID_ARG;
         }
             message.msg_type = RESPONSE;
@@ -248,8 +260,21 @@ int main(int argc, char *argv[])
             if(encode(&message, &message) == NULL);
             {
                 message.status = UNDEFINED_ERROR;
+                if (verbose == 1)
+                {
+                    printf("\nEncode returned: NULL");
+                    printf("\nstatus: %d", message.status);
+                }
+            }
+            if (verbose == 1)
+            {
+                printf("\nSending");
             }
             _error = sendto(fd, &message, sizeof(request_t), 0, (struct sockaddr *)&client_addr, len);
+            if (verbose == 1)
+            {
+                printf("\nSent\n");
+            }
         }
     }
 
