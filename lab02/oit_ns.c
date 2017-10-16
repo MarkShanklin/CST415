@@ -101,12 +101,12 @@ int main(int argc, char *argv[])
     {
         if (verbose == 1)
         {
-            printf("\nRecieving");
+            printf("\nRecieving\n");
         }
         _error = recvfrom(fd, &message, sizeof(request_t), 0, (struct sockaddr *)&client_addr, &len);
         if (verbose == 1)
         {
-            printf("\nRecieved");
+            printf("\nRecieved\n");
         }
         if(_error == sizeof(request_t))
         {
