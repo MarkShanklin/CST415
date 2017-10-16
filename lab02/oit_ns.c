@@ -140,7 +140,7 @@ int main(int argc, char *argv[])
                         services[i].keep_alive = -1;
                     }
                 }
-                if(portTaken_found < 0 && (message.port == services[i].port))
+                if(temp > 0 && (strcmp(services[i].service_name, message.service_name)))
                 {
                     portTaken_found = i;
                 }
@@ -200,7 +200,7 @@ int main(int argc, char *argv[])
                     else
                     {
                         //or possible issue new port
-                        message.status = SERVICE_NOT_FOUND;
+                        //message.status = SERVICE_NOT_FOUND;
                     }
                     break;
                 case CLOSE_PORT:
