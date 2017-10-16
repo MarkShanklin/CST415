@@ -24,8 +24,9 @@ int main(int argc, char *argv[])
     int servicePort = 50000;
     int command = 0;
     int verbose = 0;
+    char g_address[512] = "unix.cset.oit.edu";
 
-    while ((command = getopt(argc, argv, "p:hv")) != -1)
+    while ((command = getopt(argc, argv, "p:s:hv")) != -1)
     {
         switch (command)
         {
@@ -38,17 +39,32 @@ int main(int argc, char *argv[])
             break;
         case 'v':
             verbose = 1;
+        case 's':
+            strcpy(g_address,optarg);
+            break;
         case '?':
             break;
         }
     }
+
+    struct addrinfo hints;
+    struct addrinfo *addr;
     int clientSocket_fd = socket(AF_INET, SOCK_DGRAM, 0);
     char buffer[1024];
     struct sockaddr_in serverAddr;
     memset((char *)&serverAddr, 0, sizeof(serverAddr));
+    memset(&hints, 0, sizeof(hints));
     serverAddr.sin_family = AF_INET;
+    hints.ai_family = AF_INET;
+
+    if (getaddrinfo(g_address, NULL, &hints, &addr) != 0)
+    {
+        perror("Error getting address info: ");
+    }
+    memcpy(serverAddr, addr->ai_addr, addr->ai_addrlen);
     serverAddr.sin_port = htons(servicePort);
-    serverAddr.sin_addr.s_addr = htonl(INADDR_ANY);
+    //serverAddr.sin_addr.s_addr = htonl(INADDR_ANY);
+
     request_t message;
     int _error = 0;
     socklen_t len;
