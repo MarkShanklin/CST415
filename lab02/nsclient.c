@@ -61,7 +61,7 @@ int main(int argc, char *argv[])
     {
         perror("Error getting address info: ");
     }
-    memcpy(serverAddr, addr->ai_addr, addr->ai_addrlen);
+    memcpy(&serverAddr, addr->ai_addr, addr->ai_addrlen);
     serverAddr.sin_port = htons(servicePort);
     //serverAddr.sin_addr.s_addr = htonl(INADDR_ANY);
 
