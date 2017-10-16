@@ -140,7 +140,7 @@ int main(int argc, char *argv[])
                         services[i].keep_alive = -1;
                     }
                 }
-                if(temp > 0 && (strcmp(services[i].service_name, message.service_name)))
+                if(temp > 0 && (strcmp(services[i].service_name, message.service_name) == 0))
                 {
                     portTaken_found = i;
                 }
