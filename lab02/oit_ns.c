@@ -185,6 +185,7 @@ int main(int argc, char *argv[])
                     if(portTaken_found > -1)
                     {
                         message.status = SUCCESS;
+                        message.port = services[portTaken_found].port;
                     }
                     else
                     {
@@ -199,8 +200,17 @@ int main(int argc, char *argv[])
                     }
                     else
                     {
-                        //or possible issue new port
-                        //message.status = SERVICE_NOT_FOUND;
+                        if(first_openPort < 0)
+                        {
+                            message.status = ALL_PORTS_BUSY;
+                        }
+                        else
+                        {
+                            services[first_openPort].keep_alive = time(0);
+                            strcpy(services[first_openPort].service_name, message.service_name);
+                            services[first_openPort].port = message.port;
+                            message.status = SUCCESS;
+                        }
                     }
                     break;
                 case CLOSE_PORT:
