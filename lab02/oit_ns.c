@@ -257,7 +257,7 @@ int main(int argc, char *argv[])
                 printf("\nstatus: %d", message.status);
                 printf("\nservice_name: %s", message.service_name);
             }
-            if(encode(&message, &message) == NULL);
+            if(encode(&message, &message) == NULL)
             {
                 message.status = UNDEFINED_ERROR;
                 if (verbose == 1)
