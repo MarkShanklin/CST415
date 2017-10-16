@@ -64,8 +64,18 @@ int main(int argc, char *argv[])
         printf("\nPlease enter ServiceName: ");
         fgets(buffer, sizeof(buffer), stdin);
         strcpy(message.service_name,buffer);
-        message.port = 9000;
-        message.msg_type = KEEP_ALIVE;
+        memset(buffer, 0, sizeof(buffer));
+
+        printf("\nPlease enter Port: ");
+        fgets(buffer, sizeof(buffer), stdin);
+        message.port = (uint16_t)buffer;
+        memset(buffer, 0, sizeof(buffer));
+
+        printf("\nPlease enter msg_type(1-5): ");
+        fgets(buffer, sizeof(buffer), stdin);
+        message.msg_type = (uint8_t)buffer;
+        memset(buffer, 0, sizeof(buffer));
+
         message.status = SUCCESS;
         if (verbose == 1)
         {
