@@ -102,7 +102,8 @@ int main(int argc, char *argv[])
         _error = recvfrom(fd, &message, sizeof(request_t), 0, (struct sockaddr *)&client_addr, &len);
         if(_error == sizeof(request_t))
         {
-            decode(&message, &message); //decode
+            if(decode(&message, &message) != NULL)
+            {
             if (verbose == 1)
             {
                 printf("\nrequest_t recieved:");
@@ -230,6 +231,11 @@ int main(int argc, char *argv[])
                     return (EXIT_SUCCESS);
                     break;
             }
+        }
+        else
+        {
+            message.status = INVALID_ARG;
+        }
             message.msg_type = RESPONSE;
             if (verbose == 1)
             {
@@ -239,7 +245,10 @@ int main(int argc, char *argv[])
                 printf("\nstatus: %d", message.status);
                 printf("\nservice_name: %s", message.service_name);
             }
-            encode(&message, &message);
+            if(encode(&message, &message) == NULL);
+            {
+                message.status = UNDEFINED_ERROR;
+            }
             _error = sendto(fd, &message, sizeof(request_t), 0, (struct sockaddr *)&client_addr, len);
         }
     }
