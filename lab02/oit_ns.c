@@ -135,14 +135,14 @@ int main(int argc, char *argv[])
         {
             printf("\nRecieving\n");
         }
-        if(_error = recvfrom(
+        if((_error = recvfrom(
                             fd, 
                             &message, 
                             sizeof(request_t), 
                             0, 
                             (struct sockaddr *)&client_addr, 
                             &len
-                            ) == -1)
+                            )) == -1)
         {
             perror("Couldn't recieve from fd might be closed");
             return (EXIT_FAILURE);
@@ -361,14 +361,14 @@ int main(int argc, char *argv[])
         {
             printf("\nSending");
         }
-        if(_error = sendto(
+        if((_error = sendto(
                             fd, 
                             &message, 
                             sizeof(request_t), 
                             0, 
                             (struct sockaddr *)&client_addr, 
                             len
-                            ) == -1)
+                            )) == -1)
         {
             perror("Sendto failed to connect to fd");
         }
