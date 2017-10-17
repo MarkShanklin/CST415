@@ -92,6 +92,10 @@ int main(int argc, char *argv[])
         message.msg_type = (uint8_t)atoi(buffer);
         memset(buffer, 0, sizeof(buffer));
 
+        printf("\nPlease enter amount of times: ");
+        fgets(buffer, sizeof(buffer), stdin);
+        int times = (uint8_t)atoi(buffer);
+        memset(buffer, 0, sizeof(buffer));
         message.status = SUCCESS;
         if (verbose == 1)
         {
@@ -102,7 +106,7 @@ int main(int argc, char *argv[])
             printf("\nservice_name: %s", message.service_name);
         }
         int i;
-        for(i = 0; i < 3000; i++)
+        for(i = 0; i < times; i++)
         {
             encode(&message,&message);
             _error = sendto(    clientSocket_fd, 
