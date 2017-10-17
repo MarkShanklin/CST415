@@ -2,7 +2,7 @@
 * File Name     : nsclient.c
 * Purpose       : Name Server Client Program
 * Creation Date : 09-30-2016
-* Last Modified : Fri 30 Sep 2016 11:17:08 AM PDT
+* Last Modified : Tue 17 Oct 2017 03:14:23 PM PDT
 * Created By    : Mark Shanklin 
 ***********************************************************/
 #include <stdio.h>
@@ -94,8 +94,9 @@ int main(int argc, char *argv[])
 
         printf("\nPlease enter amount of times: ");
         fgets(buffer, sizeof(buffer), stdin);
-        int times = (uint8_t)atoi(buffer);
+        int times = atoi(buffer);
         memset(buffer, 0, sizeof(buffer));
+        
         message.status = SUCCESS;
         if (verbose == 1)
         {
