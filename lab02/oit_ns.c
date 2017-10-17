@@ -295,6 +295,7 @@ int main(int argc, char *argv[])
                             }
                             else
                             {
+                                memset(&message,'\0',sizeof(request_t));
                                 message.status = INVALID_ARG;
                             }
                         }
@@ -304,19 +305,21 @@ int main(int argc, char *argv[])
                         }
                         break;
                     case RESPONSE:
+                        memset(&message,'\0',sizeof(request_t));
                         message.status = INVALID_ARG;
                         break;
                     case STOP:
                         //For Hackathon
-                        message.status = INVALID_ARG;
+                        //message.status = INVALID_ARG;
                         //Normal Operation
-                        //message.status = SUCCESS;
-                        //stop = 1;
+                        message.status = SUCCESS;
+                        stop = 1;
                         break;
                 }
             }
             else
             {
+                memset(&message,'\0',sizeof(request_t));;
                 if (verbose == 1)
                 {
                     printf("\nDecode returned: NULL");
@@ -324,7 +327,7 @@ int main(int argc, char *argv[])
                 perror("\nDecode returned: NULL");
                 message.status = INVALID_ARG;
             }
-            message.msg_type = RESPONSE;
+            
             if (verbose == 1)
             {
                 printf("\nrequest_t sent:");
@@ -336,11 +339,15 @@ int main(int argc, char *argv[])
         }
         else //packet not a request_t
         {
+            memset(&message,'\0',sizeof(request_t));;
             message.status = INVALID_ARG;
         }
         //preparing message for sending
+        //message type is always a response
+        message.msg_type = RESPONSE;
         if(encode(&message, &message) == NULL)
         {
+            memset(&message,'\0',sizeof(request_t));
             message.status = UNDEFINED_ERROR;
             perror("\nEncode returned: NULL");
             if (verbose == 1)
