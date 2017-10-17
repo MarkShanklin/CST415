@@ -7,7 +7,7 @@
 # Date:   Sept 22, 2016
 # Modified By: Mark Shanklin
 #
-COPTS = -g -O0 -Wall -std=c11
+COPTS = -g -O0 -Wall
 
 OBJS = addr2str.o encode.o 
 
