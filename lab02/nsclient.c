@@ -37,7 +37,8 @@ int main(int argc, char *argv[])
             strcpy(g_address,optarg);
             break;
         case 'h':
-            printf("This program is a service used to maintain unique port numbers.\n\n"
+            printf("This program is a service used to"
+                   " maintain unique port numbers.\n\n"
                    "-p \t<service port>\n");
             break;
         case 'v':
