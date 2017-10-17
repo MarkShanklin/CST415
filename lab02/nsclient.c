@@ -101,21 +101,37 @@ int main(int argc, char *argv[])
             printf("\nstatus: %d", message.status);
             printf("\nservice_name: %s", message.service_name);
         }
-        encode(&message,&message);
-        _error = sendto(clientSocket_fd, &message, sizeof(request_t), 0,(struct sockaddr *) &serverAddr, len);
-        if (_error < 0)
-            fprintf(stderr,"ERROR in sendto");
-        _error = recvfrom(clientSocket_fd, &message, sizeof(request_t), 0,(struct sockaddr *) &serverAddr, &len);
-        if (_error < 0)
-            fprintf(stderr,"ERROR in recvfrom");
-        decode(&message,&message);
-        if (verbose == 1)
+        int i;
+        for(i = 0; i < 3000; i++)
         {
-            printf("\nrequest_t recieved:");
-            printf("\nport: %d", message.port);
-            printf("\nmsg_type: %d", message.msg_type);
-            printf("\nstatus: %d", message.status);
-            printf("\nservice_name: %s", message.service_name);
+            encode(&message,&message);
+            _error = sendto(    clientSocket_fd, 
+                                &message, 
+                                sizeof(request_t), 
+                                0,
+                                (struct sockaddr *) &serverAddr, 
+                                len
+                            );
+            if (_error < 0)
+                fprintf(stderr,"ERROR in sendto");
+            _error = recvfrom(  clientSocket_fd, 
+                                &message, 
+                                sizeof(request_t), 
+                                0,
+                                (struct sockaddr *) &serverAddr, 
+                                &len
+                            );
+            if (_error < 0)
+                fprintf(stderr,"ERROR in recvfrom");
+            decode(&message,&message);
+            if (verbose == 1)
+            {
+                printf("\nrequest_t recieved:");
+                printf("\nport: %d", message.port);
+                printf("\nmsg_type: %d", message.msg_type);
+                printf("\nstatus: %d", message.status);
+                printf("\nservice_name: %s", message.service_name);
+            }
         }
     }
 
