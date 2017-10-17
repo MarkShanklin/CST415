@@ -84,12 +84,12 @@ int main(int argc, char *argv[])
 
         printf("\nPlease enter Port: ");
         fgets(buffer, sizeof(buffer), stdin);
-        message.port = (uint16_t)atoi(buffer);
+        message.port = (uint16_t)atoui(buffer);
         memset(buffer, 0, sizeof(buffer));
 
         printf("\nPlease enter msg_type(1-5): ");
         fgets(buffer, sizeof(buffer), stdin);
-        message.msg_type = (uint8_t)atoi(buffer);
+        message.msg_type = (uint8_t)atoui(buffer);
         memset(buffer, 0, sizeof(buffer));
 
         message.status = SUCCESS;
