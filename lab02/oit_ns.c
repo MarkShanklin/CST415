@@ -284,7 +284,7 @@ int main(int argc, char *argv[])
                     case CLOSE_PORT:
                         if(portTaken_found > -1)
                         {
-                            if(message.port == services.port)
+                            if(message.port == services[portTaken_found].port)
                             {
                                 services[portTaken_found].keep_alive = -1;
                                 memset(
