@@ -135,14 +135,18 @@ int main(int argc, char *argv[])
         {
             printf("\nRecieving\n");
         }
-        _error = recvfrom(
+        if(_error = recvfrom(
                             fd, 
                             &message, 
                             sizeof(request_t), 
                             0, 
                             (struct sockaddr *)&client_addr, 
                             &len
-                         );
+                            ) == -1)
+        {
+            perror("Couldn't recieve from fd might be closed");
+            return (EXIT_FAILURE);
+        }
         if (verbose == 1)
         {
             printf("\nRecieved\n");
@@ -295,7 +299,6 @@ int main(int argc, char *argv[])
                             }
                             else
                             {
-                                memset(&message,'\0',sizeof(request_t));
                                 message.status = INVALID_ARG;
                             }
                         }
@@ -305,7 +308,6 @@ int main(int argc, char *argv[])
                         }
                         break;
                     case RESPONSE:
-                        memset(&message,'\0',sizeof(request_t));
                         message.status = INVALID_ARG;
                         break;
                     case STOP:
@@ -347,7 +349,6 @@ int main(int argc, char *argv[])
         message.msg_type = RESPONSE;
         if(encode(&message, &message) == NULL)
         {
-            memset(&message,'\0',sizeof(request_t));
             message.status = UNDEFINED_ERROR;
             perror("\nEncode returned: NULL");
             if (verbose == 1)
@@ -360,14 +361,17 @@ int main(int argc, char *argv[])
         {
             printf("\nSending");
         }
-        _error = sendto(
+        if(_error = sendto(
                             fd, 
                             &message, 
                             sizeof(request_t), 
                             0, 
                             (struct sockaddr *)&client_addr, 
                             len
-                        );
+                            ) == -1)
+        {
+            perror("Sendto failed to connect to fd");
+        }
         if(_error != sizeof(request_t))
         {
             perror("Sendto failed to send valid data");
