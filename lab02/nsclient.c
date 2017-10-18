@@ -26,6 +26,7 @@ int main(int argc, char *argv[])
     int verbose = 0;
     int clientSocket_fd = 0;;
     int _error = 0;
+    int testCase = 0;
     char g_address[512] = "unix.cset.oit.edu";
     char buffer[1024];
     struct sockaddr_in serverAddr;
@@ -73,11 +74,12 @@ int main(int argc, char *argv[])
         printf("Name Server Client\n");
         printf("Service Port: %d\n",servicePort);
     }
-    
+
     while (1)
     {
         printf("\nPlease enter test number(1-6): ");
         fgets(buffer, sizeof(buffer), stdin);
+        testCase = atoi(buffer);
         memset(buffer, 0, sizeof(buffer));
 
         //TEST 1
@@ -185,6 +187,8 @@ int main(int argc, char *argv[])
                 break;
             case 7: //sending not a request_t
                 
+                break;
+            default:
                 break;
         }
 
