@@ -117,6 +117,7 @@ int main(int argc, char *argv[])
                                     );
                     if (_error < 0)
                         perror("ERROR in sendto");
+                    memset(&message,'\0',sizeof(request_t));
                     _error = recvfrom(  clientSocket_fd, 
                                         &message, 
                                         sizeof(request_t), 
