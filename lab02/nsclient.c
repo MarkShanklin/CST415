@@ -182,8 +182,160 @@ int main(int argc, char *argv[])
                 }
                 break;
             case LOOKUP_PORT:
+                sprintf(message.service_name, "Google%d",0);
+                message.msg_type = 2;
+                message.status = SUCCESS;
+                message.port = (uint16_t)1;
+                if (verbose == 1)
+                {
+                    printf("\nrequest_t sent:");
+                    printf("\nport: %d", message.port);
+                    printf("\nmsg_type: %d", message.msg_type);
+                    printf("\nstatus: %d", message.status);
+                    printf("\nservice_name: %s", message.service_name);
+                }
+                if(encode(&message,&message) == NULL)
+                {
+                    fprintf(stderr,"\nEncode returned NULL");
+                }
+                _error = sendto(    clientSocket_fd, 
+                                    &message, 
+                                    sizeof(request_t), 
+                                    0,
+                                    (struct sockaddr *) &serverAddr, 
+                                    len
+                                );
+                if (_error < 0)
+                    perror("ERROR in sendto");
+                memset(&message,'\0',sizeof(request_t));
+                _error = recvfrom(  clientSocket_fd, 
+                                    &message, 
+                                    sizeof(request_t), 
+                                    0,
+                                    (struct sockaddr *) &serverAddr, 
+                                    &len
+                                );
+                if (_error < 0)
+                    perror("ERROR in recvfrom");
+                if(decode(&message,&message) == NULL)
+                {
+                    fprintf(stderr,"\nDecode returned a NULL");
+                }
+                else
+                {
+                    if (verbose == 1)
+                    {
+                        fprintf(stderr,"\nrequest_t recieved:");
+                        fprintf(stderr,"\nport: %d", message.port);
+                        fprintf(stderr,"\nmsg_type: %d", message.msg_type);
+                        fprintf(stderr,"\nstatus: %d", message.status);
+                        fprintf(stderr,"\nservice_name: %s", message.service_name);
+                    }
+                    if(message.port != (uint16_t)0)
+                    {
+                        fprintf(stderr,"\nport mismatch got %d expected %d",
+                    message.port, (uint16_t)0);
+                    }
+                    if(message.msg_type != RESPONSE)
+                    {
+                        fprintf(stderr,
+                                "\nmsg_type invalid expected 5 got %d",
+                                message.msg_type);
+                    }
+                    if(message.status != SUCCESS)
+                    {
+                            fprintf(stderr,
+                                "\nInvalid status expected 0 got: %d",
+                                message.status);
+                    }
+                    sprintf(buffer, "Google%d",0);
+                    if(strcmp(message.service_name, buffer) != 0)
+                    {
+                        fprintf(stderr,
+                            "\nService name mismatch got %s expected %s",
+                        message.service_name, buffer);
+                    }
+
+                }
+            }
                 break;
             case KEEP_ALIVE:
+                sprintf(message.service_name, "Google%d",0);
+                message.msg_type = 3;
+                message.status = SUCCESS;
+                message.port = (uint16_t)0;
+                if (verbose == 1)
+                {
+                    printf("\nrequest_t sent:");
+                    printf("\nport: %d", message.port);
+                    printf("\nmsg_type: %d", message.msg_type);
+                    printf("\nstatus: %d", message.status);
+                    printf("\nservice_name: %s", message.service_name);
+                }
+                if(encode(&message,&message) == NULL)
+                {
+                    fprintf(stderr,"\nEncode returned NULL");
+                }
+                _error = sendto(    clientSocket_fd, 
+                                    &message, 
+                                    sizeof(request_t), 
+                                    0,
+                                    (struct sockaddr *) &serverAddr, 
+                                    len
+                                );
+                if (_error < 0)
+                    perror("ERROR in sendto");
+                memset(&message,'\0',sizeof(request_t));
+                _error = recvfrom(  clientSocket_fd, 
+                                    &message, 
+                                    sizeof(request_t), 
+                                    0,
+                                    (struct sockaddr *) &serverAddr, 
+                                    &len
+                                );
+                if (_error < 0)
+                    perror("ERROR in recvfrom");
+                if(decode(&message,&message) == NULL)
+                {
+                    fprintf(stderr,"\nDecode returned a NULL");
+                }
+                else
+                {
+                    if (verbose == 1)
+                    {
+                        fprintf(stderr,"\nrequest_t recieved:");
+                        fprintf(stderr,"\nport: %d", message.port);
+                        fprintf(stderr,"\nmsg_type: %d", message.msg_type);
+                        fprintf(stderr,"\nstatus: %d", message.status);
+                        fprintf(stderr,"\nservice_name: %s", message.service_name);
+                    }
+                    if(message.port != (uint16_t)0)
+                    {
+                        fprintf(stderr,"\nport mismatch got %d expected %d",
+                    message.port, (uint16_t)0);
+                    }
+                    if(message.msg_type != RESPONSE)
+                    {
+                        fprintf(stderr,
+                                "\nmsg_type invalid expected 5 got %d",
+                                message.msg_type);
+                    }
+                    if(message.status != SUCCESS)
+                    {
+                        fprintf(stderr,
+                            "\nInvalid status expected 0 got: %d",
+                            message.status);
+                    }
+                    sprintf(buffer, "Google%d",0);
+                    if(strcmp(message.service_name, buffer) != 0)
+                    {
+                        fprintf(stderr,
+                            "\nService name mismatch got %s expected %s",
+                        message.service_name, buffer);
+                    }
+
+                }
+            }
                 break;
             case CLOSE_PORT:
                 break;
