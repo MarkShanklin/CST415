@@ -27,6 +27,7 @@ int main(int argc, char *argv[])
     int clientSocket_fd = 0;;
     int _error = 0;
     int testCase = 0;
+    int i = 0;
     char g_address[512] = "unix.cset.oit.edu";
     char buffer[1024];
     struct sockaddr_in serverAddr;
@@ -87,7 +88,6 @@ int main(int argc, char *argv[])
         switch(testCase)
         {
             case DEFINE_PORT:
-                int i = 9999;
                 for(i = 0; i < times; i++)
                 {
                     message.service_name = "Google" + i;
