@@ -134,11 +134,11 @@ int main(int argc, char *argv[])
                     {
                         if (verbose == 1)
                         {
-                            printf("\nrequest_t recieved:");
-                            printf("\nport: %d", message.port);
-                            printf("\nmsg_type: %d", message.msg_type);
-                            printf("\nstatus: %d", message.status);
-                            printf("\nservice_name: %s", message.service_name);
+                            fprintf(stderr,"\nrequest_t recieved:");
+                            fprintf(stderr,"\nport: %d", message.port);
+                            fprintf(stderr,"\nmsg_type: %d", message.msg_type);
+                            fprintf(stderr,"\nstatus: %d", message.status);
+                            fprintf(stderr,"\nservice_name: %s", message.service_name);
                         }
                         if(message.port != (uint16_t)i)
                         {

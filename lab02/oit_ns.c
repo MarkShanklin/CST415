@@ -198,6 +198,10 @@ int main(int argc, char *argv[])
                         {
                             services[i].keep_alive = -1;
                         }
+                        if(first_deadPort == -1)
+                        {
+                            first_deadPort = i;
+                        }
                     }
                     //keeping track if a service is alive and found in the array
                     if((temp > 0) && (strcmp(services[i].service_name, 
