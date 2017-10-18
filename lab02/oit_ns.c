@@ -335,11 +335,11 @@ int main(int argc, char *argv[])
             
             if (verbose == 1)
             {
-                fprintf("\nrequest_t sent:");
-                fprintf("\nport: %d", message.port);
-                printf("\nmsg_type: %d", message.msg_type);
-                printf("\nstatus: %d", message.status);
-                printf("\nservice_name: %s", message.service_name);
+                fprintf(stderr,"\nrequest_t sent:");
+                fprintf(stderr,"\nport: %d", message.port);
+                fprintf(stderr,"\nmsg_type: %d", message.msg_type);
+                fprintf(stderr,"\nstatus: %d", message.status);
+                fprintf(stderr,"\nservice_name: %s", message.service_name);
             }
         }
         else //packet not a request_t
