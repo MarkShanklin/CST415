@@ -151,7 +151,7 @@ int main(int argc, char *argv[])
                                     "\nmsg_type invalid expected 5 got %d",
                                     message.msg_type);
                         }
-                        if(i < 101)
+                        if(i < 100)
                         {
                             if(message.status != SUCCESS)
                             {
