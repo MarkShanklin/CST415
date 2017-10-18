@@ -554,7 +554,7 @@ int main(int argc, char *argv[])
                         "\nInvalid status expected 4 got: %d",
                         message.status);
                 }
-                sprintf(buffer, "",0);
+                sprintf(buffer, "Google%d",0);
                 if(strcmp(message.service_name, buffer) != 0)
                 {
                     fprintf(stderr,
@@ -630,7 +630,7 @@ int main(int argc, char *argv[])
                         "\nInvalid status expected 0 got: %d",
                         message.status);
                 }
-                sprintf(buffer, "Google%d",0);
+                strcpy(buffer, "");
                 if(strcmp(message.service_name, buffer) != 0)
                 {
                     fprintf(stderr,
