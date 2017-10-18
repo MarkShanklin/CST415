@@ -92,7 +92,8 @@ int main(int argc, char *argv[])
                 times = 9999;
                 for(i = 0; i < times; i++)
                 {
-                    message.service_name = strcat("Google" , i);
+                    strcpy(message.service_name, "Google")
+                    strcat(message.service_name , i);
                     message.msg_type = 1;
                     message.status = SUCCESS;
                     message.port = (uint16_t)i;
