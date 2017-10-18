@@ -24,8 +24,16 @@ int main(int argc, char *argv[])
     int servicePort = 50000;
     int command = 0;
     int verbose = 0;
+    int clientSocket_fd = 0;;
+    int _error = 0;
     char g_address[512] = "unix.cset.oit.edu";
-
+    char buffer[1024];
+    struct sockaddr_in serverAddr;
+    struct addrinfo hints;
+    struct addrinfo *addr;
+    request_t message;
+    socklen_t len;
+    
     while ((command = getopt(argc, argv, "p:s:hv")) != -1)
     {
         switch (command)
@@ -48,99 +56,142 @@ int main(int argc, char *argv[])
         }
     }
 
-    struct addrinfo hints;
-    struct addrinfo *addr;
-    int clientSocket_fd = socket(AF_INET, SOCK_DGRAM, 0);
-    char buffer[1024];
-    struct sockaddr_in serverAddr;
-    memset((char *)&serverAddr, 0, sizeof(serverAddr));
+    clientSocket_fd = socket(AF_INET, SOCK_DGRAM, 0);
+    len = sizeof(serverAddr);
+    memset((char *)&serverAddr, 0, len);
     memset(&hints, 0, sizeof(hints));
     serverAddr.sin_family = AF_INET;
     hints.ai_family = AF_INET;
-
     if (getaddrinfo(g_address, NULL, &hints, &addr) != 0)
     {
         perror("Error getting address info: ");
     }
     memcpy(&serverAddr, addr->ai_addr, addr->ai_addrlen);
     serverAddr.sin_port = htons(servicePort);
-    //serverAddr.sin_addr.s_addr = htonl(INADDR_ANY);
-
-    request_t message;
-    int _error = 0;
-    socklen_t len;
-    len = sizeof(serverAddr);
-
     if (verbose == 1)
     {
         printf("Name Server Client\n");
         printf("Service Port: %d\n",servicePort);
     }
+    
     while (1)
     {
-        printf("\nPlease enter ServiceName: ");
+        printf("\nPlease enter test number(1-6): ");
         fgets(buffer, sizeof(buffer), stdin);
-        strcpy(message.service_name,buffer);
         memset(buffer, 0, sizeof(buffer));
 
-        printf("\nPlease enter Port: ");
-        fgets(buffer, sizeof(buffer), stdin);
-        message.port = (uint16_t)atoi(buffer);
-        memset(buffer, 0, sizeof(buffer));
-
-        printf("\nPlease enter msg_type(1-5): ");
-        fgets(buffer, sizeof(buffer), stdin);
-        message.msg_type = (uint8_t)atoi(buffer);
-        memset(buffer, 0, sizeof(buffer));
-
-        printf("\nPlease enter amount of times: ");
-        fgets(buffer, sizeof(buffer), stdin);
-        int times = atoi(buffer);
-        memset(buffer, 0, sizeof(buffer));
-        
-        message.status = SUCCESS;
-        if (verbose == 1)
+        //TEST 1
+        //DEFINE_PORT multiple
+        switch(testCase)
         {
-            printf("\nrequest_t sent:");
-            printf("\nport: %d", message.port);
-            printf("\nmsg_type: %d", message.msg_type);
-            printf("\nstatus: %d", message.status);
-            printf("\nservice_name: %s", message.service_name);
+            case DEFINE_PORT:
+                int i = 9999;
+                for(i = 0; i < times; i++)
+                {
+                    message.service_name = "Google" + i;
+                    message.msg_type = 1;
+                    message.status = SUCCESS;
+                    message.port = (uint16_t)i;
+                    if (verbose == 1)
+                    {
+                        printf("\nrequest_t sent:");
+                        printf("\nport: %d", message.port);
+                        printf("\nmsg_type: %d", message.msg_type);
+                        printf("\nstatus: %d", message.status);
+                        printf("\nservice_name: %s", message.service_name);
+                    }
+                    if(encode(&message,&message) == NULL)
+                    {
+                        fprintf(stderr,"\nEncode returned NULL");
+                    }
+                    _error = sendto(    clientSocket_fd, 
+                                        &message, 
+                                        sizeof(request_t), 
+                                        0,
+                                        (struct sockaddr *) &serverAddr, 
+                                        len
+                                    );
+                    if (_error < 0)
+                        perror("ERROR in sendto");
+                    _error = recvfrom(  clientSocket_fd, 
+                                        &message, 
+                                        sizeof(request_t), 
+                                        0,
+                                        (struct sockaddr *) &serverAddr, 
+                                        &len
+                                    );
+                    if (_error < 0)
+                        perror("ERROR in recvfrom");
+                    if(decode(&message,&message) == NULL)
+                    {
+                        fprintf(stderr,"\nDecode returned a NULL");
+                    }
+                    else
+                    {
+                        if (verbose == 1)
+                        {
+                            printf("\nrequest_t recieved:");
+                            printf("\nport: %d", message.port);
+                            printf("\nmsg_type: %d", message.msg_type);
+                            printf("\nstatus: %d", message.status);
+                            printf("\nservice_name: %s", message.service_name);
+                        }
+                        if(message.port != (uint16_t)i)
+                        {
+                            fprintf(stderr,"\nport mismatch got %d expected %d",
+                        message.port, (uint16_t)i);
+                        }
+                        if(message.msg_type != RESPONSE)
+                        {
+                            fprintf(stderr,
+                                    "\nmsg_type invalid expected 5 got %d",
+                                    message.msg_type);
+                        }
+                        if(i < 101)
+                        if(message.status != SUCCESS)
+                        {
+                            fprintf(stderr,
+                                "\nInvalid status expected 0 got: %d",
+                                message.status);
+                        }
+                        else
+                        {
+                            if(message.status != ALL_PORTS_BUSY)
+                            {
+                                fprintf(stderr,
+                                    "\nInvalid status expected 3 got: %d",
+                                    message.status);
+                            }
+                        }
+                        if(strcmp(message.service_name, ("Google"+i)) != 0)
+                        {
+                            fprintf(stderr,
+                                "\nService name mismatch got %s expected %s",
+                            message.service_name, ("Google"+1));
+                        }
+
+                    }
+                }
+                break;
+            case LOOKUP_PORT:
+                break;
+            case KEEP_ALIVE:
+                break;
+            case CLOSE_PORT:
+                break;
+            case RESPONSE:
+                break;
+            case STOP:
+                break;
+            case 7: //sending not a request_t
+                
+                break;
         }
-        int i;
-        for(i = 0; i < times; i++)
-        {
-            encode(&message,&message);
-            _error = sendto(    clientSocket_fd, 
-                                &message, 
-                                sizeof(request_t), 
-                                0,
-                                (struct sockaddr *) &serverAddr, 
-                                len
-                            );
-            if (_error < 0)
-                fprintf(stderr,"ERROR in sendto");
-            _error = recvfrom(  clientSocket_fd, 
-                                &message, 
-                                sizeof(request_t), 
-                                0,
-                                (struct sockaddr *) &serverAddr, 
-                                &len
-                            );
-            if (_error < 0)
-                fprintf(stderr,"ERROR in recvfrom");
-            decode(&message,&message);
-            if (verbose == 1)
-            {
-                printf("\nrequest_t recieved:");
-                printf("\nport: %d", message.port);
-                printf("\nmsg_type: %d", message.msg_type);
-                printf("\nstatus: %d", message.status);
-                printf("\nservice_name: %s", message.service_name);
-            }
-        }
+
     }
-
-    printf("Exiting");
+    if(verbose == 1)
+    {
+        printf("Exiting");
+    }
     return (EXIT_SUCCESS);
 }
