@@ -197,10 +197,10 @@ int main(int argc, char *argv[])
                         if(difftime(current,temp) > keepAliveTime)
                         {
                             services[i].keep_alive = -1;
-                        }
-                        if(first_deadPort == -1)
-                        {
-                            first_deadPort = i;
+                            if(first_deadPort == -1)
+                            {
+                                first_deadPort = i;
+                            }
                         }
                     }
                     //keeping track if a service is alive and found in the array
