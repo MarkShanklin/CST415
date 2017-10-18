@@ -114,8 +114,8 @@ int main(int argc, char *argv[])
     int bound = sock2port(fd);
     //used to process a stop message and exit the while loop.
     int stop = 0;
-    printf("OIT Name Server\n");
-    printf("Bound to port: %d\n", bound);
+    printf("OIT Name Server");
+    printf("\nBound to port: %d", bound);
     if (verbose == 1)
     {
         if(servicePort == 0)
@@ -123,9 +123,9 @@ int main(int argc, char *argv[])
             //used to print out the assigned port
             servicePort = bound; 
         }
-        printf("\nService Port: %d\n"
-               "Minimum Ports: %d\n"
-               "Keep Alive Time: %d\n",
+        fprintf(stderr,"\nService Port: %d"
+               "\nMinimum Ports: %d"
+               "\nKeep Alive Time: %d",
                servicePort, minimumPorts, keepAliveTime);
     }
     //check to see if a stop command was recieved
@@ -133,7 +133,7 @@ int main(int argc, char *argv[])
     {
         if (verbose == 1)
         {
-            printf("\nRecieving\n");
+            fprintf(stderr,"\nRecieving");
         }
         if((_error = recvfrom(
                             fd, 
@@ -149,7 +149,7 @@ int main(int argc, char *argv[])
         }
         if (verbose == 1)
         {
-            printf("\nRecieved\n");
+            fprintf(stderr,"\nRecieved");
         }
         //check that the packect was size of a req
         if(_error == sizeof(request_t))
@@ -158,11 +158,11 @@ int main(int argc, char *argv[])
             {
                 if (verbose == 1)
                 {
-                    printf("\nrequest_t recieved:");
-                    printf("\nport: %d", message.port);
-                    printf("\nmsg_type: %d", message.msg_type);
-                    printf("\nstatus: %d", message.status);
-                    printf("\nservice_name: %s", message.service_name);
+                    fprintf(stderr,"\nrequest_t recieved:");
+                    fprintf(stderr,"\nport: %d", message.port);
+                    fprintf(stderr,"\nmsg_type: %d", message.msg_type);
+                    fprintf(stderr,"\nstatus: %d", message.status);
+                    fprintf(stderr,"\nservice_name: %s", message.service_name);
                 }
                 first_deadPort = -1;
                 first_openPort = -1;
@@ -218,13 +218,13 @@ int main(int argc, char *argv[])
                 }
                 if (verbose == 1)
                 {
-                    printf("\nCurrent Data:");
-                    printf("\nport: %d", message.port);
-                    printf("\nmsg_type: %d", message.msg_type);
-                    printf("\nservice_name: %s", message.service_name);
-                    printf("\nFirst Dead Port(-1=NA): %d", first_deadPort);
-                    printf("\nFirst Open(-1=NA): %d", first_openPort);
-                    printf("\nPort Exsists in index(-1=NA): %d\n", 
+                    fprintf(stderr,"\nCurrent Data:");
+                    fprintf(stderr,"\nport: %d", message.port);
+                    fprintf(stderr,"\nmsg_type: %d", message.msg_type);
+                    fprintf(stderr,"\nservice_name: %s", message.service_name);
+                    fprintf(stderr,"\nFirst Dead Port(-1=NA): %d", first_deadPort);
+                    fprintf(stderr,"\nFirst Open(-1=NA): %d", first_openPort);
+                    fprintf(stderr,"\nPort Exsists in index(-1=NA): %d", 
                             portTaken_found);
                 }
                 //begin prossesing the message
@@ -328,16 +328,15 @@ int main(int argc, char *argv[])
                 memset(&message,'\0',sizeof(request_t));;
                 if (verbose == 1)
                 {
-                    printf("\nDecode returned: NULL");
+                    fprintf(stderr,"\nDecode returned: NULL");
                 }
-                perror("\nDecode returned: NULL");
                 message.status = INVALID_ARG;
             }
             
             if (verbose == 1)
             {
-                printf("\nrequest_t sent:");
-                printf("\nport: %d", message.port);
+                fprintf("\nrequest_t sent:");
+                fprintf("\nport: %d", message.port);
                 printf("\nmsg_type: %d", message.msg_type);
                 printf("\nstatus: %d", message.status);
                 printf("\nservice_name: %s", message.service_name);
@@ -354,16 +353,15 @@ int main(int argc, char *argv[])
         if(encode(&message, &message) == NULL)
         {
             message.status = UNDEFINED_ERROR;
-            perror("\nEncode returned: NULL");
             if (verbose == 1)
             {
-                printf("\nEncode returned: NULL");
-                printf("\nstatus: %d", message.status);
+                fprintf(stderr,"\nEncode returned: NULL");
+                fprintf(stderr,"\nstatus: %d", message.status);
             }
         }
         if (verbose == 1)
         {
-            printf("\nSending");
+            fprintf(stderr,"\nSending");
         }
         if((_error = sendto(
                             fd, 
@@ -384,14 +382,14 @@ int main(int argc, char *argv[])
         {
             if (verbose == 1)
             {
-                printf("\nSent\n");
+                fprintf(stderr,"\nSent\n");
             }
         }
         
     }
     if(verbose == 1)
     {
-        printf("Exiting");
+        fprintf(stderr,"Exiting");
     }
     return (EXIT_SUCCESS);
 }
