@@ -92,8 +92,7 @@ int main(int argc, char *argv[])
                 times = 9999;
                 for(i = 0; i < times; i++)
                 {
-                    strcpy(message.service_name, "Google");
-                    strcat(message.service_name , itoa(i));
+                    sprintf(message.service_name, "Google%d",i);
                     message.msg_type = 1;
                     message.status = SUCCESS;
                     message.port = (uint16_t)i;
@@ -170,11 +169,12 @@ int main(int argc, char *argv[])
                                     message.status);
                             }
                         }
-                        if(strcmp(message.service_name, strcat("Google",itoa(i))) != 0)
+                        sprintf(buffer, "Google%d",i);
+                        if(strcmp(message.service_name, buffer) != 0)
                         {
                             fprintf(stderr,
                                 "\nService name mismatch got %s expected %s",
-                            message.service_name, ("Google"+1));
+                            message.service_name, buffer);
                         }
 
                     }
