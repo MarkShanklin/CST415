@@ -1,4 +1,4 @@
-#include "stdafx.h"
+ #include "stdafx.h"
 #include <Winsock2.h>
 
 #include "getport.h"
