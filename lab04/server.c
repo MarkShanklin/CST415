@@ -1,8 +1,8 @@
 /***********************************************************
 * File Name     : sever.c
 * Purpose       : file server.
-* Creation Date : 10-06-2017
-* Last Modified : Tue 17 Oct 2017 01:59:34 PM PDT
+* Creation Date : 10-21-2017
+* Last Modified : Tue 01 Nov 2017 11:43:34 PM PDT
 * Created By    : Mark Shanklin 
 ***********************************************************/
 #include <unistd.h>
@@ -19,6 +19,8 @@
 
 #include "nameserver.h"
 #include "tscounter.h"
+#include "getport.h"
+#include "md5sum.h"
 
 #define PORT 50050
 #define MAX_CONS 5
@@ -88,13 +90,8 @@ int moveFiles(char* file, char* path)
     while ( fscanf(fPointer, "%s1023", &sendBuff))
     {
         connfd = accept(listenfd, (struct sockaddr*)NULL, NULL);
-
-       // ticks = time(NULL);
-       // snprintf(sendBuff, sizeof(sendBuff), "%.24s\r\n", ctime(&ticks));
         write(connfd, sendBuff, strlen(sendBuff));
-
         close(connfd);
-        //sleep(1);
     }
 }
 
@@ -126,7 +123,6 @@ int main()
     memset(message, '0', sizeof(sendBuff)); 
     socklen_t recvLen = sizeof(recvAddr r);
     int numRead;
-    //int openPort;
     bool Run = true;
 
     listen(listenfd, 10);
@@ -164,7 +160,6 @@ int main()
                 fprintf(ftderr,"ERROR");
             }
             close(connfd);
-            //sleep(1);
         }
     }
 
