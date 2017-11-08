@@ -2,7 +2,7 @@
 * File Name     : robustConn.c
 * Purpose       : A more robust connection strategy.
 * Creation Date : 11-07-2017
-* Last Modified : Wed 08 Nov 2017 11:50:10 AM PST
+* Last Modified : Wed 08 Nov 2017 11:57:56 AM PST
 * Created By    : Mark Shanklin 
 ***********************************************************/
 #include <stdio.h>
@@ -105,8 +105,8 @@ int main(int argc, char *argv[])
                 fprintf(stderr,"RAW");
                 break;
         }
-        fprintf(stderr," connection to %s ",inet_ntop(p->ai_family, p->ai_addr,
-            dst, INET6_ADDRSTRLEN));
+        char temp[128] = inet_ntop(p->ai_family, p->ai_addr, dst, INET6_ADDSTRLEN);
+        fprintf(stderr," connection to %s ", temp);
         if((server_socket = 
             socket(p->ai_family, p->ai_socktype, p->ai_protocol)) == -1)
         {
