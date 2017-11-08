@@ -91,7 +91,7 @@ int main(int argc, char *argv[])
     char dst[INET6_ADDRSTRLEN];
     for (p=servinfo; p != NULL; p = p->ai_next)
     {
-        switch(p->ai_protocol)
+        switch((int)p->ai_protocol)
         {
             case 17:
                 fprintf(stderr,"UDP");
