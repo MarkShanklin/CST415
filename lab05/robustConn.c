@@ -33,7 +33,7 @@
 /***********************************************************
 * a function to time out a read
 ***********************************************************/
-int timed_read(int sockfd, int timeout, void *buf, siz_t count)
+int timed_read(int sockfd, int timeout, void *buf, size_t count)
 {
     int result;
     struct timeval tv;
