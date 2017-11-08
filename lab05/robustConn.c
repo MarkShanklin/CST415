@@ -86,7 +86,7 @@ int main(int argc, char *argv[])
     fprintf(stderr, "lookup %s\n",server_name);
     if((ret_val = getaddrinfo(server_name,port,NULL,&servinfo)) != 0)
     {
-        fprintf(stderr,"getaddrinfo: %d\n", ret_val);
+        fprintf(stderr,"getaddrinfo Failed: %d\n", ret_val);
         exit(1);
     }
     char dst[INET6_ADDRSTRLEN];
@@ -110,10 +110,18 @@ int main(int argc, char *argv[])
             socket(p->ai_family, p->ai_socktype, p->ai_protocol)) == -1)
         {
             fprintf(stderr,"Failed.\n");
+            if(verbose == 1)
+            {
+                fprintf(stderr,"\nWhat Failed? socket()\n");
+            }
         }
         else if(connect(server_socket, p->ai_addr, p->ai_addrlen) != 0)
         {
             fprintf(stderr,"Failed.\n");
+            if(verbose == 1)
+            {
+                fprintf(stderr,"\nWhat Failed? connect()\n");
+            }
         }
         else
         {
@@ -124,6 +132,10 @@ int main(int argc, char *argv[])
             }
             else{
                 fprintf(stderr, "Failed.\n");
+                if(verbose == 1)
+                {
+                    fprintf(stderr,"\nWhat Failed? timed_read()\n");
+                }
             }
         }
     }
