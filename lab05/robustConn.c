@@ -109,11 +109,11 @@ int main(int argc, char *argv[])
         if((server_socket = 
             socket(p->ai_family, p->ai_socktype, p->ai_protocol)) == -1)
         {
-            fprintf(stderr,"Failed_s.\n");
+            fprintf(stderr,"Failed.\n");
         }
         else if(connect(server_socket, p->ai_addr, p->ai_addrlen) != 0)
         {
-            fprintf(stderr,"Failed_c.\n");
+            fprintf(stderr,"Failed.\n");
         }
         else
         {
@@ -123,7 +123,7 @@ int main(int argc, char *argv[])
                fprintf(stderr, "Succeeded. Communicated.\n");
             }
             else{
-                fprintf(stderr, "Failed_r.\n");
+                fprintf(stderr, "Failed.\n");
             }
         }
     }
