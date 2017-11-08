@@ -110,7 +110,7 @@ int main(int argc, char *argv[])
         {
             fprintf(stderr,"Failed.");
         }
-        else if(connect(server_socket, p->ai_addr, p->addrlen) != 0)
+        else if(connect(server_socket, p->ai_addr, p->ai_addrlen) != 0)
         {
             fprintf(stderr,"Failed.");
         }
