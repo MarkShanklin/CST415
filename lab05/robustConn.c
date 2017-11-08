@@ -128,7 +128,7 @@ int main(int argc, char *argv[])
     }
 
     //free address info
-    freeaddrinfo(&servinfo);
+    freeaddrinfo(servinfo);
 
     if(verbose == 1)
     {
