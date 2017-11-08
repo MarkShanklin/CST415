@@ -94,16 +94,16 @@ int main(int argc, char *argv[])
         switch(p->ai_socktype)
         {
             case 17:
-                fprintf(stdout,"UDP");
+                fprintf(stderr,"UDP");
                 break;
             case 6:
-                fprintf(stdout,"TCP");
+                fprintf(stderr,"TCP");
                 break;
             case 0:
-                fprintf(stdout,"RAW");
+                fprintf(stderr,"RAW");
                 break;
         }
-        fprintf(stdout," connection to %s",inet_ntop(p->ai_family, p->ai_addr,
+        fprintf(stderr," connection to %s",inet_ntop(p->ai_family, p->ai_addr,
             dst, INET6_ADDRSTRLEN));
         if((server_socket = 
             socket(p->ai_family, p->ai_socktype, p->ai_protocol)) == -1)
@@ -119,7 +119,7 @@ int main(int argc, char *argv[])
             write(server_socket,message,sizeof(message));
             if(timed_read(server_socket, 5, responce, 256) > 0)
             {
-               fprintf(stdout, "Succeeded. Communicated.\n");
+               fprintf(stderr, "Succeeded. Communicated.\n");
             }
             else{
                 fprintf(stderr, "Failed.\n");
@@ -132,7 +132,7 @@ int main(int argc, char *argv[])
 
     if(verbose == 1)
     {
-        fprintf(stdout,"\nExiting with Success");
+        fprintf(stderr,"\nExiting with Success");
     }
     return (EXIT_SUCCESS);
 };
