@@ -105,8 +105,8 @@ int main(int argc, char *argv[])
                 fprintf(stderr,"RAW");
                 break;
         }
-        char temp[128] = inet_ntop(p->ai_family, p->ai_addr, dst, INET6_ADDSTRLEN);
-        fprintf(stderr," connection to %s ", temp);
+        inet_ntop(p->ai_family, p->ai_addr, dst, INET6_ADDRSTRLEN);
+        fprintf(stderr," connection to %s ", dst);
         if((server_socket = 
             socket(p->ai_family, p->ai_socktype, p->ai_protocol)) == -1)
         {
