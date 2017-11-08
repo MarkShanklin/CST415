@@ -83,7 +83,7 @@ int main(int argc, char *argv[])
     //get host name from command line args
     //server_name = ;
 
-    if(ret_val = getaddrinfo(server_name,port,NULL,&servinfo) != 0)
+    if((ret_val = getaddrinfo(server_name,port,NULL,&servinfo)) != 0)
     {
         fprintf(stderr,"getaddrinfo: %d\n", ret_val);
         exit(1);
@@ -96,7 +96,7 @@ int main(int argc, char *argv[])
             case 17:
                 fprintf(stdout,"UDP");
                 break;
-            case 6;
+            case 6:
                 fprintf(stdout,"TCP");
                 break;
             case 0:
