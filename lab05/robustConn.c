@@ -65,13 +65,16 @@ int main(int argc, char *argv[])
             "\r\nAccept-Language: en-US,en;q=0.8\r\n\r\n";
     
     //command line parsing.
-    while ((command = getopt(argc, argv, "hv")) != -1) 
+    while ((command = getopt(argc, argv, "s:hv")) != -1) 
     {
         switch (command)
         {
+        case 's': 
+             strcpy(server_name,optarg);
         case 'h':
             printf( "This program is a robust connection to "
-                    "a service.\n\n");
+                    "a service.\n\n"
+                    "-s to give server name\n");
             break;
         case 'v':
             verbose = 1;
@@ -79,9 +82,6 @@ int main(int argc, char *argv[])
             break;
         }
     }
-
-    //get host name from command line args
-    //server_name = ;
 
     if((ret_val = getaddrinfo(server_name,port,NULL,&servinfo)) != 0)
     {
