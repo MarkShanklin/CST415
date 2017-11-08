@@ -2,12 +2,12 @@
 # File Name     : Makefile
 # Purpose       :   
 # Creation Date : 11-07-2017
-# Last Modified : Tue 07 Nov 2017 03:54:39 PM PST
+# Last Modified : Tue 07 Nov 2017 06:21:52 PM PST
 # Created By    : Mark Shanklin 
 ############################################################
 
 C = gcc -g
-CFLAGS = -Wall -std=c99
+CFLAGS = -Wall -std=c11
 PROG = robConn 
 SOURCES := $(shell echo *.c)
 DEPS := $(shell echo *.h)
@@ -21,7 +21,7 @@ TAR_FILE := $(LAB)_${LOGNAME}.tar
 all: depends $(PROG)
 
 $(PROG): $(OBJECTS)
-    $(CC) $(CFLAGS) -o $@ $^
+	$(CC) $(CFLAGS) -o $@ $^
 
 .PHONY: clean
 
