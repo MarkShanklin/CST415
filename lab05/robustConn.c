@@ -5,16 +5,16 @@
 * Last Modified : Tue 07 Nov 2017 03:53:25 PM PST
 * Created By    : Mark Shanklin 
 ***********************************************************/
-#include <unistd.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
+#include <string.h>
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netdb.h>
-#include <string.h>
-#include <getopt.h>
+#include <unistd.h>
 #include <arpa/inet.h>
+#include <getopt.h>
 
 /***********************************************************
 * a function to time out a read
