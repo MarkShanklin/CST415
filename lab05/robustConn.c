@@ -19,7 +19,7 @@
 /***********************************************************
 * a function to time out a read
 ***********************************************************/
-static int timed_read(int sockfd, int timeout, void *buf, size_t count)
+static int timed_read(int sockfd, int timeout, char *buf, int count)
 {
     int result;
     struct timeval tv;
