@@ -91,7 +91,7 @@ int main(int argc, char *argv[])
     char dst[INET6_ADDRSTRLEN];
     for (p=servinfo; p != NULL; p = p->ai_next)
     {
-        switch(p->ai_socktype)
+        switch(p->ai_protocol)
         {
             case 17:
                 fprintf(stderr,"UDP");
@@ -103,7 +103,7 @@ int main(int argc, char *argv[])
                 fprintf(stderr,"RAW");
                 break;
         }
-        fprintf(stderr," connection to %s",inet_ntop(p->ai_family, p->ai_addr,
+        fprintf(stderr," connection to %s ",inet_ntop(p->ai_family, p->ai_addr,
             dst, INET6_ADDRSTRLEN));
         if((server_socket = 
             socket(p->ai_family, p->ai_socktype, p->ai_protocol)) == -1)
