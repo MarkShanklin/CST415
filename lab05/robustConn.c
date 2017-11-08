@@ -34,7 +34,6 @@ static int timed_read(int sockfd, int timeout, char *buf, int count)
     result = select(sockfd+1, &rfds, (fd_set *) 0, (fd_set *) 0, &tv);
     if(result > 0)
     {
-        fprintf(stderr," fd=%d res=%d ",sockfd, result);
         return read(sockfd, buf, count);
     }
     else
