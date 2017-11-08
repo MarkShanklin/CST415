@@ -44,8 +44,6 @@ static int timed_read(int sockfd, int timeout, char *buf, int count)
 //*************************************************************
 int main(int argc, char *argv[])
 {
-    //50000. bound to port zero so that it will assign a port
-    int servicePort = 0;
     //used to handle comand line argurements.
     int command = 0; 
     //used to signify if you want to print out data that
