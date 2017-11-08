@@ -108,21 +108,21 @@ int main(int argc, char *argv[])
         if((server_socket = 
             socket(p->ai_family, p->ai_socktype, p->ai_protocol)) == -1)
         {
-            fprintf(stderr,"Failed.");
+            fprintf(stderr,"Failed.\n");
         }
         else if(connect(server_socket, p->ai_addr, p->ai_addrlen) != 0)
         {
-            fprintf(stderr,"Failed.");
+            fprintf(stderr,"Failed.\n");
         }
         else
         {
             write(server_socket,message,sizeof(message));
             if(timed_read(server_socket, 5, responce, 256) > 0)
             {
-               fprintf(stdout, "Succeeded. Communicated.");
+               fprintf(stdout, "Succeeded. Communicated.\n");
             }
             else{
-                fprintf(stderr, "Failed.");
+                fprintf(stderr, "Failed.\n");
             }
         }
     }
