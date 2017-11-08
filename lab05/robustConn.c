@@ -105,7 +105,7 @@ int main(int argc, char *argv[])
                 fprintf(stderr,"RAW");
                 break;
         }
-        inet_ntop(p->ai_family, p->ai_addr, dst, INET6_ADDRSTRLEN);
+        inet_ntop(p->ai_family, &((struct sockaddr_in *)p->ai_addr)->sin_addr.s_addr, dst, INET6_ADDRSTRLEN);
         fprintf(stderr," connection to %s ", dst);
         if((server_socket = 
             socket(p->ai_family, p->ai_socktype, p->ai_protocol)) == -1)
