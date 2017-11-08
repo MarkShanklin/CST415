@@ -2,7 +2,7 @@
 * File Name     : robustConn.c
 * Purpose       : A more robust connection strategy.
 * Creation Date : 11-07-2017
-* Last Modified : Tue 07 Nov 2017 03:53:25 PM PST
+* Last Modified : Wed 08 Nov 2017 11:50:10 AM PST
 * Created By    : Mark Shanklin 
 ***********************************************************/
 #include <stdio.h>
@@ -74,8 +74,9 @@ int main(int argc, char *argv[])
              break;
         case 'h':
             printf( "This program is a robust connection to "
-                    "a service.\n\n"
-                    "-s to give server name\n");
+                    "a service.\n"
+                    "-s \tassign a server name\n\n");
+            return(EXIT_SUCCESS);
             break;
         case 'v':
             verbose = 1;
