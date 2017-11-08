@@ -71,6 +71,7 @@ int main(int argc, char *argv[])
         {
         case 's': 
              strcpy(server_name,optarg);
+             break;
         case 'h':
             printf( "This program is a robust connection to "
                     "a service.\n\n"
@@ -82,7 +83,7 @@ int main(int argc, char *argv[])
             break;
         }
     }
-
+    fprintf(stderr, "lookup %s\n",server_name);
     if((ret_val = getaddrinfo(server_name,port,NULL,&servinfo)) != 0)
     {
         fprintf(stderr,"getaddrinfo: %d\n", ret_val);
