@@ -118,7 +118,7 @@ int main(int argc, char *argv[])
         }
         else
         {
-            write(server_socket,message,sizeof(message));
+            write(server_socket,message,strlen(message));
             if(timed_read(server_socket, 5, responce, 256) > 0)
             {
                fprintf(stderr, "Succeeded. Communicated.\n");
