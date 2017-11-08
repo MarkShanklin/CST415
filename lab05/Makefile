@@ -7,13 +7,16 @@
 ############################################################
 
 C = gcc -g
-CFLAGS = -Wall 
+CFLAGS = -Wall -std=c99
 PROG = robConn 
 SOURCES := $(shell echo *.c)
 DEPS := $(shell echo *.h)
 OBJECTS = $(SOURCES:.c=.o)
 DEPENDS = depends.mk
 $(shell touch ${DEPENDS})
+
+LAB := $(shell basename ${PWD})
+TAR_FILE := $(LAB)_${LOGNAME}.tar
 
 all: depends $(PROG)
 
@@ -29,3 +32,7 @@ include $(DEPENDS)
 
 depends:
 	gcc -MM $(SOURCES) > $(DEPENDS)
+
+tar:
+	rm -f $(TAR_FILE)
+	tar cvf $(TAR_FILE) *.[ch] [Mm]akefile
