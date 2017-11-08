@@ -18,7 +18,6 @@
 
 /* Unfortunately some UNIX implementations define FALSE and TRUE -
    here we'll undefine them */
-
    #ifdef TRUE
    #undef TRUE
    #endif
@@ -32,7 +31,7 @@
 /***********************************************************
 * a function to time out a read
 ***********************************************************/
-int timed_read(int sockfd, int timeout, void *buf, size_t count)
+static int timed_read(int sockfd, int timeout, void *buf, size_t count)
 {
     int result;
     struct timeval tv;
@@ -53,7 +52,6 @@ int timed_read(int sockfd, int timeout, void *buf, size_t count)
         return result;
     }
 }
-
 //*************************************************************
 int main(int argc, char *argv[])
 {
