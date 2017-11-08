@@ -7,7 +7,7 @@
 ############################################################
 
 C = gcc -g
-CFLAGS = -Wall -std=c99
+CFLAGS = -Wall -std=c11
 PROG = robConn 
 SOURCES := $(shell echo *.c)
 DEPS := $(shell echo *.h)

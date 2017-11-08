@@ -13,7 +13,6 @@
 #include <sys/socket.h>
 #include <sys/types.h>
 #include <string.h>
-#include <time.h>
 #include <getopt.h>
 #include <arpa/inet.h>
 
@@ -65,7 +64,7 @@ int main(int argc, char *argv[])
     //used to signify if you want to print out data that
     // is being process to the stdout.
     int verbose = 0;
-
+    char server_name[256] = "bbc.com";
     
 
 
@@ -95,7 +94,7 @@ int main(int argc, char *argv[])
     struct addrinfo *servinfo, *p;
     int ret_val;
 
-    char server_name[256];
+    
     char port[15] = "80";
     const char *message = "GET / HTTP/1.1\r\nHost: bbc.com\r\nConnection:" 
             "keep-alive\r\nUpgrade-Insecure-Requests: 1\r\nUser-Agent:"
