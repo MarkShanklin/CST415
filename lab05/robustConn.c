@@ -16,23 +16,10 @@
 #include <getopt.h>
 #include <arpa/inet.h>
 
-/* Unfortunately some UNIX implementations define FALSE and TRUE -
-   here we'll undefine them */
-
-   #ifdef TRUE
-   #undef TRUE
-   #endif
-   
-   #ifdef FALSE
-   #undef FALSE
-   #endif
-   
-   typedef enum { FALSE, TRUE } Boolean;
-
 /***********************************************************
 * a function to time out a read
 ***********************************************************/
-int timed_read(int sockfd, int timeout, void *buf, size_t count)
+static int timed_read(int sockfd, int timeout, void *buf, size_t count)
 {
     int result;
     struct timeval tv;
@@ -65,20 +52,27 @@ int main(int argc, char *argv[])
     // is being process to the stdout.
     int verbose = 0;
     char server_name[256] = "bbc.com";
+    int server_socket;
+    struct addrinfo *servinfo, *p;
+    int ret_val;
+    char port[15] = "80";
+    char responce[256];
+    const char *message = "GET / HTTP/1.1\r\nHost: bbc.com\r\nConnection:" 
+            "keep-alive\r\nUpgrade-Insecure-Requests: 1\r\nUser-Agent:"
+            " Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML,"
+            " like Gecko) Chrome/61.0.3163.100 Safari/537.36\r\nAccept:"
+            " text/html,application/xhtml+xml,application/xml;q=0.9,image"
+            "/webp,image/apng,*/*;q=0.8\r\nAccept-Encoding: gzip, deflate"
+            "\r\nAccept-Language: en-US,en;q=0.8\r\n\r\n";
     
-
-
     //command line parsing.
     while ((command = getopt(argc, argv, "hv")) != -1) 
     {
         switch (command)
         {
         case 'h':
-            printf( "This program is a service used to "
-                    "maintain unique port numbers.\n\n"
-                    "-p \t<service port>\n"
-                    "-n \t<minimum number of ports>\n"
-                    "-t \t<keep alive time in seconds\n");
+            printf( "This program is a robust connection to "
+                    "a service.\n\n");
             break;
         case 'v':
             verbose = 1;
@@ -87,25 +81,8 @@ int main(int argc, char *argv[])
         }
     }
 
-    //setting up socket to a file discriptor.
-   // int fd = socket(AF_INET, SOCK_STREAM, 0); 
-    //
-    int server_socket;
-    struct addrinfo *servinfo, *p;
-    int ret_val;
-
-    
-    char port[15] = "80";
-    const char *message = "GET / HTTP/1.1\r\nHost: bbc.com\r\nConnection:" 
-            "keep-alive\r\nUpgrade-Insecure-Requests: 1\r\nUser-Agent:"
-            " Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML,"
-            " like Gecko) Chrome/61.0.3163.100 Safari/537.36\r\nAccept:"
-            " text/html,application/xhtml+xml,application/xml;q=0.9,image"
-            "/webp,image/apng,*/*;q=0.8\r\nAccept-Encoding: gzip, deflate"
-            "\r\nAccept-Language: en-US,en;q=0.8\r\n\r\n";
-    char responce[256];
     //get host name from command line args
-    
+    //server_name = ;
 
     if(ret_val = getaddrinfo(server_name,port,NULL,&servinfo) != 0)
     {
@@ -154,7 +131,7 @@ int main(int argc, char *argv[])
     //free address info
     freeaddrinfo(&servinfo);
 
-    if(verbose == TRUE)
+    if(verbose == 1)
     {
         fprintf(stdout,"\nExiting with Success");
     }
