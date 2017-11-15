@@ -17,6 +17,9 @@
 #include <arpa/inet.h>
 #include <getopt.h>
 
+#define BUFF_SIZE 256
+#define PORT_SIZE 15
+
 /***********************************************************
 * a function to time out a read
 ***********************************************************/
@@ -50,12 +53,12 @@ int main(int argc, char *argv[])
     //used to signify if you want to print out data that
     // is being process to the stdout.
     int verbose = 0;
-    char server_name[256] = "bbc.com";
+    char server_name[BUFF_SIZE] = "bbc.com";
     int server_socket;
     struct addrinfo *servinfo, *p;
     int ret_val;
-    char port[15] = "80";
-    char responce[256];
+    char port[PORT_SIZE] = "80";
+    char responce[BUFF_SIZE];
     const char *message = "GET / HTTP/1.1\r\nHost: bbc.com\r\nConnection:" 
             "keep-alive\r\nUpgrade-Insecure-Requests: 1\r\nUser-Agent:"
             " Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML,"
@@ -88,20 +91,20 @@ int main(int argc, char *argv[])
     if((ret_val = getaddrinfo(server_name,port,NULL,&servinfo)) != 0)
     {
         fprintf(stderr,"getaddrinfo Failed: %d\n", ret_val);
-        exit(1);
+        exit(EXIT_FAILURE);
     }
     char dst[INET6_ADDRSTRLEN];
     for (p=servinfo; p != NULL; p = p->ai_next)
     {
-        switch((int)p->ai_protocol)
+        switch((int)p->ai_socktype)
         {
-            case 17:
+            case SOCK_DGRAM:
                 fprintf(stderr,"UDP");
                 break;
-            case 6:
+            case SOCK_STREAM:
                 fprintf(stderr,"TCP");
                 break;
-            case 0:
+            case SOCK_RAW:
                 fprintf(stderr,"RAW");
                 break;
         }
@@ -130,7 +133,7 @@ int main(int argc, char *argv[])
         else
         {
             write(server_socket,message,strlen(message));
-            if(timed_read(server_socket, 5, responce, 256) > 0)
+        if(timed_read(server_socket, 5, responce, BUFF_SIZE) > 0)
             {
                fprintf(stderr, "Succeeded. Communicated.\n");
             }
