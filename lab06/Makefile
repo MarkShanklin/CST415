@@ -1,13 +1,13 @@
 ############################################################
 # File Name     : Makefile
-# Purpose       : Used to Compile Program  
-# Creation Date : 09-30-2017
+# Purpose       : DNS Resolver  
+# Creation Date : 11-15-2017
 # Created By    : Mark Shanklin 
 ############################################################
 
-CC = gcc -g -std=c99
+CC = gcc -g -std=gnu11
 CFLAGS = -Wall 
-PROG = labFour
+PROG = labSix
 SOURCES := $(shell echo *.c)
 DEPS := $(shell echo *.h)
 OBJECTS = $(SOURCES:.c=.o)
