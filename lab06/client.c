@@ -1,30 +1,42 @@
+/***********************************************************
+* File Name     : sever.c
+* Purpose       : DNS Resolver Client
+* Creation Date : 10-21-2017
+* Last Modified : Tue 01 Nov 2017 11:43:34 PM PDT
+* Created By    : Mark Shanklin 
+***********************************************************/
+#include <unistd.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdint.h>
+#include <netdb.h>
 #include <sys/socket.h>
 #include <sys/types.h>
-#include <netinet/in.h>
-#include <netdb.h>
-#include <stdio.h>
 #include <string.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <errno.h>
-#include <arpa/inet.h> 
-#include <pthread.h>
+#include <time.h>
+#include <getopt.h>
+#include <arpa/inet.h>
 
 #include "nameserver.h"
-#include "getport.h"
 #include "tscounter.h"
-#include "addr2str.h"
+#include "getport.h"
+
+#define PORT 50050
+#define MAX_CONS 5
+
+typedef enum {false,true} bool;
+static char serviceName[MAX_SERVICE_NAME_LEN + 1] = "MarkOne";
+static int port;
 
 int main(int argc, char *argv[])
 {
-    int sockfd = 0, n = 0, exitVal = 0, port;
+    int sockfd = 0, n = 0, exitVal = 0;
     char recvBuff[1024];
-	char buff[256];
     struct sockaddr_in serv_addr;
 	struct addrinfo *addr;
 	
-	setup_ns(NULL, 50050);
-	port = lookup_port("MarkOne");
+	setup_ns(NULL, PORT);
+	port = lookup_port(serviceName);
 	
 	memset(&serv_addr, '0', sizeof(serv_addr));
 	getaddrinfo("unix.cset.oit.edu", NULL, NULL, &addr);
@@ -49,10 +61,10 @@ int main(int argc, char *argv[])
 		}
 		//fgets(stdin)
 		fprintf(stdout, "Enter URL: ");
-		memset(buff, '0', sizeof(buff));
-		fgets(buff,sizeof(buff),stdin);
+		memset(serviceName, '0', sizeof(serviceName));
+		fgets(serviceName,sizeof(serviceName),stdin);
 		//write(TCP)
-		write(sockfd, buff, strlen(buff));
+		write(sockfd, serviceName, strlen(serviceName));
 		n = 0;
 		
 		memset(recvBuff, '0',sizeof(recvBuff));
@@ -62,7 +74,7 @@ int main(int argc, char *argv[])
 			recvBuff[n] = 0;
 			if(strcmp(recvBuff, "Shutdown") == 0)
 			{
-				//shutdown;
+				exitVal = 1;
 			}
 			//write(stdout)
 			if(fputs(recvBuff, stdout) == EOF)

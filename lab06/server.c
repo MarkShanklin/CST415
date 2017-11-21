@@ -1,6 +1,6 @@
 /***********************************************************
 * File Name     : sever.c
-* Purpose       : file server.
+* Purpose       : DNS Resolver Server
 * Creation Date : 10-21-2017
 * Last Modified : Tue 01 Nov 2017 11:43:34 PM PDT
 * Created By    : Mark Shanklin 
@@ -20,83 +20,24 @@
 #include "nameserver.h"
 #include "tscounter.h"
 #include "getport.h"
-#include "md5sum.h"
 
 #define PORT 50050
 #define MAX_CONS 5
 
 typedef enum {false,true} bool;
-static char serviceName[MAX_SERVICE_NAME_LEN + 1];
+static char serviceName[MAX_SERVICE_NAME_LEN + 1] = "MarkOne";
 static int port;
 
-static bool checkType(char* file)
-{
-    int len = strlen(file);
-    if(len >= 3)
-    {
-        if(file[len-2] == '.' && file[len-1] == 'c'){ return true; }
-        if(file[len-2] == '.' && file[len-1] == 'h'){ return true; }
-    }
-    if(len >= 5)
-    {
-        if(file[len-4] == '.' && file[len-3] == 'c' && file[len-2] == 'p' && file[len-1] == 'p'){ return true; }
-        if(file[len-4] == '.' && file[len-3] == 't' && file[len-2] == 'x' && file[len-1] == 't'){ return true; }
-    }
-    return false;
-}
+typedef struct {
+	char serviceIP[];
+	char serviceName[MAX_SERVICE_NAME_LEN + 1];
+} services_t;
 
-static int Files(char* loc)
-{
-    DIR *dirPointer;
-    struct dirent *entPointer;
+static services_t serv[256];
 
-    dirPointer = opendir (loc);
-    if (dirPointer != NULL)
-    {
-        while (entPointer = readdir (dirPointer))
-            if(checkType(entPointer->d_name))
-                moveFiles(entPointer->d_name, loc);
-        (void) closedir (dirPointer);
-    }
-    else
-        perror ("ERROR OPENING DIRECTORY");
-    return 0;
-}
-
-int moveFiles(char* file, char* path)
-{
-    struct sockaddr_in serverAddr;
-    struct sockaddr_in recvAddr ;
-    int connfd = socket(AF_INET, SOCK_STREAM, 0);
-    memset((char*)&serverAddr, '0', sizeof(serverAddr));
-
-    serverAddr.sin_family = AF_INET;
-    serverAddr.sin_addr.s_addr = htonl(INADDR_ANY);
-    serverAddr.sin_port = htons(port);
-
-    bind(connfd, (struct sockaddr*)&serverAddr, sizeof(serverAddr));
-    int bound = sock2port(fd);
-    printf("\nBound to port: %d", bound);
-
-    socklen_t recvLen = sizeof(recvAddr );
-    char file_path[45];
-    sprintf(file_path, "%s/%s", path, file);
-    FILE* fPointer;
-    fopen(file_path, "r");
-
-    char sendBuff[1024];
-
-    listen(listenfd, 10);
-    while ( fscanf(fPointer, "%s1023", &sendBuff))
-    {
-        connfd = accept(listenfd, (struct sockaddr*)NULL, NULL);
-        write(connfd, sendBuff, strlen(sendBuff));
-        close(connfd);
-    }
-}
-
-int main()
-{
+int main(int argc, char *argv[])
+{	//translate "-n nameserver" (getaddrinfo)
+	
     //initialization the name server
     setup_ns(NULL, PORT);
     tsc_reset();
@@ -107,32 +48,33 @@ int main()
     struct sockaddr_in serverAddr;
     struct sockaddr_in recvAddr ;
 
-
+	//create and bind socket
     int listenfd = socket(AF_INET, SOCK_STREAM, 0);
     memset((char*)&serverAddr, '0', sizeof(serverAddr));
-
     serverAddr.sin_family = AF_INET;
-    serverAddr.sin_addr.s_addr = htonl(INADDR_ANY);
+    serverAddr.sin_addr.s_addr = htonl(INADDR_ANY);//unix.cset.oit.edu
     serverAddr.sin_port = htons(port);
-
     bind(listenfd, (struct sockaddr*)&serverAddr, sizeof(serverAddr));
     int bound = sock2port(fd);
     printf("\nBound to port: %d", bound);
 
-    char message[500];
-    memset(message, '0', sizeof(sendBuff)); 
-    socklen_t recvLen = sizeof(recvAddr r);
+    char message[1024];
+    memset(message, '0', sizeof(message)); 
+    socklen_t recvLen = sizeof(recvAddr);
     int numRead;
     bool Run = true;
-
+	
+	//listen for incoming connections
     listen(listenfd, 10);
-
+	//loop until "shutdown" recieved
     while(Run)
     {
         if(tsc_value() < MAX_CONS)
         {
             int connfd = accept(listenfd, (struct sockaddr*)NULL, NULL);
+			//recieve request
             numRead= read(connfd, &message, sizeof(message));
+			//create new thread
             if(numRead > -1)
             {
                 if (strcmp("exit", message) == 0)
@@ -141,28 +83,56 @@ int main()
                     release_port();
                     tsc_decrement();
                 }
+				else if(strcmp("dump", message) == 0)
+				{
+					//dump database contents to client (human readable)
+				}
+				else if(strcmp("verbose", message) == 0)
+				{
+					//toggle verbose flag to true, reply successful
+				}
+				else if(strcmp("normal", message) == 0)	
+				{
+					//toggle verbose flag to false, reply successful
+				}
                 else if(strcmp("shutdown", message) == 0)
                 {
-                    tsc_reset();
+                    //toggle shutdown flag to true 
+					tsc_reset();
                     Run = false;
+					//reply successful
                 }
-                else if(strlen(message) >= 5)
+                else
                 {
-                    if(message[0] == 'g' && message[1] == 'e' && message[2] == 't')
-                    {
-                        files(message);
-                        tsc_increment();
-                    }
+				//assume text is to be resolved
+				//check cache data struct 
+				for(int i = 0; i < 256; i++)
+				{
+					strcmp(serv[i].serviceIP, message);
+				}
+				//if data not in cache
+					//ask closest DNS for data
+					//if DNS does not reply soon enough
+						//try again (only once)
+					//while DNS data is another DNS
+						//ask new DNS for data
+						//add new DNS to list of DNS's
                 }
+				//reply with IP address or "failure"
+				//send reply data to client
+				//while not done sending data
+					//send more reply data to client
             }
             else
             {
                 fprintf(ftderr,"ERROR");
             }
+			//close thread
+			//close connection
             close(connfd);
         }
     }
-
+	//clean up data structures
     release_port(serviceName, port);
     return 0;
 }
