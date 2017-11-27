@@ -115,7 +115,7 @@ static int getDNS_Data(char *message)
 	while(token != NULL)
 	{
 		int x = strlen(token);
-		printf("%d\n",x);
+		printf("\n%d\n",x);
 		char temp[2];
 		sprintf(temp,"%c",(char)x);
 		strcat(convMess, temp);
