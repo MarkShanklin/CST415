@@ -24,7 +24,7 @@
 #define PORT 50050
 #define MAX_CONS 5
 
-/* typedef enum {false,true} bool;
+typedef enum {false,true} bool;
 static char serviceName[MAX_SERVICE_NAME_LEN + 1] = "MarkOne";
 static int port;
 
@@ -92,7 +92,6 @@ typedef struct {
 	uint16_t qt, qc;
 } dnsQuestion_t;
 
-*/
 static int getDNS_Data(char *message)
 {
 	char dnsdata[65536];
@@ -102,14 +101,14 @@ static int getDNS_Data(char *message)
 	memset(dnsdata, 0, sizeof(dnsdata));
 	memset(convMess, 0, sizeof(convMess));
 
-/* 	dnsHeader_t *header;
+ 	dnsHeader_t *header;
 	dnsRecord_t *record;
 	dnsQuestion_t *question;
 	
 	header = (dnsHeader_t*)&dnsdata[0];
 	header->id = htons((uint16_t)connfd); //change to unique
 	header->rd = 1;
-	header-->qd = htons(1); */
+	header-->qd = htons(1);
 	
 	char* token;// = &dnsdata[sizeof(dnsHeader_t)];
 	
@@ -145,7 +144,7 @@ static int getDNS_Data(char *message)
 	//reply with IP address or "failure"
 	return EXIT_SUCCESS;
 }
-/*
+
 static void* runThread(void * data)
 {
 	int connfd = (int)*data;
@@ -174,7 +173,7 @@ static void* runThread(void * data)
 	//close thread
 	//pthread_exit(EXIT_SUCCESS);
 }
- */
+
 int main(int argc, char *argv[])
 {	//translate "-n nameserver" (getaddrinfo)
 	struct addrinfo *addr;	
