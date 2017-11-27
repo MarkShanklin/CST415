@@ -139,6 +139,7 @@ static int getDNS_Data(char *message)
 						//ask new DNS for data
 						//add new DNS to list of DNS's
 	//reply with IP address or "failure"
+	return EXIT_SUCCESS;
 }
 /*
 static void* runThread(void * data)
