@@ -111,6 +111,7 @@ static int getDNS_Data(char *message)
 	
 	token = strtok(message, ".");
 	char convMess[strlen(message)+2];
+	memset(convMess, 0, sizeof(convMess));
 	
 	while(token != NULL)
 	{
