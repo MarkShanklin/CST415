@@ -14,12 +14,12 @@ PROG3 = clearport
 SOURCES = $(PROG).c
 SOURCES2 = $(PROG2).c
 SOURCES3 = $(PROG3).c
-DEPS = *.h
+DEPS = nameserver.h getport.h tscounter.h
 
 LAB := $(shell basename ${PWD})
 TAR_FILE := $(LAB)_${LOGNAME}.tar
 
-all: $(PROG) $(PROG2) $(PROG3)
+all: $(PROG) $(PROG2)
 
 .c.o:
 	$(CC) $(COPTS) -c $? -o $@
