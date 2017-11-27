@@ -113,7 +113,7 @@ static int getDNS_Data(char *message, int connfd)
 	header = (dnsHeader_t*)&dnsdata[0];
 	header->id = htons((uint16_t)connfd); //change to unique
 	header->rd = 1;
-	header-->qd = htons(1);
+	header->qd = htons(1);
 	
 	char* token;// = &dnsdata[sizeof(dnsHeader_t)];
 	
