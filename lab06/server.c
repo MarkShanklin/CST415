@@ -35,6 +35,11 @@ typedef struct node{
 	struct node *prev;
 } services_t;
 
+typedef struct {
+	int connfd;
+	char message[MAX_SERVICE_NAME_LEN + 1];
+} conn_t;
+
 static services_t *serv;
 
 static services_t* GetNewNode(char * ip, char * name)
@@ -147,7 +152,8 @@ static int getDNS_Data(char *message)
 
 static void* runThread(void * data)
 {
-	int connfd = (int)*data;
+	conn_t temp = (conn_t)data;
+	
 	//assume text is to be resolved
 	//check cache data struct 
 	services_t * travel = serv;
@@ -158,18 +164,18 @@ static void* runThread(void * data)
 	if(travel != NULL)
 	{
 		//reply with IP address
-		write(connfd, travel->serviceIP, 16);
+		write(temp.connfd, travel->serviceIP, 16);
 	}
 	else
 	{
 		//if data not in cache
 		//ask closest DNS for data
-		getDNS_Data(message);
+		getDNS_Data(temp.message);
 		//send reply data to client
-		write(connfd, message, strlen(message));
+		write(temp.connfd, temp.message, strlen(temp.message));
 	}
 	//close connection
-	close(connfd);
+	close(temp.connfd);
 	//close thread
 	//pthread_exit(EXIT_SUCCESS);
 }
@@ -247,9 +253,12 @@ int main(int argc, char *argv[])
 				}
 				else
 				{
+					conn_t data;
+					data.connfd = connfd;
+					data.message = message;
 					getDNS_Data(message);
 					//pthread_create(*thread, *attr, &runThread, connfd);
-					//runThread(connfd);
+					//runThread(&data);
 				}
 			}
             else
