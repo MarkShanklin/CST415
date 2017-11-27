@@ -24,7 +24,7 @@
 #define PORT 50050
 #define MAX_CONS 5
 
-typedef enum {false,true} bool;
+/* typedef enum {false,true} bool;
 static char serviceName[MAX_SERVICE_NAME_LEN + 1] = "MarkOne";
 static int port;
 
@@ -92,6 +92,7 @@ typedef struct {
 	uint16_t qt, qc;
 } dnsQuestion_t;
 
+*/
 static int getDNS_Data(char *message)
 {
 	char dnsdata[65536];
@@ -137,7 +138,7 @@ static int getDNS_Data(char *message)
 						//add new DNS to list of DNS's
 	//reply with IP address or "failure"
 }
-
+/*
 static void* runThread(void * data)
 {
 	int connfd = (int)*data;
@@ -166,7 +167,7 @@ static void* runThread(void * data)
 	//close thread
 	//pthread_exit(EXIT_SUCCESS);
 }
-
+ */
 int main(int argc, char *argv[])
 {	//translate "-n nameserver" (getaddrinfo)
 	getDNS_Data("www.google.com");
