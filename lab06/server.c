@@ -98,14 +98,14 @@ static int getDNS_Data(char *message)
 	char dnsdata[65536];
 	memset(dnsdata, 0, sizeof(dnsdata));
 	
-	dnsHeader_t *header;
+/* 	dnsHeader_t *header;
 	dnsRecord_t *record;
 	dnsQuestion_t *question;
 	
 	header = (dnsHeader_t*)&dnsdata[0];
 	header->id = htons((uint16_t)connfd); //change to unique
 	header->rd = 1;
-	header-->qd = htons(1);
+	header-->qd = htons(1); */
 	
 	char* token;// = &dnsdata[sizeof(dnsHeader_t)];
 	
