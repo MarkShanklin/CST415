@@ -37,7 +37,7 @@ typedef struct node{
 
 static services_t *serv;
 
-static services_t* GetNewNode(char ip, char name)
+static services_t* GetNewNode(char * ip, char * name)
 {
 	services_t* newNode
 		= (services_t*)malloc(sizeof(services_t));
