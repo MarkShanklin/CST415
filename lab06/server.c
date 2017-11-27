@@ -178,6 +178,7 @@ static void* runThread(void * data)
 	close(temp->connfd);
 	//close thread
 	//pthread_exit(EXIT_SUCCESS);
+	return temp;
 }
 
 int main(int argc, char *argv[])
