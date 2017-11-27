@@ -41,8 +41,8 @@ static services_t* GetNewNode(char * ip, char * name)
 {
 	services_t* newNode
 		= (services_t*)malloc(sizeof(services_t));
-	newNode->serviceIP = ip;
-	newNode->serviceName = name;
+	strcpy(newNode->serviceIP,ip);
+	strcpy(newNode->serviceName, name);
 	newNode->prev = NULL;
 	newNode->next = NULL;
 	return newNode;
