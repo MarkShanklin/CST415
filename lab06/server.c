@@ -175,7 +175,7 @@ static void* runThread(void * data)
 		write(temp->connfd, temp->message, strlen(temp->message));
 	}
 	//close connection
-	close(temp.connfd);
+	close(temp->connfd);
 	//close thread
 	//pthread_exit(EXIT_SUCCESS);
 }
