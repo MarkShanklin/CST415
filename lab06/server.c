@@ -152,7 +152,7 @@ static int getDNS_Data(char *message, int connfd)
 
 static void* runThread(void * data)
 {
-	conn_t temp = (conn_t)data;
+	conn_t * temp = (conn_t*)data;
 	
 	//assume text is to be resolved
 	//check cache data struct 
@@ -164,15 +164,15 @@ static void* runThread(void * data)
 	if(travel != NULL)
 	{
 		//reply with IP address
-		write(temp.connfd, travel->serviceIP, 16);
+		write(temp->connfd, travel->serviceIP, 16);
 	}
 	else
 	{
 		//if data not in cache
 		//ask closest DNS for data
-		getDNS_Data(temp.message, temp.connfd);
+		getDNS_Data(temp->message, temp->connfd);
 		//send reply data to client
-		write(temp.connfd, temp.message, strlen(temp.message));
+		write(temp->connfd, temp->message, strlen(temp->message));
 	}
 	//close connection
 	close(temp.connfd);
