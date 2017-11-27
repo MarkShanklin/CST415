@@ -18,7 +18,7 @@
 #include <arpa/inet.h>
 
 #include "nameserver.h"
-//#include "tscounter.h"
+#include "tscounter.h"
 #include "getport.h"
 
 #define PORT 50050
@@ -173,7 +173,8 @@ static void* runThread(void * data)
  */
 int main(int argc, char *argv[])
 {	//translate "-n nameserver" (getaddrinfo)
-	getDNS_Data("www.google.com");
+	char str[] = "www.google.com";
+	getDNS_Data(str);
 /* 	
 	getaddrinfo("8.8.8.8");
     //initialization the name server
