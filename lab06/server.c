@@ -96,8 +96,12 @@ typedef struct {
 static int getDNS_Data(char *message)
 {
 	char dnsdata[65536];
+	char convMess[strlen(message)+2];
+	char temp[2];
+	int len = 0;
 	memset(dnsdata, 0, sizeof(dnsdata));
-	
+	memset(convMess, 0, sizeof(convMess));
+
 /* 	dnsHeader_t *header;
 	dnsRecord_t *record;
 	dnsQuestion_t *question;
@@ -110,19 +114,16 @@ static int getDNS_Data(char *message)
 	char* token;// = &dnsdata[sizeof(dnsHeader_t)];
 	
 	token = strtok(message, ".");
-	char convMess[strlen(message)+2];
-	memset(convMess, 0, sizeof(convMess));
 	
 	while(token != NULL)
 	{
-		int x = strlen(token);
-		printf("\n%d\n",x);
-		char temp[2];
-		sprintf(temp,"%c",(char)x);
+		len = strlen(token);		
+		sprintf(temp,"%c",(char)len);
 		strcat(convMess, temp);
 		strcat(convMess, token);
 		token = strtok(NULL, ".");
 	}
+	/*
 	for(int i = 0; i < strlen(convMess); i++)
 	{
 		if((int)convMess[i] < 60)
@@ -134,7 +135,8 @@ static int getDNS_Data(char *message)
 			printf("%c", convMess[i]);
 		}
 	}
-	printf("\n");
+	printf("\n"); */
+
 	//if DNS does not reply soon enough
 						//try again (only once)
 					//while DNS data is another DNS
@@ -174,10 +176,7 @@ static void* runThread(void * data)
 }
  */
 int main(int argc, char *argv[])
-{	//translate "-n nameserver" (getaddrinfo)
-	char str[] = "www.google.com";
-	getDNS_Data(str);
-/* 	
+{	//translate "-n nameserver" (getaddrinfo)	
 	getaddrinfo("8.8.8.8");
     //initialization the name server
     setup_ns(NULL, PORT);
@@ -248,8 +247,9 @@ int main(int argc, char *argv[])
 				}
 				else
 				{
+					getDNS_Data(message);
 					//pthread_create(*thread, *attr, &runThread, connfd);
-					runThread(connfd);
+					//runThread(connfd);
 				}
 			}
             else
@@ -259,6 +259,6 @@ int main(int argc, char *argv[])
         }
     }
 	//clean up data structures
-    release_port(serviceName, port); */
+    release_port(serviceName, port); 
     return 0;
 }
