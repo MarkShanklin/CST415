@@ -48,7 +48,7 @@ static services_t* GetNewNode(char * ip, char * name)
 	return newNode;
 }	
 
-static void push(char ip, char name) {
+static void push(char * ip, char * name) {
 	services_t* temp = head;
 	services_t* newNode = GetNewNode(ip,name);
 	if(head == NULL) {
