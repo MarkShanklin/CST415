@@ -202,7 +202,7 @@ int main(int argc, char *argv[])
     serverAddr.sin_addr.s_addr = htonl(INADDR_ANY);//unix.cset.oit.edu
     serverAddr.sin_port = htons(port);
     bind(listenfd, (struct sockaddr*)&serverAddr, sizeof(serverAddr));
-    int bound = sock2port(fd);
+    int bound = sock2port(listenfd);
     printf("\nBound to port: %d", bound);
 
     char message[1024];
@@ -264,7 +264,7 @@ int main(int argc, char *argv[])
 			}
             else
             {
-                fprintf(ftderr,"ERROR");
+                fprintf(stderr,"ERROR");
             }
         }
     }
