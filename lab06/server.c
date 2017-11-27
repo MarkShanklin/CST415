@@ -115,7 +115,7 @@ static int getDNS_Data(char *message)
 	while(token != NULL)
 	{
 		int x = strlen(token);
-		strcat(convMess, &((char)x));
+		strcat(convMess, (char)x);
 		strcat(convMess, token);
 		token = strtok(NULL, ".");
 	}
