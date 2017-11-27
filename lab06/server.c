@@ -176,8 +176,9 @@ static void* runThread(void * data)
 }
  */
 int main(int argc, char *argv[])
-{	//translate "-n nameserver" (getaddrinfo)	
-	getaddrinfo("8.8.8.8");
+{	//translate "-n nameserver" (getaddrinfo)
+	struct addrinfo *addr;	
+	getaddrinfo("8.8.8.8",NULL,NULL, &addr);
     //initialization the name server
     setup_ns(NULL, PORT);
     tsc_reset();
