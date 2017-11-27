@@ -18,7 +18,7 @@
 #include <arpa/inet.h>
 
 #include "nameserver.h"
-#include "tscounter.h"
+//#include "tscounter.h"
 #include "getport.h"
 
 #define PORT 50050
@@ -115,7 +115,9 @@ static int getDNS_Data(char *message)
 	while(token != NULL)
 	{
 		int x = strlen(token);
-		strcat(convMess, (char)x);
+		char temp[2];
+		sprintf(temp,"%c",(char)x);
+		strcat(convMess, temp);
 		strcat(convMess, token);
 		token = strtok(NULL, ".");
 	}
