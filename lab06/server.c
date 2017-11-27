@@ -61,7 +61,7 @@ static void push(char * ip, char * name) {
 }
 
 static void Print(int connfd) {
-	struct Node* temp = serv;
+	services_t* temp = serv;
 	printf("cache contents:\n");
 	write(connfd, "cache contents:\n", strlen("cache contents:\n"));
 	while(temp != NULL) {
