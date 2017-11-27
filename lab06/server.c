@@ -256,10 +256,10 @@ int main(int argc, char *argv[])
 				{
 					conn_t data;
 					data.connfd = connfd;
-					data.message = message;
-					getDNS_Data(message);
+					strcpy(data.message, message);
 					//pthread_create(*thread, *attr, &runThread, connfd);
 					//runThread(&data);
+					getDNS_Data(message, connfd);
 				}
 			}
             else
