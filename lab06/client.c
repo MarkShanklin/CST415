@@ -41,7 +41,7 @@ int main(int argc, char *argv[])
 	memset(&serv_addr, '0', sizeof(serv_addr));
 	getaddrinfo("unix.cset.oit.edu", NULL, NULL, &addr);
 	
-	memccpy(&serv_addr, addr->ai_addr, addr->ai_addrlen);
+	memcpy(&serv_addr, addr->ai_addr, addr->ai_addrlen);
 
 	while( exitVal == 0)
 	{		
