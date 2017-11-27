@@ -28,16 +28,150 @@ typedef enum {false,true} bool;
 static char serviceName[MAX_SERVICE_NAME_LEN + 1] = "MarkOne";
 static int port;
 
-typedef struct {
-	char serviceIP[];
+typedef struct node{
+	char serviceIP[16];
 	char serviceName[MAX_SERVICE_NAME_LEN + 1];
+	struct node *next;
+	struct node *prev;
 } services_t;
 
-static services_t serv[256];
+static services_t *serv;
+
+static services_t* GetNewNode(char ip, char name)
+{
+	services_t* newNode
+		= (services_t*)malloc(sizeof(services_t));
+	newNode->serviceIP = ip;
+	newNode->serviceName = name;
+	newNode->prev = NULL;
+	newNode->next = NULL;
+	return newNode;
+}	
+
+static void push(char ip, char name) {
+	services_t* temp = head;
+	services_t* newNode = GetNewNode(ip,name);
+	if(head == NULL) {
+		head = newNode;
+		return;
+	}
+	while(temp->next != NULL) temp = temp->next; // Go To last Node
+	temp->next = newNode;
+	newNode->prev = temp;
+}
+
+static void Print(int connfd) {
+	struct Node* temp = serv;
+	printf("cache contents:\n");
+	write(connfd, "cache contents:\n", strlen("cache contents:\n"));
+	while(temp != NULL) {
+		printf("%s-%s\n",temp->serviceName, temp->serviceIP);
+		write(connfd, temp->serviceName, strlen(temp->serviceName));
+		write(connfd, "-", strlen("-"));
+		write(connfd, temp->serviceIP, strlen(temp->serviceIP));
+		write(connfd, "\n", strlen("\n"));
+		temp = temp->next;
+	}
+	//database now
+}
+
+typedef struct {
+	uint16_t id;
+	unsigned char rd : 1, tc : 1, aa : 1, op : 3, qr : 1;
+	unsigned char rc : 4, zz : 3, ra : 1;
+	uint16_t qd, an, ns, ar;	
+} dnsHeader_t;
+
+typedef struct {
+	uint16_t tp, cl;
+	uint32_t tl;
+	uint16_t rl;
+} dnsRecord_t;
+
+typedef struct {
+	uint16_t qt, qc;
+} dnsQuestion_t;
+
+static int getDNS_Data(char *message)
+{
+	char dnsdata[65536];
+	memset(dnsdata, 0, sizeof(dnsdata));
+	
+	dnsHeader_t *header;
+	dnsRecord_t *record;
+	dnsQuestion_t *question;
+	
+	header = (dnsHeader_t*)&dnsdata[0];
+	header->id = htons((uint16_t)connfd); //change to unique
+	header->rd = 1;
+	header-->qd = htons(1);
+	
+	char* token;// = &dnsdata[sizeof(dnsHeader_t)];
+	
+	token = strtok(message, ".");
+	char convMess[strlen(message)+2];
+	
+	while(token != NULL)
+	{
+		int x = strlen(token);
+		strcat(convMess, &((char)x));
+		strcat(convMess, token);
+		token = strtok(NULL, ".");
+	}
+	for(int i = 0; i < strlen(convMess); i++)
+	{
+		if((int)convMess[i] < 60)
+		{
+			printf("%d", (int)convMess[i]);
+		}
+		else
+		{
+			printf("%c", convMess[i]);
+		}
+	}
+	printf("\n");
+	//if DNS does not reply soon enough
+						//try again (only once)
+					//while DNS data is another DNS
+						//ask new DNS for data
+						//add new DNS to list of DNS's
+	//reply with IP address or "failure"
+}
+
+static void* runThread(void * data)
+{
+	int connfd = (int)*data;
+	//assume text is to be resolved
+	//check cache data struct 
+	services_t * travel = serv;
+	while(travel != NULL && strcmp(travel->serviceName, message) != 0)
+	{
+							travel = travel->next;
+	}
+	if(travel != NULL)
+	{
+		//reply with IP address
+		write(connfd, travel->serviceIP, 16);
+	}
+	else
+	{
+		//if data not in cache
+		//ask closest DNS for data
+		getDNS_Data(message);
+		//send reply data to client
+		write(connfd, message, strlen(message));
+	}
+	//close connection
+	close(connfd);
+	//close thread
+	//pthread_exit(EXIT_SUCCESS);
+}
 
 int main(int argc, char *argv[])
 {	//translate "-n nameserver" (getaddrinfo)
-	
+	getDNS_Data("www.google.com");
+/* 	
+	getaddrinfo("8.8.8.8");
     //initialization the name server
     setup_ns(NULL, PORT);
     tsc_reset();
@@ -59,10 +193,10 @@ int main(int argc, char *argv[])
     printf("\nBound to port: %d", bound);
 
     char message[1024];
-    memset(message, '0', sizeof(message)); 
+    memset(message, 0, sizeof(message)); 
     socklen_t recvLen = sizeof(recvAddr);
     int numRead;
-    bool Run = true;
+	bool Run = true;
 	
 	//listen for incoming connections
     listen(listenfd, 10);
@@ -75,64 +209,49 @@ int main(int argc, char *argv[])
 			//recieve request
             numRead= read(connfd, &message, sizeof(message));
 			//create new thread
-            if(numRead > -1)
+			if(numRead > -1)
             {
-                if (strcmp("exit", message) == 0)
-                {
-                    //exit
-                    release_port();
-                    tsc_decrement();
-                }
+				if (strcmp("exit", message) == 0)
+				{
+					//exit
+					close(connfd);
+					tsc_decrement();
+				}
 				else if(strcmp("dump", message) == 0)
 				{
-					//dump database contents to client (human readable)
+					Print(connfd);
 				}
 				else if(strcmp("verbose", message) == 0)
 				{
 					//toggle verbose flag to true, reply successful
+					write(connfd,"SUCCESS", strlen("SUCCESS"));
 				}
 				else if(strcmp("normal", message) == 0)	
 				{
 					//toggle verbose flag to false, reply successful
+					write(connfd,"SUCCESS", strlen("SUCCESS"));
 				}
-                else if(strcmp("shutdown", message) == 0)
-                {
-                    //toggle shutdown flag to true 
-					tsc_reset();
-                    Run = false;
-					//reply successful
-                }
-                else
-                {
-				//assume text is to be resolved
-				//check cache data struct 
-				for(int i = 0; i < 256; i++)
+				else if(strcmp("shutdown", message) == 0)
 				{
-					strcmp(serv[i].serviceIP, message);
+					//toggle shutdown flag to true 
+					tsc_reset();
+					close(connfd);
+					Run = false;
+					//reply successful
 				}
-				//if data not in cache
-					//ask closest DNS for data
-					//if DNS does not reply soon enough
-						//try again (only once)
-					//while DNS data is another DNS
-						//ask new DNS for data
-						//add new DNS to list of DNS's
-                }
-				//reply with IP address or "failure"
-				//send reply data to client
-				//while not done sending data
-					//send more reply data to client
-            }
+				else
+				{
+					//pthread_create(*thread, *attr, &runThread, connfd);
+					runThread(connfd);
+				}
+			}
             else
             {
                 fprintf(ftderr,"ERROR");
             }
-			//close thread
-			//close connection
-            close(connfd);
         }
     }
 	//clean up data structures
-    release_port(serviceName, port);
+    release_port(serviceName, port); */
     return 0;
 }
