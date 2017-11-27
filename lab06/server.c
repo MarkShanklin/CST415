@@ -157,7 +157,7 @@ static void* runThread(void * data)
 	//assume text is to be resolved
 	//check cache data struct 
 	services_t * travel = serv;
-	while(travel != NULL && strcmp(travel->serviceName, message) != 0)
+	while(travel != NULL && strcmp(travel->serviceName, temp->message) != 0)
 	{
 							travel = travel->next;
 	}
