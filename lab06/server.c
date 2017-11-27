@@ -97,7 +97,7 @@ typedef struct {
 	uint16_t qt, qc;
 } dnsQuestion_t;
 
-static int getDNS_Data(char *message)
+static int getDNS_Data(char *message, int connfd)
 {
 	char dnsdata[65536];
 	char convMess[strlen(message)+2];
@@ -170,7 +170,7 @@ static void* runThread(void * data)
 	{
 		//if data not in cache
 		//ask closest DNS for data
-		getDNS_Data(temp.message);
+		getDNS_Data(temp.message, temp.connfd);
 		//send reply data to client
 		write(temp.connfd, temp.message, strlen(temp.message));
 	}
