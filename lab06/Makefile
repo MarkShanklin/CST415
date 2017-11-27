@@ -1,36 +1,43 @@
-############################################################
-# File Name     : Makefile
-# Purpose       : DNS Resolver  
-# Creation Date : 11-15-2017
-# Created By    : Mark Shanklin 
-############################################################
+#**************************************************
+# Makefile for OIT lab
+# 
+# Created By: Mark Shanklin
+# Email: mark.shanklin@oit.edu
+# Date: Sept 27, 2016
+# 
+CC = gcc
+COPTS = -g -O0 -Wall -std=gnu11
+PROG = DNS_server
+PROG2 = DNS_client
+PROG3 = clearport
 
-CC = gcc -g -std=gnu11
-CFLAGS = -Wall 
-PROG = labSix
-SOURCES := $(shell echo *.c)
-DEPS := $(shell echo *.h)
-OBJECTS = $(SOURCES:.c=.o)
-DEPENDS = depends.mk
-$(shell touch ${DEPENDS})
+SOURCES = $(PROG).c
+SOURCES2 = $(PROG2).c
+SOURCES3 = $(PROG3).c
+DEPS = *.h
 
 LAB := $(shell basename ${PWD})
 TAR_FILE := $(LAB)_${LOGNAME}.tar
 
-all: depends $(PROG)
+all: $(PROG) $(PROG2) $(PROG3)
 
-$(PROG): $(OBJECTS)
-	$(CC) $(CFLAGS) -o $@ $^
+.c.o:
+	$(CC) $(COPTS) -c $? -o $@
 
-.PHONY: clean
+$(PROG): $(SOURCES) $(DEPS)
+	$(CC) $(COPTS) -o $@ $(SOURCES)
+
+$(PROG2): $(SOURCES2) $(DEPS)
+	$(CC) $(COPTS) -o $@ $(SOURCES2)
+
+$(PROG3): $(SOURCES3) $(DEPS)
+	$(CC) $(COPTS) -o $@ $(SOURCES3)
 
 clean:
-	rm -f $(PROG) *.o $(DEPENDS)
-
-include $(DEPENDS)
-
-depends:
-	gcc -MM $(SOURCES) > $(DEPENDS)
+	rm -f $(PROG)
+	rm -f $(PROG2)
+	rm -f $(PROG3)
+	rm -f *.o
 
 tar:
 	rm -f $(TAR_FILE)
