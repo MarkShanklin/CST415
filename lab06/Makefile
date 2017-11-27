@@ -7,8 +7,8 @@
 # 
 CC = gcc
 COPTS = -g -O0 -Wall -std=gnu11
-PROG = DNS_server
-PROG2 = DNS_client
+PROG = server
+PROG2 = client
 PROG3 = clearport
 
 SOURCES = $(PROG).c
