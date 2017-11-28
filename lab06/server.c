@@ -113,7 +113,7 @@ static int getDNS_Data(char *message, int connfd)
 
 	place.sin_family = AF_INET;
 	place.sin_port = htons(53);
-	place.sin_addr.S_addr = inet_addr("8.8.8.8"); //need to be in the database
+	place.sin_addr.s_addr = inet_addr("8.8.8.8"); //need to be in the database
 
  	dnsHeader_t *header;
 	dnsRecord_t *record;
