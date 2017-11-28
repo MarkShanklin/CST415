@@ -27,6 +27,7 @@
 typedef enum {false,true} bool;
 static char serviceName[MAX_SERVICE_NAME_LEN + 1] = "MarkOne1";
 static int port;
+static char IP[16];
 
 typedef struct node{
 	char serviceIP[16];
@@ -142,8 +143,8 @@ static int getDNS_Data(char *message, int connfd)
 		}
 	}
 	printf("\n"); 
-	write(connfd,convMess, sizeof(convMess));
-	close(connfd);
+	//write(connfd,convMess, sizeof(convMess));
+	//close(connfd);
 	//if DNS does not reply soon enough
 						//try again (only once)
 					//while DNS data is another DNS
@@ -185,9 +186,29 @@ static void* runThread(void * data)
 }
 
 int main(int argc, char *argv[])
-{	//translate "-n nameserver" (getaddrinfo)
-	struct addrinfo *addr;	
-	getaddrinfo("8.8.8.8",NULL,NULL, &addr);
+{	
+	//used to handle comand line argurements.
+	int command = 0;
+	 
+	//command line parsing.
+    while ((command = getopt(argc, argv, "n:h")) != -1) 
+    {
+        switch (command)
+        {
+        case 'n':
+        	strcpy(IP, optarg);
+            break;
+        case 'h':
+            printf("This program is a DNS resolver.\n\n"
+                   "-n \t<nameserver>\n");
+            break;
+        case '?':
+            break;
+        }
+    }
+	//translate "-n nameserver" (getaddrinfo)
+	//struct addrinfo *addr;	
+	//getaddrinfo("8.8.8.8",NULL,NULL, &addr);
     //initialization the name server
     setup_ns(NULL, PORT);
     tsc_reset();
