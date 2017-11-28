@@ -105,6 +105,7 @@ static int getDNS_Data(char *message, int connfd)
 	int len = 0;
 	memset(dnsdata, 0, sizeof(dnsdata));
 	memset(convMess, 0, sizeof(convMess));
+	memset(temp, 0, sizeof(temp));
 
  	dnsHeader_t *header;
 	dnsRecord_t *record;
@@ -142,7 +143,7 @@ static int getDNS_Data(char *message, int connfd)
 	}
 	printf("\n"); 
 	write(connfd,convMess, sizeof(convMess));
-
+	close(connfd);
 	//if DNS does not reply soon enough
 						//try again (only once)
 					//while DNS data is another DNS
