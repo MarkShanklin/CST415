@@ -256,7 +256,7 @@ int main(int argc, char *argv[])
 				{
 					//toggle shutdown flag to true 
 					tsc_reset();
-					write(connfd,"shutdown", strlen("shutdown"))
+					write(connfd,"shutdown", strlen("shutdown"));
 					close(connfd);
 					Run = false;
 					//reply successful
