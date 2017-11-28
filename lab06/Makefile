@@ -12,7 +12,7 @@ PROG2 = client
 
 SOURCES = $(PROG).c
 SOURCES2 = $(PROG2).c
-DEPS = nameserver.h getport.o tscounter.o
+DEPS = getport.o tscounter.o addr2str.o nameserver.h
 
 LAB := $(shell basename ${PWD})
 TAR_FILE := $(LAB)_${LOGNAME}.tar
