@@ -218,7 +218,7 @@ int main(int argc, char *argv[])
     {
         if(tsc_value() < MAX_CONS)
         {
-            int connfd = accept(listenfd, (struct sockaddr*)NULL, NULL);
+            int connfd = accept(listenfd, (struct sockaddr*)&recvAddr, &recvLen);
 			//recieve request
             numRead= read(connfd, &message, sizeof(message));
 			//create new thread
