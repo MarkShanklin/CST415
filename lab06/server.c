@@ -221,6 +221,7 @@ int main(int argc, char *argv[])
     {
         if(tsc_value() < MAX_CONS)
         {
+			memset(message, 0, sizeof(message));
             int connfd = 
 			accept(listenfd, (struct sockaddr*)&recvAddr, &recvLen);
 			//recieve request
