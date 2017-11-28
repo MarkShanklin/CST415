@@ -102,7 +102,8 @@ static int getDNS_Data(char *message, int connfd)
 {
 	int fd = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
 	char dnsdata[65536];
-	char temp[65536];
+	char retMsg[256];
+	char strIP[16];
 	char convMess[strlen(message)+2];
 	char temp[2];
 	int len = 0;
@@ -192,21 +193,28 @@ static int getDNS_Data(char *message, int connfd)
 		rData = (unsigned char*)&dnsdata[offset + sizeof(dnsRecord_t) + 
 		strlen((char*)rName)];
 	}
-	memset(temp,0,sizeof(temp));
+	memset(retMsg,0,sizeof(retMsg));
 	printf("Offset data - %d:\n", offset);
 	for(int i = 0; buff[i + offset] != 0; i++)
 	{
-		temp[i] = buff[i + offset];
+		retMsg[i] = buff[i + offset];
 	}
-	translate((char*)temp);
-	printf("Name:\t%s\n", temp);
+	translate((char*)retMsg);
+	printf("Name:\t%s\n", retMsg);
 	printf("Type:\t%s\n", ntohs(recdata->tp));
 	printf("Class:\t%s\n", ntohs(recdata->cl));
 	printf("TTL:\t%s\n", ntohs(recdata->tl));
 	printf("Len:\t%s\n", ntohs(recdata->rl));
 	printf("Data:\t");
 
-	write(connfd,"SUCCESS", sizeof("SUCCESS"));
+	//do more stuff
+	if(ntohs(recdata->tp) == 1)
+	{
+		sprintf(char*)retMsg, "%d", (unit8_t)rdata[0]);
+		strcat(char*)strIP, (char*)retMsg);
+		//do more stuff
+	}
+	write(connfd,retmsg, sizeof(retmsg));
 	close(connfd);
 	//if DNS does not reply soon enough
 						//try again (only once)
