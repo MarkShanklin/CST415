@@ -102,6 +102,7 @@ static int getDNS_Data(char *message, int connfd)
 {
 	int fd = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
 	char dnsdata[65536];
+	char temp[65536];
 	char convMess[strlen(message)+2];
 	char temp[2];
 	int len = 0;
@@ -191,7 +192,19 @@ static int getDNS_Data(char *message, int connfd)
 		rData = (unsigned char*)&dnsdata[offset + sizeof(dnsRecord_t) + 
 		strlen((char*)rName)];
 	}
-
+	memset(temp,0,sizeof(temp));
+	printf("Offset data - %d:\n", offset);
+	for(int i = 0; buff[i + offset] != 0; i++)
+	{
+		temp[i] = buff[i + offset];
+	}
+	translate((char*)temp);
+	printf("Name:\t%s\n", temp);
+	printf("Type:\t%s\n", ntohs(recdata->tp));
+	printf("Class:\t%s\n", ntohs(recdata->cl));
+	printf("TTL:\t%s\n", ntohs(recdata->tl));
+	printf("Len:\t%s\n", ntohs(recdata->rl));
+	printf("Data:\t");
 
 	write(connfd,"SUCCESS", sizeof("SUCCESS"));
 	close(connfd);
@@ -203,6 +216,53 @@ static int getDNS_Data(char *message, int connfd)
 	//reply with IP address or "failure"
 	return EXIT_SUCCESS;
 }
+
+int translate(char* msg)
+{
+	char translated[256];
+	memset(translated, 0, 256);
+	int count = 0;
+	for(int i = 0; msg[i] != 0; i++)
+	{
+		count = (uint8_t)msg[i];
+		for(int j = 0; j < count; j++, i++)
+		{
+			translated[i] = msg[i + 1];
+		}
+		translated[i] = '.';
+		count = i;
+	}
+	translated[count] = 0;
+	memset(msg, 0, 256);
+	sprintf(msg,"%s", translated);
+
+	return 0;
+}
+
+int checkCache(char* msg, int connfd)
+{
+	bool found = false;
+	services_t* temp = serv;
+	while(temp != NULL && found == false) {
+		if(strcmp(msg,temp->serviceName) == 0)
+		{
+			write(connfd, temp->serviceIP, strlen(temp->serviceIP));
+			found = true;
+		}
+		//printf("%s-%s\n",temp->serviceName, temp->serviceIP);
+		//write(connfd, temp->serviceName, strlen(temp->serviceName));
+		//write(connfd, "-", strlen("-"));
+		//write(connfd, temp->serviceIP, strlen(temp->serviceIP));
+		//write(connfd, "\n", strlen("\n"));
+		temp = temp->next;
+	}
+	if(found == false)
+	{
+		getDNS_Data(msg, connfd);
+	}
+	return 0;
+}
+
 
 static void* runThread(void * data)
 {
