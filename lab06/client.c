@@ -37,7 +37,7 @@ int main(int argc, char *argv[])
 	
 	setup_ns(NULL, PORT);
 	port = lookup_port(serviceName);
-	
+	printf("%d\n", port);
 	memset(&serv_addr, '0', sizeof(serv_addr));
 	getaddrinfo("unix.cset.oit.edu", NULL, NULL, &addr);
 	
