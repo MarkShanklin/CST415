@@ -159,8 +159,20 @@ static int getDNS_Data(char *message, int connfd)
 	strlen(convMess)+1+sizeof(dnsQuestion_t), 0, 
 	(struct sockaddr*)&place, sizeof(place));
 
-	//write(fd,dnsdata, sizeof(convMess));
-	//close(connfd);
+	int leng = sizeof(place);
+	recvfrom(fd, (char*)dnsdata, sizeof(dnsdata), 0, 
+	(struct sockaddr*)&place,(socklen_t*)&leng);
+
+	header = (dnsHeader_t*)dnsdata;
+
+	printf("Responce header:\n\n");
+	printf("Questions:\n %d\n", ntohs(header->qd));
+	printf("Answers:\n %d\n", ntohs(header->an));
+	printf("Authoritative Servers:\n %d\n", ntohs(header->ns));
+	printf("Additional Records:\n %d\n", ntohs(header->ar));
+
+	write(connfd,"SUCCESS", sizeof("SUCCESS"));
+	close(connfd);
 	//if DNS does not reply soon enough
 						//try again (only once)
 					//while DNS data is another DNS
