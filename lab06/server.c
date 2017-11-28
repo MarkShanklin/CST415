@@ -210,7 +210,6 @@ int main(int argc, char *argv[])
 	struct addrinfo *addr;	
 	getaddrinfo(IP,NULL,NULL, &addr);
 	push(&addr->ai_addr->sa_data, &IP);
-	addr->
     //initialization the name server
     setup_ns(NULL, PORT);
     tsc_reset();
