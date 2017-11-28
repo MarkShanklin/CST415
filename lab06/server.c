@@ -179,8 +179,10 @@ static int getDNS_Data(char *message, int connfd)
 	dnsRecord_t * recdata; 
 	unsigned char* rName;
 	unsigned char* rData; 
-	offset = sizeof(dnsHeader_t)+strlen(convMess)+1+sizeof(dnsQuestion_t)+
-	sizeof(dnsRecord_t));
+	offset = (sizeof(dnsHeader_t)
+	+ strlen(convMess) + 1
+	+ sizeof(dnsQuestion_t)
+	+ sizeof(dnsRecord_t));
 
 	if((unit8_t)(rName[0]) >= 192)
 	{
