@@ -210,8 +210,8 @@ static int getDNS_Data(char *message, int connfd)
 	//do more stuff
 	if(ntohs(recdata->tp) == 1)
 	{
-		sprintf(char*)retMsg, "%d", (unit8_t)rdata[0]);
-		strcat(char*)strIP, (char*)retMsg);
+		sprintf((char*)retMsg, "%d", (unit8_t)rdata[0]);
+		strcat((char*)strIP, (char*)retMsg);
 		//do more stuff
 	}
 	write(connfd,retmsg, sizeof(retmsg));
