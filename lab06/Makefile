@@ -23,10 +23,10 @@ all: $(PROG) $(PROG2)
 	$(CC) $(COPTS) -c $? -o $@
 
 $(PROG): $(SOURCES) $(DEPS)
-	$(CC) $(COPTS) -o $@ $(SOURCES)
+	$(CC) $(COPTS) -o $@ $(SOURCES) $(DEPS)
 
 $(PROG2): $(SOURCES2) $(DEPS)
-	$(CC) $(COPTS) -o $@ $(SOURCES2)
+	$(CC) $(COPTS) -o $@ $(SOURCES2) $(DEPS)
 
 clean:
 	rm -f $(PROG)
