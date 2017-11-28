@@ -197,9 +197,9 @@ static int getDNS_Data(char *message, int connfd)
 	}
 	memset(retMsg,0,sizeof(retMsg));
 	printf("Offset data - %d:\n", offset);
-	for(int i = 0; buff[i + offset] != 0; i++)
+	for(int i = 0; dnsdata[i + offset] != 0; i++)
 	{
-		retMsg[i] = buff[i + offset];
+		retMsg[i] = dnsdata[i + offset];
 	}
 	translate((char*)retMsg);
 	printf("Name:\t%s\n", retMsg);
