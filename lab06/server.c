@@ -127,19 +127,23 @@ static int getDNS_Data(char *message, int connfd)
 		strcat(convMess, token);
 		token = strtok(NULL, ".");
 	}
-	/*
+	
+	
 	for(int i = 0; i < strlen(convMess); i++)
 	{
 		if((int)convMess[i] < 60)
 		{
 			printf("%d", (int)convMess[i]);
+			write(connfd,(int)convMess[i], 1);
 		}
 		else
 		{
 			printf("%c", convMess[i]);
+			write(connfd,convMess[i], 1);
 		}
 	}
-	printf("\n"); */
+	printf("\n"); 
+	write(connfd,"\n", 1);
 
 	//if DNS does not reply soon enough
 						//try again (only once)
@@ -225,15 +229,18 @@ int main(int argc, char *argv[])
 			//create new thread
 			if(numRead > -1)
             {
+				printf("message: %s\n", message);
 				if (strcmp("exit", message) == 0)
 				{
 					//exit
+					write(connfd,"SUCCESS", strlen("SUCCESS"));
 					close(connfd);
 					tsc_decrement();
 				}
 				else if(strcmp("dump", message) == 0)
 				{
 					Print(connfd);
+					write(connfd,"SUCCESS", strlen("SUCCESS"));
 				}
 				else if(strcmp("verbose", message) == 0)
 				{
