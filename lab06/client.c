@@ -63,7 +63,7 @@ int main(int argc, char *argv[])
 		memset(serviceName, '0', sizeof(serviceName));
 		fgets(serviceName,sizeof(serviceName),stdin);
 		//write(TCP)
-		service_name[strlen(service_name) -1] = 0;
+		serviceName[strlen(serviceName) -1] = 0;
 		write(sockfd, serviceName, strlen(serviceName));
 		n = 0;
 		
