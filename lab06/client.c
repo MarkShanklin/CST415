@@ -31,7 +31,7 @@ static int port;
 int main(int argc, char *argv[])
 {
     int sockfd = 0, n = 0, exitVal = 0;
-    char recvBuff[1024];
+    char recvBuff[MAX_SERVICE_NAME_LEN + 1];
     struct sockaddr_in serv_addr;
 	struct addrinfo *addr;
 	
