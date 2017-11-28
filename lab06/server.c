@@ -212,7 +212,7 @@ static int getDNS_Data(char *message, int connfd)
 	//do more stuff
 	if(ntohs(recdata->tp) == 1)
 	{
-		sprintf((char*)retMsg, "%d", (uint8_t)rdata[0]);
+		sprintf((char*)retMsg, "%d", (uint8_t)rData[0]);
 		strcat((char*)strIP, (char*)retMsg);
 		//do more stuff
 	}
