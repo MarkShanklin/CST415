@@ -134,16 +134,14 @@ static int getDNS_Data(char *message, int connfd)
 		if((int)convMess[i] < 60)
 		{
 			printf("%d", (int)convMess[i]);
-			write(connfd,(int)convMess[i], 1);
 		}
 		else
 		{
 			printf("%c", convMess[i]);
-			write(connfd,convMess[i], 1);
 		}
 	}
 	printf("\n"); 
-	write(connfd,"\n", 1);
+	write(connfd,convMess, sizeof(convMess));
 
 	//if DNS does not reply soon enough
 						//try again (only once)
