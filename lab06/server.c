@@ -25,7 +25,7 @@
 #define MAX_CONS 5
 
 typedef enum {false,true} bool;
-static char serviceName[MAX_SERVICE_NAME_LEN + 1] = "MarkOne";
+static char serviceName[MAX_SERVICE_NAME_LEN + 1] = "MarkOne1";
 static int port;
 
 typedef struct node{
