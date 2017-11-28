@@ -105,6 +105,7 @@ static int getDNS_Data(char *message, int connfd)
 	char convMess[strlen(message)+2];
 	char temp[2];
 	int len = 0;
+	int offset = 0;
 	memset(dnsdata, 0, sizeof(dnsdata));
 	memset(convMess, 0, sizeof(convMess));
 	memset(temp, 0, sizeof(temp));
@@ -159,6 +160,8 @@ static int getDNS_Data(char *message, int connfd)
 	strlen(convMess)+1+sizeof(dnsQuestion_t), 0, 
 	(struct sockaddr*)&place, sizeof(place));
 
+	memset(dnsdata, 0, sizeof(dnsdata));
+
 	int leng = sizeof(place);
 	recvfrom(fd, (char*)dnsdata, sizeof(dnsdata), 0, 
 	(struct sockaddr*)&place,(socklen_t*)&leng);
@@ -169,7 +172,26 @@ static int getDNS_Data(char *message, int connfd)
 	printf("Questions:\n %d\n", ntohs(header->qd));
 	printf("Answers:\n %d\n", ntohs(header->an));
 	printf("Authoritative Servers:\n %d\n", ntohs(header->ns));
-	printf("Additional Records:\n %d\n", ntohs(header->ar));
+	printf("Additional Records:\n %d\n\n", ntohs(header->ar));
+
+	dnsRecord_t * recdata; 
+	unsigned char* rName;
+	unsigned char* rData; 
+	offset = sizeof(dnsHeader_t)+strlen(convMess)+1+sizeof(dnsQuestion_t)+
+	sizeof(dnsRecord_t));
+
+	if((unit8_t)(rName[0]) >= 192)
+	{
+		recdata = (dnsRecord_t*)&dnsdata[offset + 2];
+		rData = (unsigned char*)&dnsdata[offset + sizeof(dnsRecord_t)];
+		offset = (unit8_t)rName[1];
+	}else
+	{
+		recdata = (dnsRecord_t*)&dnsdata[offset + strlen((char*)rName)]; 
+		rData = (unsigned char*)&dnsdata[offset + sizeof(dnsRecord_t) + 
+		strlen((char*)rName)];
+	}
+
 
 	write(connfd,"SUCCESS", sizeof("SUCCESS"));
 	close(connfd);
