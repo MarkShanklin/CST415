@@ -203,7 +203,7 @@ int main(int argc, char *argv[])
     serverAddr.sin_port = htons(port);
     bind(listenfd, (struct sockaddr*)&serverAddr, sizeof(serverAddr));
     int bound = sock2port(listenfd);
-    printf("\nBound to port: %d", bound);
+    printf("\nBound to port: %d\n", bound);
 
     char message[1024];
     memset(message, 0, sizeof(message)); 
