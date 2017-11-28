@@ -214,7 +214,7 @@ static int getDNS_Data(char *message, int connfd)
 		strcat((char*)strIP, (char*)retMsg);
 		//do more stuff
 	}
-	write(connfd,retmsg, sizeof(retmsg));
+	write(connfd,retMsg, sizeof(retMsg));
 	close(connfd);
 	//if DNS does not reply soon enough
 						//try again (only once)
