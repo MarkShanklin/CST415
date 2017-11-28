@@ -184,11 +184,11 @@ static int getDNS_Data(char *message, int connfd)
 	+ sizeof(dnsQuestion_t)
 	+ sizeof(dnsRecord_t));
 
-	if((unit8_t)(rName[0]) >= 192)
+	if((uint8_t)(rName[0]) >= 192)
 	{
 		recdata = (dnsRecord_t*)&dnsdata[offset + 2];
 		rData = (unsigned char*)&dnsdata[offset + sizeof(dnsRecord_t)];
-		offset = (unit8_t)rName[1];
+		offset = (uint8_t)rName[1];
 	}else
 	{
 		recdata = (dnsRecord_t*)&dnsdata[offset + strlen((char*)rName)]; 
@@ -212,7 +212,7 @@ static int getDNS_Data(char *message, int connfd)
 	//do more stuff
 	if(ntohs(recdata->tp) == 1)
 	{
-		sprintf((char*)retMsg, "%d", (unit8_t)rdata[0]);
+		sprintf((char*)retMsg, "%d", (uint8_t)rdata[0]);
 		strcat((char*)strIP, (char*)retMsg);
 		//do more stuff
 	}
