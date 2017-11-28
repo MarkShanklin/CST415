@@ -100,6 +100,7 @@ typedef struct {
 
 static int getDNS_Data(char *message, int connfd)
 {
+	int fd = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
 	char dnsdata[65536];
 	char convMess[strlen(message)+2];
 	char temp[2];
@@ -107,6 +108,12 @@ static int getDNS_Data(char *message, int connfd)
 	memset(dnsdata, 0, sizeof(dnsdata));
 	memset(convMess, 0, sizeof(convMess));
 	memset(temp, 0, sizeof(temp));
+
+	struct sockaddr_in place;
+
+	place.sin_family = AF_INET;
+	place.sin_port = htons(53);
+	place.sin_addr.S_addr = inet_addr("8.8.8.8"); //need to be in the database
 
  	dnsHeader_t *header;
 	dnsRecord_t *record;
@@ -132,7 +139,8 @@ static int getDNS_Data(char *message, int connfd)
 	
 	
 	for(int i = 0; i < strlen(convMess); i++)
-	{
+	{ 
+		dnsdata[sizeof(dnsHeader_t)+ i] = convMess[i];
 		if((int)convMess[i] < 60)
 		{
 			printf("%d", (int)convMess[i]);
@@ -143,7 +151,15 @@ static int getDNS_Data(char *message, int connfd)
 		}
 	}
 	printf("\n"); 
-	//write(connfd,convMess, sizeof(convMess));
+	question = (dnsQuestion_t*)&dnsdata[sizeof(dnsHeader_t)+strlen(convMess)+1];
+	question->qt = htons(1);
+	question->qc = htons(1);
+
+	sendto(fd, (char*)dnsdata, sizeof(dnsHeader_t)+
+	strlen(convMess)+1+sizeof(dnsQuestion_t), 0, 
+	(struct sockaddr*)&place, sizeof(place));
+
+	//write(fd,dnsdata, sizeof(convMess));
 	//close(connfd);
 	//if DNS does not reply soon enough
 						//try again (only once)
