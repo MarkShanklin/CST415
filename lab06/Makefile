@@ -35,4 +35,4 @@ clean:
 
 tar:
 	rm -f $(TAR_FILE)
-	tar cvf $(TAR_FILE) *.[ch] [Mm]akefile
+	tar -cvf $(TAR_FILE) *.[ch] [Mm]akefile
