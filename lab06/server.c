@@ -217,7 +217,11 @@ int main(int argc, char *argv[])
 {	
 	//used to handle comand line argurements.
 	int command = 0;
-	 
+	 if(argc < 3)
+	 {
+		printf("-n \t<nameserver> is required.\n");
+		return EXIT_FAILURE;
+	 }
 	//command line parsing.
     while ((command = getopt(argc, argv, "n:h")) != -1) 
     {
