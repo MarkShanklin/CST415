@@ -59,7 +59,7 @@ int main(int argc, char *argv[])
 		   return EXIT_FAILURE;
 		}
 		//fgets(stdin)
-		fprintf(stdout, "Enter URL: ");
+		fprintf(stdout, "\nEnter URL: ");
 		memset(serviceName, '0', sizeof(serviceName));
 		fgets(serviceName,sizeof(serviceName),stdin);
 		//write(TCP)
