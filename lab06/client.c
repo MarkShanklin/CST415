@@ -72,7 +72,7 @@ int main(int argc, char *argv[])
 		while ((n = read(sockfd, recvBuff, sizeof(recvBuff)-1)) > 0)
 		{
 			recvBuff[n] = 0;
-			if(strcmp(recvBuff, "Shutdown") == 0)
+			if(strcmp(recvBuff, "shutdown") == 0)
 			{
 				exitVal = 1;
 			}
