@@ -122,7 +122,7 @@ static int getDNS_Data(char *message, int connfd)
 	place.sin_addr.s_addr = inet_addr("8.8.8.8"); //need to be in the database
 
  	dnsHeader_t *header;
-	dnsRecord_t *record;
+	dnsRecord_t * recdata;
 	dnsQuestion_t *question;
 	
 	header = (dnsHeader_t*)&dnsdata[0];
@@ -179,7 +179,6 @@ static int getDNS_Data(char *message, int connfd)
 	printf("Authoritative Servers:\n %d\n", ntohs(header->ns));
 	printf("Additional Records:\n %d\n\n", ntohs(header->ar));
 
-	dnsRecord_t * recdata; 
 	char* rName;
 	char* rData; 
 	offset = 
