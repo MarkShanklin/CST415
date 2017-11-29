@@ -316,9 +316,9 @@ static int getDNS_Data(char *message, int connfd)
 	return 0;
 } */
 
-static void* runThread(void * data)
+static void* runThread(char* message, int connfd)
 {
-	conn_t * temp = (conn_t*)data;
+	//conn_t * temp = (conn_t*)data;
 	
 	//assume text is to be resolved
 	//check cache data struct 
@@ -335,14 +335,14 @@ static void* runThread(void * data)
 	if(found == true)
 	{
 		//reply with IP address
-		write(temp->connfd, travel->serviceIP, 16);
-		close(temp->connfd);
+		write(connfd, travel->serviceIP, 16);
+		close(connfd);
 	}
 	else
 	{
 		//if data not in cache
 		//ask closest DNS for data
-		getDNS_Data(temp->message, temp->connfd);
+		getDNS_Data(message, connfd);
 		//send reply data to client
 		//write(temp->connfd, temp->message, strlen(temp->message));
 	}
@@ -463,11 +463,11 @@ int main(int argc, char *argv[])
 				}
 				else
 				{
-					conn_t data;
-					data.connfd = connfd;
-					strcpy(data.message, message);
+					//conn_t data;
+					//data.connfd = connfd;
+					//strcpy(data.message, message);
 					//pthread_create(*thread, *attr, &runThread, connfd);
-					runThread(&data);
+					runThread(message, connfd);
 				}
 			}
             else
