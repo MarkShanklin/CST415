@@ -207,7 +207,7 @@ static int getDNS_Data(char *message, int connfd)
 	}
 
 	translate((char*)temp);
-	sprintf(msg, "%s", (char*)temp);
+	sprintf(message, "%s", (char*)temp);
 
 	printf("Name:\t%s\n", temp);
 	printf("Type:\t%d\n", ntohs(recdata->tp));
