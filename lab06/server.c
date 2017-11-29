@@ -254,7 +254,6 @@ static int getDNS_Data(char *message, int connfd)
 			else if((uint8_t)dnsdata[tempOffset] >= 192)
 			{
 				tempOffset = (uint8_t)dnsdata[tempOffset + 1];
-				recursiveTranslate(tempOffset, tempHolder, dnsdata);
 			}
 			else
 			{
