@@ -131,7 +131,7 @@ static int getDNS_Data(char *message, int connfd)
 	header->qd = htons(1);
 	
 	char* token;// = &dnsdata[sizeof(dnsHeader_t)];
-	char messageCopy[];
+	char messageCopy[sizeof(message)];
 	strcpy(messageCopy, message);
 	token = strtok(messageCopy, ".");
 	
