@@ -57,6 +57,7 @@ typedef struct {
 
 static char serviceName[MAX_SERVICE_NAME_LEN + 1] = "MarkOne1";
 static int port;
+static bool verbose = false;
 static char IP[16];
 static services_t *serviceCache;
 static services_t *database;
@@ -351,7 +352,6 @@ int checkCache(char* msg, int connfd)
 	return 0;
 }
 
-
 static void* runThread(void * data)
 {
 	conn_t * temp = (conn_t*)data;
@@ -367,6 +367,7 @@ static void* runThread(void * data)
 	{
 		//reply with IP address
 		write(temp->connfd, travel->serviceIP, 16);
+		close(temp->connfd);
 	}
 	else
 	{
@@ -374,10 +375,10 @@ static void* runThread(void * data)
 		//ask closest DNS for data
 		getDNS_Data(temp->message, temp->connfd);
 		//send reply data to client
-		write(temp->connfd, temp->message, strlen(temp->message));
+		//write(temp->connfd, temp->message, strlen(temp->message));
 	}
 	//close connection
-	close(temp->connfd);
+	//close(temp->connfd);
 	//close thread
 	//pthread_exit(EXIT_SUCCESS);
 	return temp;
@@ -465,16 +466,22 @@ int main(int argc, char *argv[])
 				{
 					Print(connfd);
 					write(connfd,"SUCCESS", strlen("SUCCESS"));
+					close(connfd);
 				}
 				else if(strcmp("verbose", message) == 0)
 				{
 					//toggle verbose flag to true, reply successful
+					verbose = true;
 					write(connfd,"SUCCESS", strlen("SUCCESS"));
+					close(connfd);
 				}
 				else if(strcmp("normal", message) == 0)	
 				{
+					
 					//toggle verbose flag to false, reply successful
+					verbose = false;
 					write(connfd,"SUCCESS", strlen("SUCCESS"));
+					close(connfd);
 				}
 				else if(strcmp("shutdown", message) == 0)
 				{
