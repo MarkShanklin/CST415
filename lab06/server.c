@@ -191,7 +191,7 @@ static int getDNS_Data(char *message, int connfd)
 		strcat(convMess, token);
 		token = strtok(NULL, ".");
 	}
-	fprintf(stderr, "%s", convMess);
+	fprintf(stderr, "convMess: %s\n", convMess);
 	
 	question = (dnsQuestion_t*)&dnsdata[sizeof(dnsHeader_t)+strlen(convMess)+1];
 	question->qt = htons(1);
@@ -226,12 +226,12 @@ static int getDNS_Data(char *message, int connfd)
 		rData =
 		(char*)&dnsdata[offset + sizeof(dnsRecord_t) + strlen((char*)rName)];
 	}
-	//memset(temp,0,sizeof(temp));
-
+	
 	for(int i = 0; dnsdata[i + offset] != 0; i++)
 	{
 		temp[i] = dnsdata[i + offset];
 	}
+	fprintf(stderr,"temp: %s\n", temp);
 	Translate((char*)temp);
 	sprintf(convMess, "%s", (char*)temp);
 
