@@ -2,7 +2,7 @@
 * File Name     : sever.c
 * Purpose       : DNS Resolver Server
 * Creation Date : 11-21-2017
-* Last Modified : Tue 28 Nov 2017 11:43:34 PM PDT
+* Last Modified : Wed 29 Nov 2017 02:00:03 AM PST
 * Created By    : Mark Shanklin 
 ***********************************************************/
 #include <unistd.h>
@@ -20,6 +20,7 @@
 #include "nameserver.h"
 #include "tscounter.h"
 #include "getport.h"
+#include "addr2str.h"
 
 #define PORT 50050
 #define MAX_CONS 5
