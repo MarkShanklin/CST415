@@ -25,9 +25,6 @@
 #define MAX_CONS 5
 
 typedef enum {false,true} bool;
-static char serviceName[MAX_SERVICE_NAME_LEN + 1] = "MarkOne1";
-static int port;
-static char IP[16];
 
 typedef struct node{
 	char serviceIP[16];
@@ -40,46 +37,6 @@ typedef struct {
 	int connfd;
 	char message[MAX_SERVICE_NAME_LEN + 1];
 } conn_t;
-
-static services_t *serv;
-
-static services_t* GetNewNode(char * ip, char * name)
-{
-	services_t* newNode
-		= (services_t*)malloc(sizeof(services_t));
-	strcpy(newNode->serviceIP,ip);
-	strcpy(newNode->serviceName, name);
-	newNode->prev = NULL;
-	newNode->next = NULL;
-	return newNode;
-}	
-
-static void push(char * ip, char * name) {
-	services_t* temp = serv;
-	services_t* newNode = GetNewNode(ip,name);
-	if(serv == NULL) {
-		serv = newNode;
-		return;
-	}
-	while(temp->next != NULL) temp = temp->next; // Go To last Node
-	temp->next = newNode;
-	newNode->prev = temp;
-}
-
-static void Print(int connfd) {
-	services_t* temp = serv;
-	printf("cache contents:\n");
-	write(connfd, "cache contents:\n", strlen("cache contents:\n"));
-	while(temp != NULL) {
-		printf("%s-%s\n",temp->serviceName, temp->serviceIP);
-		write(connfd, temp->serviceName, strlen(temp->serviceName));
-		write(connfd, "-", strlen("-"));
-		write(connfd, temp->serviceIP, strlen(temp->serviceIP));
-		write(connfd, "\n", strlen("\n"));
-		temp = temp->next;
-	}
-	//database now
-}
 
 typedef struct {
 	uint16_t id;
@@ -98,14 +55,59 @@ typedef struct {
 	uint16_t qt, qc;
 } dnsQuestion_t;
 
+static char serviceName[MAX_SERVICE_NAME_LEN + 1] = "MarkOne1";
+static int port;
+static char IP[16];
+static services_t *serviceCache;
+static services_t *database;
+
+static services_t* GetNewNode(char * ip, char * name)
+{
+	services_t* newNode
+		= (services_t*)malloc(sizeof(services_t));
+	strcpy(newNode->serviceIP,ip);
+	strcpy(newNode->serviceName, name);
+	newNode->prev = NULL;
+	newNode->next = NULL;
+	return newNode;
+}	
+
+static void push(char * ip, char * name) {
+	services_t* temp = serviceCache;
+	services_t* newNode = GetNewNode(ip,name);
+	if(serviceCache == NULL) {
+		serviceCache = newNode;
+		return;
+	}
+	while(temp->next != NULL) temp = temp->next; // Go To last Node
+	temp->next = newNode;
+	newNode->prev = temp;
+}
+
+static void Print(int connfd) {
+	services_t* temp = serviceCache;
+	printf("cache contents:\n");
+	write(connfd, "cache contents:\n", strlen("cache contents:\n"));
+	while(temp != NULL) {
+		printf("%s-%s\n",temp->serviceName, temp->serviceIP);
+		write(connfd, temp->serviceName, strlen(temp->serviceName));
+		write(connfd, "-", strlen("-"));
+		write(connfd, temp->serviceIP, strlen(temp->serviceIP));
+		write(connfd, "\n", strlen("\n"));
+		temp = temp->next;
+	}
+	//database now
+}
+
 static int getDNS_Data(char *message, int connfd)
 {
 	int fd = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
 	char dnsdata[65536];
-	char retMsg[256];
+	char retMsg[65536];
+	char temp[256];
 	char strIP[16];
 	char convMess[strlen(message)+2];
-	char temp[2];
+	char tokenTemp[2];
 	int len = 0;
 	int offset = 0;
 	memset(dnsdata, 0, sizeof(dnsdata));
@@ -134,14 +136,13 @@ static int getDNS_Data(char *message, int connfd)
 	while(token != NULL)
 	{
 		len = strlen(token);		
-		sprintf(temp,"%c",(char)len);
-		strcat(convMess, temp);
+		sprintf(tokenTemp,"%c",(char)len);
+		strcat(convMess, tokenTemp);
 		strcat(convMess, token);
 		token = strtok(NULL, ".");
 	}
 	
-	
-	for(int i = 0; i < strlen(convMess); i++)
+/* 	for(int i = 0; i < strlen(convMess); i++)
 	{ 
 		dnsdata[sizeof(dnsHeader_t)+ i] = convMess[i];
 		if((int)convMess[i] < 60)
@@ -153,7 +154,8 @@ static int getDNS_Data(char *message, int connfd)
 			printf("%c", convMess[i]);
 		}
 	}
-	printf("\n"); 
+	printf("\n"); */ 
+
 	question = (dnsQuestion_t*)&dnsdata[sizeof(dnsHeader_t)+strlen(convMess)+1];
 	question->qt = htons(1);
 	question->qc = htons(1);
@@ -177,32 +179,36 @@ static int getDNS_Data(char *message, int connfd)
 	printf("Additional Records:\n %d\n\n", ntohs(header->ar));
 
 	dnsRecord_t * recdata; 
-	unsigned char* rName;
-	unsigned char* rData; 
-	offset = (sizeof(dnsHeader_t)
-	+ strlen(convMess) + 1
-	+ sizeof(dnsQuestion_t)
-	+ sizeof(dnsRecord_t));
+	char* rName;
+	char* rData; 
+	offset = 
+	(sizeof(dnsHeader_t) + strlen(convMess) + 1 + sizeof(dnsQuestion_t));
+	rName = &dnsdata[offset];
 
 	if((uint8_t)(rName[0]) >= 192)
 	{
 		recdata = (dnsRecord_t*)&dnsdata[offset + 2];
-		rData = (unsigned char*)&dnsdata[offset + sizeof(dnsRecord_t)];
+		rData = (char*)&dnsdata[offset + sizeof(dnsRecord_t)];
 		offset = (uint8_t)rName[1];
 	}else
 	{
 		recdata = (dnsRecord_t*)&dnsdata[offset + strlen((char*)rName)]; 
-		rData = (unsigned char*)&dnsdata[offset + sizeof(dnsRecord_t) + 
-		strlen((char*)rName)];
+		rData =
+		(char*)&dnsdata[offset + sizeof(dnsRecord_t) + strlen((char*)rName)];
 	}
-	memset(retMsg,0,sizeof(retMsg));
+	memset(temp,0,sizeof(temp));
+
 	printf("Offset data - %d:\n", offset);
+
 	for(int i = 0; dnsdata[i + offset] != 0; i++)
 	{
-		retMsg[i] = dnsdata[i + offset];
+		temp[i] = dnsdata[i + offset];
 	}
-	translate((char*)retMsg);
-	printf("Name:\t%s\n", retMsg);
+
+	translate((char*)temp);
+	sprintf(msg, "%s", (char*)temp);
+
+	printf("Name:\t%s\n", temp);
 	printf("Type:\t%s\n", ntohs(recdata->tp));
 	printf("Class:\t%s\n", ntohs(recdata->cl));
 	printf("TTL:\t%s\n", ntohs(recdata->tl));
@@ -212,9 +218,82 @@ static int getDNS_Data(char *message, int connfd)
 	//do more stuff
 	if(ntohs(recdata->tp) == 1)
 	{
-		sprintf((char*)retMsg, "%d", (uint8_t)rData[0]);
-		strcat((char*)strIP, (char*)retMsg);
+		sprintf((char*)temp, "%d", (uint8_t)rData[0]);
+		strcat((char*)strIP, (char*)temp);
+		if (verbose == true)
+		{
+			strcat(retMsg, "\n");
+			strcat(retMsg, (char*)temp);
+		}
+		else
+		{
+			sprintf(retMsg, "%s", (char*)temp;);
+		}
+
+		for(int i = 1; i < ntohs(recdata->rl); i++)
+		{
+			sprintf((char*)temp, ".%d", (uint8_t)rData[i]);
+			strcat(clientResponse, (char*)temp);
+			strcat((char*)strIP, (char*)temp);
+		}
+
+		push(strIP,msg);
 		//do more stuff
+	}
+	else if (ntohs(recdata->tp) == 5)
+	{
+		int tempOffset = 
+		sizeof(dnsHeader_t) + sizeof(dnsQuestion_t) +
+		strlen(convMess) + 2 + sizeof(dnsRecord_t);
+
+		char tempHolder[256];
+		memset(tempHolder,0, 256);
+		bool done = false;
+		while(done != true)
+		{
+			if((uint8_t)dnsdata[tempOffset] == 0)
+			{}
+			else if((uint8_t)dnsdata[tempOffset] >= 192)
+			{
+				tempOffset = (uint8_t)dnsdata[tempOffset + 1];
+				recursiveTranslate(tempOffset, tempHolder, dnsdata);
+			}
+			else
+			{
+				int count = (uint8_t)dnsdata[tempOffset]+1;
+				for(int i = 0; i < count; i++)
+				{
+					if ((uint8_t)dnsdata[tempOffset+i] == 0)
+					{
+						done = true;
+					}
+					else
+					{
+						memset(tokenTemp, 0, 2);
+						if(dnsdata[tempOffset + i] < 60)
+						{
+							sprintf(tokenTemp, "%d", (uint8_t)dnsdata[tempOffset + i]);
+						} 
+						else 
+						{
+							sprintf(tokenTemp, "%c", dnsdata[tempOffset + i]);
+						}
+							strcat((char*)tempHolder, tokenTemp);
+					}	
+				}
+			}
+		}
+
+		//recurse(tempHolder, tempOffset, dnsdata);
+		if(verbose == true)
+		{
+			strcat(retMsg, "\n");
+			strcat(retMsg, tempHolder);
+		}
+		else
+		{
+			sprintf(retMsg, "%s", tempHolder);
+		}
 	}
 	write(connfd,retMsg, sizeof(retMsg));
 	close(connfd);
@@ -245,14 +324,13 @@ int translate(char* msg)
 	translated[count] = 0;
 	memset(msg, 0, 256);
 	sprintf(msg,"%s", translated);
-
 	return 0;
 }
 
 int checkCache(char* msg, int connfd)
 {
 	bool found = false;
-	services_t* temp = serv;
+	services_t* temp = serviceCache;
 	while(temp != NULL && found == false) {
 		if(strcmp(msg,temp->serviceName) == 0)
 		{
@@ -280,7 +358,7 @@ static void* runThread(void * data)
 	
 	//assume text is to be resolved
 	//check cache data struct 
-	services_t * travel = serv;
+	services_t * travel = serviceCache;
 	while(travel != NULL && strcmp(travel->serviceName, temp->message) != 0)
 	{
 							travel = travel->next;
