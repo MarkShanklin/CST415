@@ -350,7 +350,7 @@ static void* runThread(char* message, int connfd)
 	//close(temp->connfd);
 	//close thread
 	//pthread_exit(EXIT_SUCCESS);
-	return temp;
+	return NULL;
 }
 
 int main(int argc, char *argv[])
