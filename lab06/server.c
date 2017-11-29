@@ -1,8 +1,8 @@
 /***********************************************************
 * File Name     : sever.c
 * Purpose       : DNS Resolver Server
-* Creation Date : 10-21-2017
-* Last Modified : Tue 01 Nov 2017 11:43:34 PM PDT
+* Creation Date : 11-21-2017
+* Last Modified : Tue 28 Nov 2017 11:43:34 PM PDT
 * Created By    : Mark Shanklin 
 ***********************************************************/
 #include <unistd.h>
@@ -97,7 +97,6 @@ static void Print(int connfd) {
 		write(connfd, "\n", strlen("\n"));
 		temp = temp->next;
 	}
-	//database now
 }
 
 int Translate(char *msg)
@@ -238,14 +237,9 @@ static int getDNS_Data(char *message, int connfd)
 		fprintf(stderr,"dnsdata: %c\n", dnsdata[i + offset]);
 		temp[i] = dnsdata[i + offset];
 	}
-	fprintf(stderr,"DNS_DATA:%s\n",dnsdata);
-	fprintf(stderr,"temp: %s\n", temp);
+
 	Translate((char*)temp);
 	sprintf(convMess, "%s", (char*)temp);
-
-	fprintf(stderr,"message: %s\n", message);
-	fprintf(stderr, "convMess: %s\n", convMess);
-	fprintf(stderr,"temp: %s\n", temp);
 
 	if(ntohs(recdata->tp) == 1)
 	{
@@ -450,8 +444,8 @@ int main(int argc, char *argv[])
 					//data.connfd = connfd;
 					//strcpy(data.message, message);
 					//pthread_create(*thread, *attr, &runThread, connfd);
-					getDNS_Data(message, connfd);
-					//runThread(message, connfd);
+					//getDNS_Data(message, connfd);
+					runThread(message, connfd);
 				}
 			}
             else
