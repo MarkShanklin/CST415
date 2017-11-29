@@ -201,13 +201,6 @@ static int getDNS_Data(char *message, int connfd)
 	sprintf(temp,"%s", translated);
 	sprintf(message, "%s", translated);
 
-	printf("translated: %s\n", message);
-	printf("Type:\t%d\n", ntohs(recdata->tp));
-	printf("Class:\t%d\n", ntohs(recdata->cl));
-	printf("TTL:\t%d\n", ntohs(recdata->tl));
-	printf("Len:\t%d\n", ntohs(recdata->rl));
-	printf("Data:\t");
-
 	if(ntohs(recdata->tp) == 1)
 	{
 		sprintf((char*)temp, "%d", (uint8_t)rData[0]);
@@ -294,27 +287,6 @@ static int getDNS_Data(char *message, int connfd)
 	//reply with IP address or "failure"
 	return EXIT_SUCCESS;
 }
-
-/* int translate(char* msg)
-{
-	char translated[256];
-	memset(translated, 0, 256);
-	int count = 0;
-	for(int i = 0; msg[i] != 0; i++)
-	{
-		count = (uint8_t)msg[i];
-		for(int j = 0; j < count; j++, i++)
-		{
-			translated[i] = msg[i + 1];
-		}
-		translated[i] = '.';
-		count = i;
-	}
-	translated[count] = 0;
-	memset(msg, 0, 256);
-	sprintf(msg,"%s", translated);
-	return 0;
-} */
 
 static void* runThread(char* message, int connfd)
 {

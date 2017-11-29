@@ -77,7 +77,7 @@ int main(int argc, char *argv[])
 				exitVal = 1;
 			}
 			//write(stdout)
-			if(fputs(recvBuff, stdout) == EOF)
+			if(fputs(recvBuff, stderr) == EOF)
 			{
 				fprintf(stderr,"\n ERROR : FPUTS ERROR\n");
 			}
