@@ -232,7 +232,7 @@ static int getDNS_Data(char *message, int connfd)
 		temp[i] = dnsdata[i + offset];
 	}
 	Translate((char*)temp);
-	sprintf(convMess, "%s", (char*)temp));
+	sprintf(convMess, "%s", (char*)temp);
 
 	fprintf(stderr,"message: %s\n", message);
 	fprintf(stderr, "convMess: %s\n", convMess);
