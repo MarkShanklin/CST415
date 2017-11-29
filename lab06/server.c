@@ -143,20 +143,6 @@ static int getDNS_Data(char *message, int connfd)
 		token = strtok(NULL, ".");
 	}
 	
-/* 	for(int i = 0; i < strlen(convMess); i++)
-	{ 
-		dnsdata[sizeof(dnsHeader_t)+ i] = convMess[i];
-		if((int)convMess[i] < 60)
-		{
-			printf("%d", (int)convMess[i]);
-		}
-		else
-		{
-			printf("%c", convMess[i]);
-		}
-	}
-	printf("\n"); */ 
-
 	question = (dnsQuestion_t*)&dnsdata[sizeof(dnsHeader_t)+strlen(convMess)+1];
 	question->qt = htons(1);
 	question->qc = htons(1);
@@ -172,12 +158,6 @@ static int getDNS_Data(char *message, int connfd)
 	(struct sockaddr*)&place,(socklen_t*)&leng);
 
 	header = (dnsHeader_t*)dnsdata;
-
-	printf("Responce header:\n\n");
-	printf("Questions:\n %d\n", ntohs(header->qd));
-	printf("Answers:\n %d\n", ntohs(header->an));
-	printf("Authoritative Servers:\n %d\n", ntohs(header->ns));
-	printf("Additional Records:\n %d\n\n", ntohs(header->ar));
 
 	char* rName;
 	char* rData; 
@@ -197,8 +177,6 @@ static int getDNS_Data(char *message, int connfd)
 		(char*)&dnsdata[offset + sizeof(dnsRecord_t) + strlen((char*)rName)];
 	}
 	memset(temp,0,sizeof(temp));
-
-	printf("Offset data - %d:\n", offset);
 
 	for(int i = 0; dnsdata[i + offset] != 0; i++)
 	{
@@ -223,7 +201,7 @@ static int getDNS_Data(char *message, int connfd)
 	sprintf(temp,"%s", translated);
 	sprintf(message, "%s", translated);
 
-	printf("Name:\t%s\n", temp);
+	printf("translated: %s\n", message);
 	printf("Type:\t%d\n", ntohs(recdata->tp));
 	printf("Class:\t%d\n", ntohs(recdata->cl));
 	printf("TTL:\t%d\n", ntohs(recdata->tl));
@@ -306,7 +284,7 @@ static int getDNS_Data(char *message, int connfd)
 			sprintf(retMsg, "%s", tempHolder);
 		}
 	}
-	write(connfd,message sizeof(retMsg));
+	write(connfd,retMsg, sizeof(retMsg));
 	close(connfd);
 	//if DNS does not reply soon enough
 						//try again (only once)
@@ -345,11 +323,16 @@ static void* runThread(void * data)
 	//assume text is to be resolved
 	//check cache data struct 
 	services_t * travel = serviceCache;
-	while(travel != NULL && strcmp(travel->serviceName, temp->message) != 0)
+	bool found = false;
+	while(travel != NULL &&  found != true)
 	{
-							travel = travel->next;
+		if(strcmp(travel->serviceName, temp->message) == 0)
+		{
+			found = true;
+		}
+		travel = travel->next;
 	}
-	if(travel != NULL)
+	if(found == true)
 	{
 		//reply with IP address
 		write(temp->connfd, travel->serviceIP, 16);
