@@ -326,7 +326,7 @@ static void* runThread(char* message, int connfd)
 	bool found = false;
 	while(travel != NULL &&  found != true)
 	{
-		if(strcmp(travel->serviceName, temp->message) == 0)
+		if(strcmp(travel->serviceName, message) == 0)
 		{
 			found = true;
 		}
