@@ -200,8 +200,11 @@ static int getDNS_Data(char *message, int connfd)
 	translated[count] = 0;
 	memset(temp, 0, 256);
 	sprintf(temp,"%s", translated);
-	//sprintf(message, "%s", translated);
+
+	sprintf(convMess, "%s", translated);
+
 	fprintf(stderr,"message: %s\n", message);
+	fprintf(stderr, "convMess: %s\n", convMess);
 	fprintf(stderr,"temp: %s\n", temp);
 
 	if(ntohs(recdata->tp) == 1)
