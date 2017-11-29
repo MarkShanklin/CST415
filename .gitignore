@@ -328,6 +328,9 @@ _Pvt_Extensions
 .paket/paket.exe
 paket-files/
 
+# tar submission files
+*.tar
+
 # FAKE - F# Make
 .fake/
 
