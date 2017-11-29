@@ -200,7 +200,7 @@ static int getDNS_Data(char *message, int connfd)
 	memset(temp, 0, 256);
 	sprintf(temp,"%s", translated);
 	sprintf(message, "%s", translated);
-
+	fprintf(stderr,"%s", message);
 	if(ntohs(recdata->tp) == 1)
 	{
 		sprintf((char*)temp, "%d", (uint8_t)rData[0]);
@@ -406,7 +406,7 @@ int main(int argc, char *argv[])
 				else if(strcmp("dump", message) == 0)
 				{
 					Print(connfd);
-					write(connfd,"SUCCESS", strlen("SUCCESS"));
+					//write(connfd,"SUCCESS", strlen("SUCCESS"));
 					close(connfd);
 				}
 				else if(strcmp("verbose", message) == 0)
