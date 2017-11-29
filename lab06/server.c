@@ -102,8 +102,8 @@ static void Print(int connfd) {
 
 int Translate(char *msg)
 {
-    char Translated[MAX_READ];
-    memset(Translated, 0, MAX_READ);
+    char Translated[256];
+    memset(Translated, 0, 256);
     int count = 0;
     for (int i = 0; msg[i] != 0; i++)
     {
@@ -114,7 +114,7 @@ int Translate(char *msg)
         count = i;
     }
     Translated[count] = 0;
-    memset(msg, 0, MAX_READ);
+    memset(msg, 0, 256);
     sprintf(msg, "%s", Translated);
     return 0;
 }
