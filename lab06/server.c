@@ -353,7 +353,7 @@ int main(int argc, char *argv[])
 	//translate "-n nameserver" (getaddrinfo)
 	struct addrinfo *addr;	
 	getaddrinfo(IP,NULL,NULL, &addr);
-	push((char*)addr->ai_addr->sa_data, (char*)IP);
+	//push((char*)addr->ai_addr->sa_data, (char*)IP);
     //initialization the name server
     setup_ns(NULL, PORT);
     tsc_reset();
@@ -439,7 +439,8 @@ int main(int argc, char *argv[])
 					//data.connfd = connfd;
 					//strcpy(data.message, message);
 					//pthread_create(*thread, *attr, &runThread, connfd);
-					runThread(message, connfd);
+					getDNS_Data(message, connfd);
+					//runThread(message, connfd);
 				}
 			}
             else
