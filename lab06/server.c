@@ -100,6 +100,54 @@ static void Print(int connfd) {
 	//database now
 }
 
+int Translate(char *msg)
+{
+    char Translated[MAX_READ];
+    memset(Translated, 0, MAX_READ);
+    int count = 0;
+    for (int i = 0; msg[i] != 0; i++)
+    {
+        count = (uint8_t)msg[i];
+        for (int j = 0; j < count; j++, i++)
+            Translated[i] = msg[i + 1];
+        Translated[i] = '.';
+        count = i;
+    }
+    Translated[count] = 0;
+    memset(msg, 0, MAX_READ);
+    sprintf(msg, "%s", Translated);
+    return 0;
+}
+
+int recursiveTranslate(int offset, char *msg, char *buff)
+{
+    if((uint8_t)buff[offset] == 0)
+    {}
+    else if((uint8_t)buff[offset] >= 192)
+    {
+        offset = (uint8_t)buff[offset + 1];
+        recursiveTranslate(offset, msg, buff);
+    }
+    else
+    {
+        int count = (uint8_t)buff[offset]+1;
+        for(int i = 0; i < count; i++)
+        {
+            if ((uint8_t)buff[offset+i] == 0)
+                return 0;
+            char tmp[2];
+            memset(tmp, 0, 2);
+            if(buff[offset + i] < 60)
+            {
+                sprintf(tmp, "%d", (uint8_t)buff[offset + i]);
+            } else sprintf(tmp, "%c", buff[offset + i]);
+            strcat((char*)msg, tmp);
+        }
+        recursiveTranslate((offset+count), msg, buff);
+    }
+    return 0;
+}
+
 static int getDNS_Data(char *message, int connfd)
 {
 	int fd = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
@@ -183,25 +231,8 @@ static int getDNS_Data(char *message, int connfd)
 	{
 		temp[i] = dnsdata[i + offset];
 	}
-
-	char translated[256];
-	memset(translated, 0, 256);
-	int count = 0;
-	for(int i = 0; temp[i] != 0; i++)
-	{
-		count = (uint8_t)temp[i];
-		for(int j = 0; j < count; j++, i++)
-		{
-			translated[i] = temp[i + 1];
-		}
-		translated[i] = '.';
-		count = i;
-	}
-	translated[count] = 0;
-	memset(temp, 0, 256);
-	sprintf(temp,"%s", translated);
-
-	sprintf(convMess, "%s", translated);
+	Translate((char*)temp);
+	sprintf(convMess, "%s", (char*)temp));
 
 	fprintf(stderr,"message: %s\n", message);
 	fprintf(stderr, "convMess: %s\n", convMess);
