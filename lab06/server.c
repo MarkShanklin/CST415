@@ -173,7 +173,7 @@ static int getDNS_Data(char *message, int connfd)
 	dnsRecord_t * recdata;
 	dnsQuestion_t *question;
 	
-	header = (dnsHeader_t*)&dnsdata[0];
+	header = (dnsHeader_t*)&dnsdata;
 	header->id = htons((uint16_t)connfd); //change to unique
 	header->rd = 1;
 	header->qd = htons(1);
@@ -193,7 +193,13 @@ static int getDNS_Data(char *message, int connfd)
 	}
 	fprintf(stderr, "convMess: %s\n", convMess);
 	
-	question = (dnsQuestion_t*)&dnsdata[sizeof(dnsHeader_t)+strlen(convMess)+1];
+	for(int i = 0; i < strlen(convMess); i++)
+	{
+		dnsdata[sizeof(dnsHeader_t) + i] = convMess[i];
+	}
+
+	question = (dnsQuestion_t*)&dnsdata[sizeof(dnsHeader_t)
+	+ strlen(convMess) + 1];
 	question->qt = htons(1);
 	question->qc = htons(1);
 
