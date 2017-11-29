@@ -199,8 +199,10 @@ static int getDNS_Data(char *message, int connfd)
 	translated[count] = 0;
 	memset(temp, 0, 256);
 	sprintf(temp,"%s", translated);
-	sprintf(message, "%s", translated);
-	fprintf(stderr,"%s", message);
+	//sprintf(message, "%s", translated);
+	fprintf(stderr,"message: %s\n", message);
+	fprintf(stderr,"temp: %s\n", temp);
+
 	if(ntohs(recdata->tp) == 1)
 	{
 		sprintf((char*)temp, "%d", (uint8_t)rData[0]);
