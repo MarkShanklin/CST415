@@ -328,30 +328,6 @@ int translate(char* msg)
 	return 0;
 }
 
-int checkCache(char* msg, int connfd)
-{
-	bool found = false;
-	services_t* temp = serviceCache;
-	while(temp != NULL && found == false) {
-		if(strcmp(msg,temp->serviceName) == 0)
-		{
-			write(connfd, temp->serviceIP, strlen(temp->serviceIP));
-			found = true;
-		}
-		//printf("%s-%s\n",temp->serviceName, temp->serviceIP);
-		//write(connfd, temp->serviceName, strlen(temp->serviceName));
-		//write(connfd, "-", strlen("-"));
-		//write(connfd, temp->serviceIP, strlen(temp->serviceIP));
-		//write(connfd, "\n", strlen("\n"));
-		temp = temp->next;
-	}
-	if(found == false)
-	{
-		getDNS_Data(msg, connfd);
-	}
-	return 0;
-}
-
 static void* runThread(void * data)
 {
 	conn_t * temp = (conn_t*)data;
@@ -498,8 +474,7 @@ int main(int argc, char *argv[])
 					data.connfd = connfd;
 					strcpy(data.message, message);
 					//pthread_create(*thread, *attr, &runThread, connfd);
-					//runThread(&data);
-					getDNS_Data(message, connfd);
+					runThread(&data);
 				}
 			}
             else
