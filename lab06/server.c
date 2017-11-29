@@ -383,7 +383,7 @@ int main(int argc, char *argv[])
 	//translate "-n nameserver" (getaddrinfo)
 	struct addrinfo *addr;	
 	getaddrinfo(IP,NULL,NULL, &addr);
-	push(&addr->ai_addr->sa_data, &IP);
+	push((char*)addr->ai_addr->sa_data, &IP);
     //initialization the name server
     setup_ns(NULL, PORT);
     tsc_reset();
