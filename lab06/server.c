@@ -205,8 +205,23 @@ static int getDNS_Data(char *message, int connfd)
 		temp[i] = dnsdata[i + offset];
 	}
 
-	translate((char*)temp);
-	sprintf(message, "%s", (char*)temp);
+	char translated[256];
+	memset(translated, 0, 256);
+	int count = 0;
+	for(int i = 0; temp[i] != 0; i++)
+	{
+		count = (uint8_t)temp[i];
+		for(int j = 0; j < count; j++, i++)
+		{
+			translated[i] = temp[i + 1];
+		}
+		translated[i] = '.';
+		count = i;
+	}
+	translated[count] = 0;
+	memset(temp, 0, 256);
+	sprintf(temp,"%s", translated);
+	sprintf(message, "%s", translated);
 
 	printf("Name:\t%s\n", temp);
 	printf("Type:\t%d\n", ntohs(recdata->tp));
@@ -302,7 +317,7 @@ static int getDNS_Data(char *message, int connfd)
 	return EXIT_SUCCESS;
 }
 
-int translate(char* msg)
+/* int translate(char* msg)
 {
 	char translated[256];
 	memset(translated, 0, 256);
@@ -321,7 +336,7 @@ int translate(char* msg)
 	memset(msg, 0, 256);
 	sprintf(msg,"%s", translated);
 	return 0;
-}
+} */
 
 static void* runThread(void * data)
 {
