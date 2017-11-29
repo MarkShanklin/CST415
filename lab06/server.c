@@ -236,7 +236,7 @@ static int getDNS_Data(char *message, int connfd)
 			strcat(retMsg, (char*)temp);
 			strcat((char*)strIP, (char*)temp);
 		}
-		push(strIP,msg);
+		push(strIP,message);
 	}
 	else if (ntohs(recdata->tp) == 5)
 	{
