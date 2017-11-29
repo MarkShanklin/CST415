@@ -306,7 +306,7 @@ static int getDNS_Data(char *message, int connfd)
 			sprintf(retMsg, "%s", tempHolder);
 		}
 	}
-	write(connfd,retMsg, sizeof(retMsg));
+	write(connfd,message sizeof(retMsg));
 	close(connfd);
 	//if DNS does not reply soon enough
 						//try again (only once)
