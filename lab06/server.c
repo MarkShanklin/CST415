@@ -268,42 +268,7 @@ static int getDNS_Data(char *message, int connfd)
 
 		char tempHolder[256];
 		memset(tempHolder,0, 256);
-		bool done = false;
-		while(done != true)
-		{
-			if((uint8_t)dnsdata[tempOffset] == 0)
-			{}
-			else if((uint8_t)dnsdata[tempOffset] >= 192)
-			{
-				tempOffset = (uint8_t)dnsdata[tempOffset + 1];
-			}
-			else
-			{
-				int count = (uint8_t)dnsdata[tempOffset]+1;
-				for(int i = 0; i < count; i++)
-				{
-					if ((uint8_t)dnsdata[tempOffset+i] == 0)
-					{
-						done = true;
-					}
-					else
-					{
-						memset(tokenTemp, 0, 2);
-						if(dnsdata[tempOffset + i] < 60)
-						{
-							sprintf(tokenTemp, "%d", (uint8_t)dnsdata[tempOffset + i]);
-						} 
-						else 
-						{
-							sprintf(tokenTemp, "%c", dnsdata[tempOffset + i]);
-						}
-							strcat((char*)tempHolder, tokenTemp);
-					}	
-				}
-			}
-		}
-
-		//recurse(tempHolder, tempOffset, dnsdata);
+		recursiveTranslate(tempOffset, tempHolder, dnsdata);
 		if(verbose == true)
 		{
 			strcat(retMsg, "\n");
