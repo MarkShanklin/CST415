@@ -204,7 +204,7 @@ static int getDNS_Data(char *message, int connfd)
 	memset(dnsdata, 0, sizeof(dnsdata));
 
 	int leng = sizeof(place);
-	recvfrom(fd, (char*)dnsdata, sizeof(dnsdata), 0, 
+	recvfrom(fd, (char*)dnsdata, 65536, 0, 
 	(struct sockaddr*)&place,(socklen_t*)&leng);
 
 	header = (dnsHeader_t*)dnsdata;
@@ -232,6 +232,7 @@ static int getDNS_Data(char *message, int connfd)
 		fprintf(stderr,"dnsdata: %c\n", dnsdata[i + offset]);
 		temp[i] = dnsdata[i + offset];
 	}
+	fprintf(stderr,"DNS_DATA:%s\n",dnsdata);
 	fprintf(stderr,"temp: %s\n", temp);
 	Translate((char*)temp);
 	sprintf(convMess, "%s", (char*)temp);
