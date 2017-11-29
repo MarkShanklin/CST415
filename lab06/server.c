@@ -212,7 +212,7 @@ static int getDNS_Data(char *message, int connfd)
 	char* rName;
 	char* rData; 
 	offset = 
-	(sizeof(dnsHeader_t) + strlen(convMess) + 1 + sizeof(dnsQuestion_t));
+	(sizeof(dnsHeader_t) + strlen(convMess) + sizeof(dnsQuestion_t) + 1);
 	rName = &dnsdata[offset];
 
 	if((uint8_t)(rName[0]) >= 192)
@@ -229,6 +229,7 @@ static int getDNS_Data(char *message, int connfd)
 	
 	for(int i = 0; dnsdata[i + offset] != 0; i++)
 	{
+		fprintf(stderr,"dnsdata: %c\n", dnsdata[i + offset]);
 		temp[i] = dnsdata[i + offset];
 	}
 	fprintf(stderr,"temp: %s\n", temp);
