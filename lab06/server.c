@@ -60,7 +60,7 @@ static int port;
 static bool verbose = false;
 static char IP[16];
 static services_t *serviceCache;
-static services_t *database;
+//static services_t *database;
 
 static services_t* GetNewNode(char * ip, char * name)
 {
