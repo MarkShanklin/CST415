@@ -210,13 +210,12 @@ static int getDNS_Data(char *message, int connfd)
 	sprintf(msg, "%s", (char*)temp);
 
 	printf("Name:\t%s\n", temp);
-	printf("Type:\t%s\n", ntohs(recdata->tp));
-	printf("Class:\t%s\n", ntohs(recdata->cl));
-	printf("TTL:\t%s\n", ntohs(recdata->tl));
-	printf("Len:\t%s\n", ntohs(recdata->rl));
+	printf("Type:\t%d\n", ntohs(recdata->tp));
+	printf("Class:\t%d\n", ntohs(recdata->cl));
+	printf("TTL:\t%d\n", ntohs(recdata->tl));
+	printf("Len:\t%d\n", ntohs(recdata->rl));
 	printf("Data:\t");
 
-	//do more stuff
 	if(ntohs(recdata->tp) == 1)
 	{
 		sprintf((char*)temp, "%d", (uint8_t)rData[0]);
@@ -228,18 +227,16 @@ static int getDNS_Data(char *message, int connfd)
 		}
 		else
 		{
-			sprintf(retMsg, "%s", (char*)temp;);
+			sprintf(retMsg, "%s", (char*)temp);
 		}
 
 		for(int i = 1; i < ntohs(recdata->rl); i++)
 		{
 			sprintf((char*)temp, ".%d", (uint8_t)rData[i]);
-			strcat(clientResponse, (char*)temp);
+			strcat(retMsg, (char*)temp);
 			strcat((char*)strIP, (char*)temp);
 		}
-
 		push(strIP,msg);
-		//do more stuff
 	}
 	else if (ntohs(recdata->tp) == 5)
 	{
